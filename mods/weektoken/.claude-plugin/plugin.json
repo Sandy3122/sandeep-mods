@@ -1,7 +1,7 @@
 {
   "name": "weektoken",
   "displayName": "WeekToken",
-  "version": "0.2.21",
+  "version": "0.2.22",
   "description": "Shows your 5-hour, weekly and per-model usage limits against elapsed time, with a forecast and history, in a band above the prompt and a pane.",
   "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
   "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/weektoken#readme",
@@ -10,8 +10,8 @@
   "keywords": ["usage", "rate-limit", "pace", "quota"],
   "types": "./types/index.d.ts",
   "icon": "./.claude-plugin/icon.png",
-  "documentationUrl": "https://github.com/3dnow/claude-mods/tree/main/weektoken",
-  "supportUrl": "https://github.com/3dnow/claude-mods/issues",
+  "documentationUrl": "https://github.com/Sandy3122/claude-mods/tree/main/mods/weektoken#readme",
+  "supportUrl": "https://github.com/Sandy3122/claude-mods/issues",
   "privacyPolicyUrl": "https://github.com/3dnow/claude-mods/tree/main/weektoken#privacy-and-permissions",
   "termsOfServiceUrl": "https://github.com/3dnow/claude-mods/blob/main/LICENSE"
 }

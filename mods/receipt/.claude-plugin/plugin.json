@@ -1,21 +1,23 @@
 {
   "name": "receipt",
-  "version": "0.2.0",
-  "description": "What each turn did, in a band above the prompt once it ends (files changed with lines, commands and failures, reads, subagents), and a toast when the model goes in circles; read from the turn's own tool calls: no tool, no prompt, no tokens",
+  "displayName": "Receipt",
+  "version": "0.2.1",
+  "description": "Shows what each turn did in a band above the prompt: files changed, commands, failures, reads and subagents.",
   "author": {
-    "name": "hoobnn",
-    "url": "https://github.com/hoobnn"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/hoobnn/hoobnn-agent-mods",
-  "repository": "https://github.com/hoobnn/hoobnn-agent-mods",
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/receipt#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
   "keywords": [
     "receipt",
     "turn",
     "activity",
+    "summary",
     "loop",
     "band",
-    "mod"
+    "diff"
   ],
   "types": "./types/index.d.ts",
   "userConfig": {

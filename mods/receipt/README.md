@@ -1,58 +1,88 @@
-# receipt：Claude Code 回合回执
+# Receipt
 
-**简体中文** · [English](README.en.md)
+Receipt leaves a one-line summary above the prompt when a turn ends, showing the files Claude changed, the commands it ran and how many failed.
 
-Claude 每轮回复结束后，输入框上方会留下一行回执：改了几个文件、增删多少行、跑了几条命令、有几条失败。不用翻记录，就知道这一轮做了什么。Claude 原地打转时还会弹提示。全程不消耗 token。
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
 
-![receipt：上一轮改了什么、跑了什么、读了什么](assets/preview.png)
+![The receipt band showing what the last turn changed, ran and read](assets/preview.png)
 
-## 功能
+## What it does
 
-- **一行回执**：先显示这一轮怎么结束的（`✓` 正常回答、`◼` 被中断、`✗` 出错）和用时，再列出有内容的几项：改动的文件和增删行数、执行的命令和失败数、读取次数（`Read`、`Grep`、`Glob`）、开了几个子代理、产生了几条预警。
-- **子代理也算**：子代理改的文件和跑的命令都计入开启它的这一轮。
-- **不打扰**：没用工具的纯聊天轮不留回执，下一轮开始时回执自动收起；输入框弹出 `/` 或 `@` 选择器时也会让开。
-- **改了没验证就标出来**：这一轮最后一次改代码之后没有跑过测试、构建、lint 或类型检查（或者根本没跑），回执末尾显示黄色的「未验证」，`/receipt` 里也会写明。只改 Markdown、纯文本这类文档不算。识别 `npm test`、`pytest`、`go test`、`cargo check`、`tsc`、`eslint`、`make`、`bash scripts/check.sh` 等常见写法，包括 `uv run`、`npx` 这类前缀。
-- **逐处回放改动**：回执末尾有「回放」按钮（`ctrl+x` `Tab` 聚焦横条后按 `r`），也可以输入 `/receipt replay`，打开面板逐处查看这一轮每次编辑的 diff：文件、增删行数、从第几行开始改，`n` / `p` 前后翻，`c` 或 `Esc` 关闭。diff 取自编辑实际执行后的结果，被拒绝或失败的编辑不会出现；子代理的编辑也在里面。每轮最多记录前 50 处，每处最多 120 行。
-- **原地打转提醒**：这一轮进行中，出现下面两种情况会弹 toast，每段连续只提醒一次：
-  - 同一个调用连续失败 `repeatFailures` 次（默认 3），中间没有任何改动。编辑文件或跑了会改东西的命令（如 `sed -i`、`npm install`）算在推进，计数重来；`cat`、`ls` 这类只读命令不算。
-  - 同一个文件被改回之前的样子，达到 `flipFlops` 次（默认 2）。
-- **零 token**：只在工具调用执行完后读取结果（Edit、Write、NotebookEdit 统计文件；有 git 行数用 git 的，没有就按补丁算；Bash 统计命令），不注册工具，不加提示词，不拦截调用。
+- Shows a band above the prompt after each turn that used a tool: how the turn ended, how long it took, files changed with lines added and removed, commands run and failed, reads, subagents and warnings.
+- Counts a subagent's edits and commands toward the turn that started it.
+- Marks the receipt `unverified` when code changed after the turn's last test, build, lint or type check, or when none ran. Edits to prose files such as Markdown do not count.
+- Replays the turn's edits one at a time in a pane, with each diff.
+- Shows a toast when Claude seems to go in circles: the same call failing again and again, or a file edited back and forth.
+- Reads only the tool calls the turn already made, so it adds no tool and no prompt text.
 
-## 安装
+## Install
 
-```sh
-claude plugin marketplace add hoobnn/hoobnn-agent-mods
-claude plugin install receipt@hoobnn-agent-mods
+```
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install receipt@sandeep-mods
 ```
 
-## 命令
+## Use
 
-- `/receipt`：完整列出上一轮的回执：每个文件的增删行数（新建的文件标「新建」）、每条失败的命令、每条预警。
-- `/receipt replay`：打开回放面板，逐处查看上一轮每次编辑的 diff。
-- `/receipt off`、`/receipt on`：隐藏或显示回执。这个设置会写回 `/config`，以后的会话也会沿用。
+Nothing to start. When a turn that used a tool ends, the band appears above the prompt. It leaves when the next turn starts. A chat-only turn leaves no receipt. The band steps aside while a `/` or `@` picker is open.
 
-## 选项
+A receipt looks like this:
 
-在 `/config` 里修改，或写在 `~/.claude/settings.json` 的 `pluginConfigs` 里：
+```
+✓ Last turn 2m 13s · Edited 3 +48 −12 · Commands 6 · 1 failed · Reads 14 · Agents 1 · ⚠ 1
+```
 
-| 选项 | 作用 | 默认 |
+The first mark shows how the turn ended: `✓` answered, `◼` interrupted, `✗` error.
+
+Commands:
+- `/receipt` lists the last receipt in full: every file with its lines (`new` for a file the turn created), every failed command and every warning.
+- `/receipt replay` opens a pane with the turn's edits, one at a time. You can also press **r** on the band's Replay button.
+- `/receipt off` and `/receipt on` hide or show the band. They write the `visible` setting, so later sessions keep the choice.
+
+In the replay pane, **n** and **p** move to the next and previous edit, and **c** or Esc closes it. Diffs come from the edits' results, so a refused or failed edit is missing. A turn keeps its first 50 edits, each up to 120 lines.
+
+The toast fires once per streak, for the main thread only:
+- The same call fails `repeatFailures` times in a row with nothing changed in between. An edit, or a shell command that was not read-only (`sed -i`, `npm install`), counts as work and resets the count. `cat` or `ls` does not.
+- A file is edited back to what an earlier edit took out, `flipFlops` times.
+
+## Settings
+
+| Option | Default | What it does |
 | --- | --- | --- |
-| `visible` | 两轮之间在输入框上方显示回执 | 开 |
-| `repeatFailures` | 同一调用连续失败几次后提醒；0 关闭 | 3 |
-| `flipFlops` | 同一文件来回改几次后提醒；0 关闭 | 2 |
-| `flagUnverified` | 最后一次改代码之后没跑测试、构建或检查时，回执标「未验证」 | 开 |
-| `language` | 界面语言：`auto`、`en`、`zh-Hans`、`zh-Hant`、`ja`、`ko`、`es`、`fr`、`de`、`pt-BR`、`ru` | `auto` |
+| `visible` | `true` | Shows the receipt above the prompt between turns |
+| `repeatFailures` | `3` | Toast after the same call fails this many times in a row; `0` turns it off |
+| `flipFlops` | `2` | Toast after a file is edited back and forth this many times; `0` turns it off |
+| `flagUnverified` | `true` | Marks the receipt when code changed after the last test, build, lint or type check |
+| `language` | `auto` | Language of the receipt, `/receipt` and the toasts: `auto`, `en`, `zh-Hans`, `zh-Hant`, `ja`, `ko`, `es`, `fr`, `de`, `pt-BR` or `ru` |
 
-`language` 为 `auto` 时，依次跟随 Claude Code 的 `language` 设置和系统语言环境，都没有时用英语。
+`auto` follows Claude Code's language setting, then your system locale, then English.
 
-## 同系列 mod
+Change them in `/plugin` → **Installed** → **receipt** → **Configure options**, or run `claude plugin configure receipt@sandeep-mods`.
 
-[hoobnn-agent-mods](../../README.md) 里还有任务进度条（`todo-bar`）、状态栏 HUD（`hud`）、运行动画和宠物（`spinner`）、Tailscale 节点状态（`ts-band`）和一言（`hitokoto`），可以搭配使用。
+## Requirements
 
-## 开发
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- No other programs needed.
 
-- `hooks/register.tsx`：钩子（会话开始时的语言和 `/receipt`，回合开始与结束，读取工具调用，命令和横条）。
-- `hooks/ledger.ts`：根据每次调用的内容生成回执，以及两条打转规则。
-- `hooks/config.ts`：选项，一次性读成类型化的 `Config`。
-- `hooks/i18n.ts`：各语言文案。
-- `hooks/kit/`：`claude-code/kit` 的副本；改源文件后运行 `scripts/sync-kit.sh`。
+## What it can access
+
+- **Hooks:** session start, turn start and end, every tool call (after it has run), the `/receipt` command, prompt edits and submits, and the drawing of the band above the prompt and the replay pane.
+- **Gating:** it never refuses or holds a tool call. It reads each call's input and result after the call finishes.
+- **Reads:** your Claude Code settings (for the language), the `LC_ALL`, `LC_MESSAGES` and `LANG` environment variables, and the session's working directory, to shorten file paths.
+- **Writes:** the `visible` setting when you run `/receipt off` or `/receipt on`. It writes no other files.
+- **Programs, network and models:** none. It runs no programs, makes no network requests and calls no model, so it costs no tokens.
+
+## Troubleshooting
+
+- **No band appears.** Check that `visible` is on (`/receipt on`). A turn with no tool calls leaves no receipt, and the band hides while a `/` or `@` picker is open or a survey is showing.
+- **A receipt says `unverified` and I ran tests.** Only commands it recognises count, such as `npm test`, `pytest`, `go test`, `cargo check`, `tsc`, `eslint`, `make` or a script named like `check.sh`. A check that ran before the last code edit does not count.
+- **Replay is empty or missing an edit.** Refused or failed edits have no diff. Replay needs at least one edit in the last turn.
+- **The text is in the wrong language.** Set `language` to the one you want instead of `auto`.
+
+## License
+
+MIT; see LICENSE.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [hoobnn](https://github.com/hoobnn) in [hoobnn/hoobnn-agent-mods](https://github.com/hoobnn/hoobnn-agent-mods/tree/b95d1e454a76523e433fb37e5ca171e1f5576676/claude-code/receipt), MIT.

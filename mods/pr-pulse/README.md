@@ -1,74 +1,78 @@
 # PR Pulse
 
-[![CI](https://github.com/gerricchaplin/pr-pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/gerricchaplin/pr-pulse/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/gerricchaplin/pr-pulse/actions/workflows/codeql.yml/badge.svg)](https://github.com/gerricchaplin/pr-pulse/actions/workflows/codeql.yml)
-[![Security](https://github.com/gerricchaplin/pr-pulse/actions/workflows/security.yml/badge.svg)](https://github.com/gerricchaplin/pr-pulse/actions/workflows/security.yml)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/gerricchaplin/pr-pulse/badge)](https://scorecard.dev/viewer/?uri=github.com/gerricchaplin/pr-pulse)
-[![License: MIT](https://img.shields.io/badge/license-MIT-6000F0.svg)](LICENSE)
+PR Pulse shows live status for your GitHub pull requests in Claude Code: checks, merge readiness, review comments, your review queue and change alerts.
 
-Live GitHub pull-request status inside [Claude Code](https://claude.com/claude-code): checks, merge readiness, review comments, your review queue and change alerts, without leaving the terminal.
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and deploys
 
 ![PR Pulse pane watching a pull request: merge-readiness verdict, check progress, recent activity and workflows](assets/pr-pulse.png)
 
+## What it does
+
+- Opens three tabbed panes: PR Pulse (your open PRs), PR history and PR reviews.
+- Shows a merge-readiness verdict for the selected PR (ready to merge, blocked, or waiting on checks) with the checklist behind it.
+- Lists checks with failed ones first, and lets you drill from a workflow to its jobs and steps, with an excerpt of the failure log.
+- Lists unresolved review threads, the conversation and resolved threads.
+- Lists PRs you opened, PRs merged in the last 7 days, and PRs waiting for your review or your teams' review.
+- Raises a toast and adds a line to the recent-activity list when a check fails, all checks pass, a review lands, someone comments, a PR becomes ready to merge or a review is requested from you.
+- Drafts a prompt from a failed check or a review thread and puts it in your prompt box. Nothing is sent until you press Enter.
+
 ## Install
 
-```text
-/plugin marketplace add gerricchaplin/pr-pulse
-/plugin install pr-pulse@pr-pulse
 ```
-
-Requires the [GitHub CLI](https://cli.github.com) (`gh`), signed in (`gh auth status`). PR Pulse makes every GitHub call through `gh`, as you.
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install pr-pulse@sandeep-mods
+```
 
 ## Use
 
-Run `/pulse` in a GitHub repo. Optional argument: `owner/repo`, `owner/repo#123` or a PR URL.
+Run `/pulse` in a GitHub repo. It takes an optional argument: `owner/repo`, `owner/repo#123` or a PR URL. With no argument it watches your latest open PR in the repo you are in.
 
-PR Pulse opens in the same window as your Claude conversation, as three tabbed panes (PR Pulse, PR history and PR reviews), so you can keep working with Claude while it watches.
+Keys while a pane is focused:
+- **r** refreshes.
+- **m** minimises the panes to a one-line band above the prompt. Polling and alerts carry on.
+- **q** closes PR Pulse.
+- **o** opens the PR in your browser.
 
-- **PR Pulse pane**: your open PRs, a merge-readiness verdict (`✓ READY TO MERGE`, `✗ BLOCKED · n`, `◐ WAITING ON CHECKS`) with the checklist behind it, a check bar, failed checks first, and drill-down from workflow to job to steps with a failure-log excerpt.
-- **Comments**: unresolved review threads, the conversation and resolved threads.
-- **PR history**: your PRs and everyone's merged in the last 7 days.
-- **PR reviews**: PRs waiting on you, and on your teams.
-- **Alerts**: toasts and a recent-activity list when a check fails or all pass, a review lands, someone comments, the PR becomes ready to merge, or a review is requested from you.
-- **Fix with Claude / Address with Claude**: drafts a prompt from a failed check's log or a review thread into your prompt box. Nothing is sent until you press Enter.
-- **Minimise** (`m`): the panes collapse to a one-line band above the prompt; polling and alerts carry on. `/pulse` or `e` expands.
+Run `/pulse` again, or press **e** in the band, to expand the panes. The band shows each open PR with its state, the number of PRs waiting on your review, and the latest alert.
 
-Keys while a pane is focused: `r` refresh, `m` minimise, `q` close, `o` open the PR in the browser.
+The **Fix with Claude** and **Address with Claude** buttons add a draft to your prompt box. If you change folder, PR Pulse follows the new repo.
 
-## Security
+PR Pulse polls GitHub, because a local plugin cannot receive webhooks. It refreshes your PRs and checks every 15 seconds, and history, the review queue and branch status every 60 seconds.
 
-PR Pulse has no dependencies and a deliberately small reach: it runs only `gh`, `git`, `uname` and `open`/`xdg-open` (for `https://` links), never writes files, never calls a model and never sends a prompt for you. CI fails if that reach grows without review. Details, the checks this repository runs, and how to report a vulnerability: [SECURITY.md](SECURITY.md).
+## Settings
 
-## GitHub API use
+None. The panes follow your Claude Code theme (dark or light).
 
-PR Pulse polls (a local plugin cannot receive webhooks): every 15 s for your PRs and checks, every 60 s for history, the review queue and branch status. All calls are serial and go through your own `gh` token, sharing its hourly limits with everything else you run.
+## Requirements
 
-## Try it on this repo
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- The [GitHub CLI](https://cli.github.com) (`gh`), signed in. Check with `gh auth status`.
+- `git`, to find the repo you are in.
+- `open` on macOS or `xdg-open` elsewhere, to open links in your browser.
 
-This repository doubles as a demo target. `scripts/demo.sh <scenario>` opens a throwaway draft PR in a known state:
+## What it can access
 
-| Scenario | What PR Pulse shows |
-|---|---|
-| `green` | all checks pass, the "✓ All checks passed" alert |
-| `fail` | a failing build with its error log, and **Fix with Claude** |
-| `slow` | a two-minute check: the pane goes from running to green |
-| `flaky` | fails, then passes after `gh run rerun --failed` without a false alert |
-| `skip` | a skipped optional check |
-| `title` | the required `pr-title` check failing |
+- **Hooks:** session start, a change of folder, the `/pulse` command, closing the PR Pulse pane, and the drawing of the three panes and the band above the prompt. None of them can refuse or rewrite a tool call.
+- **Runs programs:** `gh`, `git`, `uname` and `open` or `xdg-open`. It runs nothing else.
+- **`gh` commands:** `gh repo view`, `gh pr list` (your PRs, merged PRs, and PRs that request your review), `gh pr view`, `gh pr checks`, `gh run view` (jobs and the failed-job log) and `gh api` (your user, repo compare, and GraphQL queries for review threads and comment counts). All of them read. PR Pulse never creates, comments on, approves or merges anything.
+- **Network:** every request goes through `gh` to GitHub, as your signed-in user. Calls count against your own GitHub rate limits. It makes no other network requests.
+- **Opens links:** only `https://` URLs, in your default browser, when you ask.
+- **Prompt box:** it reads your prompt text and appends a draft. It never submits it.
+- **Writes files:** none. State is kept in memory for the session.
+- **Models:** none are called, so it costs no tokens.
 
-`scripts/demo.sh clean` closes them all.
+## Troubleshooting
 
-## Develop
-
-```sh
-npm ci                                   # pinned Claude Code
-npx claude plugin validate .
-npx claude plugin test .
-python3 scripts/check-capabilities.py    # fails if the plugin's reach changed
-```
-
-Guidance for contributors and coding agents: [AGENTS.md](AGENTS.md).
+- **Nothing shows, or an error appears.** Run `gh auth status` and sign in with `gh auth login`. Then run `/pulse` again.
+- **"No PRs of yours in owner/repo".** PR Pulse watches PRs you opened in the current repo. Pass `owner/repo#123` or a PR URL to watch a specific one.
+- **The wrong repo is watched.** Run `/pulse owner/repo` to pick one, or change into the repo folder.
+- **The draft did not appear in the prompt.** A dialog may be open. Close it and press the button again.
+- **GitHub rate limit errors.** Close PR Pulse with **q** while you run other heavy `gh` work. It shares your token's hourly limit.
 
 ## License
 
-MIT
+MIT; see LICENSE.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [gerricchaplin](https://github.com/gerricchaplin) in [gerricchaplin/pr-pulse](https://github.com/gerricchaplin/pr-pulse/tree/8bf587aaa9cb3815875dcc3818c8827a37e7cb78), MIT.

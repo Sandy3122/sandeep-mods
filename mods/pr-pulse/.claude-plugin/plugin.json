@@ -1,12 +1,14 @@
 {
   "name": "pr-pulse",
-  "version": "0.1.0",
-  "description": "PR Pulse: live status, merge readiness, checks, comments, review queue and change alerts for your GitHub PRs, with a collapsible band",
-  "types": "./types/index.d.ts",
+  "displayName": "PR Pulse",
+  "version": "0.1.1",
+  "description": "Watch your GitHub pull requests from Claude Code: checks, merge readiness, comments, review queue and change alerts.",
   "author": {
-    "name": "Gerric Chaplin",
-    "url": "https://github.com/gerricchaplin"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/pr-pulse#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
   "keywords": [
     "github",
@@ -16,6 +18,5 @@
     "notifications",
     "statusline"
   ],
-  "homepage": "https://github.com/gerricchaplin/pr-pulse",
-  "repository": "https://github.com/gerricchaplin/pr-pulse"
+  "types": "./types/index.d.ts"
 }

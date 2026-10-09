@@ -1,11 +1,25 @@
 {
   "name": "rabe",
-  "version": "0.1.0",
-  "description": "Watch Claude Code's background work: subagents, Codex jobs, shells, monitors, cron jobs and workflows.",
+  "displayName": "Rabe",
+  "version": "0.1.1",
+  "description": "Shows the subagents, Codex jobs, shells, monitors, cron jobs and workflows running in the background, in a band above the prompt and a pane.",
   "author": {
-    "name": "Lorenz Hilpert"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/rabe#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
+  "keywords": [
+    "background",
+    "agents",
+    "subagents",
+    "codex",
+    "shells",
+    "monitors",
+    "cron",
+    "workflows"
+  ],
   "types": "./types/index.d.ts",
   "userConfig": {
     "hideBuiltinTasks": {

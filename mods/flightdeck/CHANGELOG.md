@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4 (2026-10-09)
+
+- Removed unused images and moved the demo GIF to assets/. No behaviour change.
+
 ## 0.3.3 (2026-10-09)
 
 - Imported from scasella/claude-flightdeck at f31daca.

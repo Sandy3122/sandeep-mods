@@ -4,7 +4,7 @@ Flightdeck shows a live dashboard in a Claude Code pane: context and cost, an ar
 
 Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
 
-![Flightdeck during a session: five subagents appear as cards, switch to swimlanes and finish while the permission gate fills with checks](docs/media/demo.gif)
+![Flightdeck during a session: five subagents appear as cards, switch to swimlanes and finish while the permission gate fills with checks](assets/demo.gif)
 
 ## What it does
 

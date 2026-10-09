@@ -21,7 +21,7 @@ rail.tsx, elapsed.tsx                ─▶ surface modules: animated connectors
 | `hooks/elapsed.tsx` | Surface module: live clocks |
 | `types/index.d.ts` | Types for the mod's `$.state` |
 | `tests/flightdeck.test.ts` | Behaviour tests |
-| `docs/media/` | Screenshots and demo GIF (`demo.gif` is used by the README; the others are upstream media) |
+| `assets/demo.gif` | Demo GIF shown in the README |
 | `tsconfig.json` | Type-check config |
 
 ## Events hooked

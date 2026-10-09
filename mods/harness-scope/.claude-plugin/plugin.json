@@ -1,7 +1,7 @@
 {
   "name": "harness-scope",
   "displayName": "Harness Scope",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Turns global skills, rules, agents and tools on or off per repo using named profiles.",
   "author": {
     "name": "Sandeep",
@@ -19,6 +19,7 @@
     "rules",
     "per-repo"
   ],
+  "icon": "./.claude-plugin/icon.png",
   "userConfig": {
     "configDir": {
       "type": "string",

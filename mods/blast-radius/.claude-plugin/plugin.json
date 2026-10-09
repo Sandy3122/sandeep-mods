@@ -1,11 +1,24 @@
 {
   "name": "blast-radius",
-  "version": "0.2.2",
+  "displayName": "Blast Radius",
+  "version": "0.2.3",
   "description": "Holds risky Bash commands and shows what they would change before they run.",
   "author": {
-    "name": "Hamza Zafar",
-    "url": "https://github.com/hamzafer"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/blast-radius#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
+  "license": "MIT",
+  "keywords": [
+    "safety",
+    "bash",
+    "rm",
+    "git",
+    "force-push",
+    "migration",
+    "confirm"
+  ],
   "types": "./types/index.d.ts",
   "userConfig": {
     "timeoutSeconds": {

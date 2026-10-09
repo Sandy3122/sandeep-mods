@@ -1,21 +1,13 @@
 {
   "name": "todo-bar",
-  "version": "0.3.0",
-  "description": "The task list's progress in a band above the prompt, read from the todo and task tools' own calls: no tool, no prompt, no tokens",
-  "author": {
-    "name": "hoobnn",
-    "url": "https://github.com/hoobnn"
-  },
-  "homepage": "https://github.com/hoobnn/hoobnn-agent-mods",
-  "repository": "https://github.com/hoobnn/hoobnn-agent-mods",
+  "displayName": "Todo Bar",
+  "version": "0.3.1",
+  "description": "Shows the task list's progress in a band above the prompt, read from Claude's own todo and task tool calls.",
+  "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/todo-bar#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
-  "keywords": [
-    "todo",
-    "tasks",
-    "progress",
-    "band",
-    "mod"
-  ],
+  "keywords": ["todo", "tasks", "progress", "band", "subagents"],
   "types": "./types/index.d.ts",
   "userConfig": {
     "visible": {
@@ -46,19 +38,7 @@
       "type": "string",
       "title": "Language",
       "description": "Language of the band and /todos; auto follows Claude Code's language setting, then the system locale",
-      "options": [
-        "auto",
-        "en",
-        "zh-Hans",
-        "zh-Hant",
-        "ja",
-        "ko",
-        "es",
-        "fr",
-        "de",
-        "pt-BR",
-        "ru"
-      ],
+      "options": ["auto", "en", "zh-Hans", "zh-Hant", "ja", "ko", "es", "fr", "de", "pt-BR", "ru"],
       "default": "auto"
     }
   }

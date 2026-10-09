@@ -1,11 +1,24 @@
 {
   "name": "harness-scope",
-  "version": "0.1.3",
-  "description": "Turn global skills, rules, agents and tools on or off per repo with named profiles",
+  "displayName": "Harness Scope",
+  "version": "0.1.4",
+  "description": "Turns global skills, rules, agents and tools on or off per repo using named profiles.",
   "author": {
-    "name": "shimo4228"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/harness-scope#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
+  "keywords": [
+    "context",
+    "profiles",
+    "skills",
+    "agents",
+    "tools",
+    "rules",
+    "per-repo"
+  ],
   "userConfig": {
     "configDir": {
       "type": "string",

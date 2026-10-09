@@ -1,37 +1,81 @@
-# harness-scope
+# Harness Scope
 
-The Claude Code mod itself: the folder Claude Code installs. It turns your global skills, agents, instruction files (CLAUDE.md and rules) and tools on or off per repo, using named profiles you keep in `~/.claude/harness-scope/profiles/`. A repo picks one profile with a one-line `.claude/harness-scope.json`; the repo's own skills, agents and CLAUDE.md always stay.
+Harness Scope hides the global skills, agents, instruction files and tools you choose in a repo, using a named profile that the repo selects.
 
-You decide what is hidden. Nothing changes in a repo until you put that file there, and the file can only name one of your profiles.
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 
-- **Is it on?** In a repo that selects a profile, a status line under the prompt reads `⚠ harness-scope: profile "writing" on` (Claude Code draws the ⚠ in front of a mod's status line; it is not a warning), and one line on screen says which file selected it. If that line is missing in such a repo, the mod did not load.
-- **What did it turn off?** Run `/harness-scope`. It lists what is off and kept, and any profile pattern that matched nothing (a typo).
-- **What names can a profile use?** After one prompt, run `/harness-scope names`. It lists the skill, agent and tool names this conversation offered, in any repo.
-- **How do I undo it?** Delete `.claude/harness-scope.json` and run `/clear` (or start a new conversation). To remove the mod itself: `claude plugin uninstall harness-scope@harness-scope`. The mod writes no files, so there is nothing else to clean up.
+## What it does
 
-## Examples
+- Turns off global skills, agents, instruction files (rules in `~/.claude`) and tools in a repo, using a profile you write once and reuse.
+- Keeps the repo's own skills, agents and CLAUDE.md. Project, local, managed and memory instruction files are never removed.
+- Does nothing in a repo that has no `.claude/harness-scope.json`. That file can only name one of your profiles, so a cloned repo cannot turn off your rules.
+- Removes turned-off skills from the skill listing and moves turned-off tools behind ToolSearch. It also refuses calls to them and says why.
+- Adds `/harness-scope`, which lists what is off, what stayed, and any profile pattern that matched nothing.
+- Ships one bundled profile, `writing`: only the repo's own skills, the Explore and general-purpose agents, and no LSP, NotebookEdit, EnterWorktree or ExitWorktree.
 
-1. **A writing repo that sees only its own skills.** Put `{ "profile": "writing" }` in the repo's `.claude/harness-scope.json`. The bundled `writing` profile keeps the repo's own skills, the Explore and general-purpose agents, and turns off LSP, NotebookEdit, EnterWorktree and ExitWorktree.
-2. **Keep a few global skills in a docs repo.** Save `~/.claude/harness-scope/profiles/docs.json` as `{ "skills": { "allow": ["prose-translation", "anthropic-skills:docx"] } }` and select `docs` in the repo. Every other global, plugin and built-in skill drops out of the listing there.
-3. **Hide coding rules and an MCP server's tools in a research repo.** Save `{ "instructions": { "deny": ["~/.claude/rules/common/testing.md"] }, "tools": { "deny": ["mcp__github__*"] } }` as a profile and select it. That rule file is not loaded, and the matching tools are refused when called.
+## Install
 
-## What each hook does
+```
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install harness-scope@sandeep-mods
+```
 
-| Hook | What it changes |
-|---|---|
-| `classic.SessionStart` | Nothing in the session. On `/clear` and resume it forgets the loaded profile so the next request reads it again. |
-| `session.start` | Registers the `/harness-scope` command. |
-| `command.run` | Answers `/harness-scope` with what the profile turned off, and `/harness-scope names` with the names offered. Other commands pass through untouched. |
-| `prompt.context` | Removes your own instruction files (kind `user`) that the profile turns off. Project, local, managed and memory files are never removed. |
-| `prompt.attachment` | Removes turned-off skills from the skill listing and turned-off tools from the deferred tool list. Reminders from hooks and other plugins pass through untouched. If it cannot tell for sure where each skill's entry starts, it leaves the listing as it is and says so on screen. |
-| `agent.offer` | Stops offering agent types the profile turns off. The repo's own agents are always offered. |
-| `tool.describe` | Moves turned-off tools behind ToolSearch. |
-| `tool.call` | Refuses calls to turned-off tools, and Skill calls to skills it removed from the listing, with the reason. |
+## Use
 
-With no `.claude/harness-scope.json`, or with a profile it cannot read, every hook passes everything through unchanged. A profile it cannot read is reported once on screen and in the status line.
+1. Save a profile as `~/.claude/harness-scope/profiles/<name>.json`. Each of the four keys is optional, and each takes exactly one of `allow` or `deny`, with a list of names. `*` and `?` work as wildcards.
 
-## Data
+   ```json
+   {
+     "skills": { "allow": ["prose-translation", "anthropic-skills:docx"] },
+     "instructions": { "deny": ["~/.claude/rules/common/testing.md"] },
+     "tools": { "deny": ["mcp__github__*"] }
+   }
+   ```
 
-The mod reads the profile files in `~/.claude/harness-scope/profiles/`, the repo's `.claude/harness-scope.json`, and Claude Code's session usage (to tell the repo's own skills apart, to find where each skill entry in the listing starts, and for `/harness-scope names`). It reads no environment variables: it finds `~/.claude` from where the plugin is installed, or from the optional `configDir` setting. It writes nothing, sends nothing over the network, starts no processes and calls no model.
+   Keys: `skills`, `agents`, `instructions`, `tools`. In `instructions`, patterns match file paths and `~/.claude/` stands for your configuration directory.
+2. In the repo, create `.claude/harness-scope.json` containing `{ "profile": "<name>" }`. Use `writing` to try the bundled profile. A profile file in your folder wins over a bundled one with the same name.
+3. Start a new conversation or run `/clear`.
 
-Usage, the profile format, measurements and limitations are in the README of the shimo4228/harness-scope repository on GitHub.
+To check it:
+
+- **Status line.** In a repo with a profile, the status line reads `profile "<name>" on`. Claude Code puts a warning sign in front of it. It is not a warning. One line on screen also says which file selected the profile. If both are missing in such a repo, the mod did not load.
+- **`/harness-scope`.** Lists what is off and kept, and patterns that matched nothing (usually a typo).
+- **`/harness-scope names`.** After one prompt, lists the skill, agent and tool names this conversation offered, so you know what to write in a profile.
+
+To undo it, delete `.claude/harness-scope.json` and run `/clear`. To remove the mod, run `/plugin uninstall harness-scope@sandeep-mods`.
+
+## Settings
+
+| Option | Default | What it does |
+| --- | --- | --- |
+| `configDir` | empty | The Claude Code configuration directory that holds `harness-scope/profiles/`. Empty means the mod works it out from where it is installed. Set it when you load the mod with `--plugin-dir`. |
+
+## Requirements
+
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- A profile file or the bundled `writing` profile. Without `configDir` and outside a normal install, only bundled profiles are found.
+
+## What it can access
+
+- **Hooks:** session start (to add `/harness-scope`), `/harness-scope`, instruction files, skill listing and deferred tool list attachments, agent offers, tool descriptions and every tool call. The tool call hook can refuse a call.
+- **Reads:** the repo's `.claude/harness-scope.json` (in the session folder or the git root), the profile file in `<configDir>/harness-scope/profiles/`, and Claude Code's session usage, to tell the repo's own skills from global ones. The profile folder is outside the project.
+- **Network and models:** none. It makes no network requests and calls no model.
+- **Runs programs:** none. It reads no environment variables.
+- **Writes files:** none. It does not move, edit or delete anything.
+- **Screen:** it writes lines to the screen log and sets the status line.
+- **Approvals:** it never approves anything. It only hides items and refuses calls to turned-off tools and skills.
+
+## Troubleshooting
+
+- **Nothing is hidden.** Check that `.claude/harness-scope.json` is valid and holds only `"profile"`, then run `/clear`. A broken selector or profile makes the mod pass everything through and say so on screen.
+- **Profile not found.** The mod looks in `<configDir>/harness-scope/profiles/` and then the bundled profiles. If you loaded the mod with `--plugin-dir`, set the `configDir` option.
+- **Skill listing passed through.** If the listing format is unexpected or the skills cannot be told apart, the mod leaves the listing alone and prints a note. `/harness-scope` shows it.
+- **A pattern matches nothing.** Run `/harness-scope names` for the exact names and fix the profile.
+
+## License
+
+MIT; see LICENSE.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [shimo4228](https://github.com/shimo4228) in [shimo4228/harness-scope](https://github.com/shimo4228/harness-scope/tree/02225a09febf2fb0914857b6c532965e807e8e5c/plugin), MIT.

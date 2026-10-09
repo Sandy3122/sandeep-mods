@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 (2026-10-09)
+- Imported from JayDoubleu/aside at cf2b756.
+- Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.
+
 ## 0.1.0
 
 First release, validated on Claude Code 2.1.270 with `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`.

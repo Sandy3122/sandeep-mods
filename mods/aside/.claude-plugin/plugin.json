@@ -1,18 +1,21 @@
 {
   "name": "aside",
-  "version": "0.1.0",
-  "description": "Read-only side chat: /aside opens a pane beside the transcript where you ask about the session so far; answers come from a tool-less fork of the session's own transcript and nothing is written back into the main thread.",
+  "displayName": "Aside",
+  "version": "0.1.1",
+  "description": "Opens a read-only side chat pane where you ask about the session so far; a tool-less fork of the transcript answers and nothing enters the main thread.",
   "author": {
-    "name": "JayDoubleu"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/JayDoubleu/aside",
-  "repository": "https://github.com/JayDoubleu/aside",
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/aside#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
   "keywords": [
     "side-chat",
     "read-only",
     "pane",
-    "function-hooks",
+    "questions",
+    "context",
     "mod"
   ],
   "userConfig": {

@@ -17,7 +17,7 @@ buttons ─▶ refresh, minimise, expand, close, open PR, draft prompt
 | --- | --- |
 | `hooks/hooks.json` | Points at `./register.tsx` |
 | `hooks/register.tsx` | Polling, readiness logic, alerts, panes and band |
-| `hooks/register.test.ts` | Behaviour tests with a faked `gh` |
+| `tests/register.test.ts` | Behaviour tests with a faked `gh` |
 | `types/index.d.ts` | Types for the mod's `$.state` |
 | `assets/pr-pulse.png` | Screenshot used by the README |
 
@@ -64,7 +64,7 @@ There are no options. The only config read is Claude Code's `theme`, through `$.
 
 ## Testing
 
-`hooks/register.test.ts` fakes `gh` with a mutable world, so tests change a PR between refreshes to check readiness verdicts, alerts and drill-down. A capability guard test fails if the mod runs a program outside `gh`, `git`, `uname` and `open` or `xdg-open`. Run `claude plugin test mods/pr-pulse`.
+`tests/register.test.ts` fakes `gh` with a mutable world, so tests change a PR between refreshes to check readiness verdicts, alerts and drill-down. A capability guard test fails if the mod runs a program outside `gh`, `git`, `uname` and `open` or `xdg-open`. Run `claude plugin test mods/pr-pulse`.
 
 ## Known limits
 

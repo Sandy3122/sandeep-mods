@@ -1,7 +1,7 @@
 {
   "name": "pr-pulse",
   "displayName": "PR Pulse",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Watch your GitHub pull requests from Claude Code: checks, merge readiness, comments, review queue and change alerts.",
   "author": {
     "name": "Sandeep",

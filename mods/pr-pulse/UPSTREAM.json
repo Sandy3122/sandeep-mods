@@ -1,0 +1,12 @@
+{
+  "name": "pr-pulse",
+  "repo": "gerricchaplin/pr-pulse",
+  "path": "",
+  "url": "https://github.com/gerricchaplin/pr-pulse/tree/8bf587aaa9cb3815875dcc3818c8827a37e7cb78",
+  "commit": "8bf587aaa9cb3815875dcc3818c8827a37e7cb78",
+  "author": "gerricchaplin",
+  "license": "MIT",
+  "category": "Git and deploys",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

@@ -1,0 +1,12 @@
+{
+  "name": "weektoken",
+  "repo": "3dnow/claude-mods",
+  "path": "weektoken",
+  "url": "https://github.com/3dnow/claude-mods/tree/9f0bf8e119a1444fc267b9553da88c6b444f3683/weektoken",
+  "commit": "9f0bf8e119a1444fc267b9553da88c6b444f3683",
+  "author": "3dnow",
+  "license": "MIT",
+  "category": "Cost and usage",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

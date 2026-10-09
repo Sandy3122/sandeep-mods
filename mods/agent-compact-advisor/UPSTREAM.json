@@ -1,0 +1,12 @@
+{
+  "name": "agent-compact-advisor",
+  "repo": "apolenkov/agent-compact-advisor",
+  "path": "",
+  "url": "https://github.com/apolenkov/agent-compact-advisor/tree/5486abec02ae09bda76750993a0f68ca61b76dbf",
+  "commit": "5486abec02ae09bda76750993a0f68ca61b76dbf",
+  "author": "apolenkov",
+  "license": "MIT",
+  "category": "Context",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

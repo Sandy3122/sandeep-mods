@@ -1,0 +1,12 @@
+{
+  "name": "deploy-verify",
+  "repo": "yash-gadodia/claude-mods",
+  "path": "deploy-verify",
+  "url": "https://github.com/yash-gadodia/claude-mods/tree/f4c1c751f67918c73f29977cbd52b8398f8556ac/deploy-verify",
+  "commit": "f4c1c751f67918c73f29977cbd52b8398f8556ac",
+  "author": "yash-gadodia",
+  "license": "MIT",
+  "category": "Git and deploys",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

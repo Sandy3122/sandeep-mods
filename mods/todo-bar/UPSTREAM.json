@@ -1,0 +1,12 @@
+{
+  "name": "todo-bar",
+  "repo": "hoobnn/hoobnn-agent-mods",
+  "path": "claude-code/todo-bar",
+  "url": "https://github.com/hoobnn/hoobnn-agent-mods/tree/b95d1e454a76523e433fb37e5ca171e1f5576676/claude-code/todo-bar",
+  "commit": "b95d1e454a76523e433fb37e5ca171e1f5576676",
+  "author": "hoobnn",
+  "license": "MIT",
+  "category": "Workflow",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

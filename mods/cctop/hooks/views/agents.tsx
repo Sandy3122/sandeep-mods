@@ -1,0 +1,257 @@
+// The Agents & MCP view: subagents as the TUI's agents view lists them
+// (state glyph, type, model family, elapsed, tokens, priced cost, what came
+// back, waste with its reason), the team the session leads as a second
+// group (glyph, name, model, elapsed, context, tokens, its own cost with
+// its mark, human/machine turns, the status word — team PRD §4.3), MCP
+// servers (name, RSS, calls, restarts) and background tasks, one row each,
+// from `cctop query agents`. A workflow run is one row — the query's `row`,
+// verbatim, after the agents outside any run, as the TUI lists it — a Button
+// when the pane has one to draw with; pressed, the view is that run's
+// `detail` (or `detail_narrow` below 116 body columns), verbatim, under a
+// `back` Button (workflows PRD §4.4).
+import type { ElementTable, RenderElement } from 'claude-code';
+import type { Model } from '../model';
+import { DASH, at, formatBytes, formatDuration, formatUsd, isMissing, measured, stringAt, tokensOf } from './format';
+import { NEEDS_BINARY, type Color, type ViewElements } from './overview';
+import { THEME, seg, type Line } from './frame';
+import { bodyWidth, line, panel, row, type Cell, type FrameRow } from './table';
+
+const W = { glyph: 10, model: 6, prefix: 3, kind: 6, elapsed: 6, tokens: 6, cost: 5, ret: 5, rss: 7, calls: 9, restarts: 4, status: 16, ctx: 5, teamCost: 6, turns: 5 };
+
+/** A teammate's liveness glyph, as the TUI's team group: `●` working, `○` ended, `—` unknown. */
+const TEAM_GLYPH: Record<string, [string, Color | undefined]> = {
+  active: ['●', 'cyan'],
+  recent: ['●', 'cyan'],
+  ended: ['○', undefined],
+  gone: ['○', undefined],
+  missing: ['—', 'yellow'],
+};
+
+const STATE_GLYPH: Record<string, [string, Color]> = {
+  running: ['◐', 'cyan'],
+  done: ['✓', 'green'],
+  failed: ['✗', 'red'],
+};
+
+/** `claude-opus-5` → `opus`: the family, as the TUI's agents view. */
+function family(model: string | null): string {
+  return (model ?? '').replace(/^claude-/, '').split('-')[0] ?? '';
+}
+
+/** Dollars without the sign in five cells, as the TUI's agents view (`0.19`, `12.4`, `118`). */
+function cents(usd: number): string {
+  if (usd >= 100) return usd.toFixed(0);
+  if (usd >= 10) return usd.toFixed(1);
+  return usd.toFixed(2);
+}
+
+/** `idle 55m` / `idle 2h10` from the waste's age, else the reason word. */
+function wasteText(a: unknown): string {
+  const waste = at(a, 'waste');
+  if (waste === null || waste === undefined) return '0.00';
+  const usd = measured(waste, 'usd');
+  const reason = stringAt(waste, 'reason') ?? '';
+  const idle = at(waste, 'idle_ms');
+  // `reason` is the query's enum value (`failed`, `killed`, `no_ret`, `idle`); the TUI prints it with a space.
+  const label = reason === 'idle' && typeof idle === 'number' ? `idle ${shortDuration(idle)}` : reason.replace('_', ' ');
+  const amount = usd === null || stringAt(waste, 'usd', 'source') === 'unpriced' ? DASH : cents(usd.value);
+  return `${amount} ${label}`;
+}
+
+/** Minutes-first, as the TUI's coach::short_duration: `41m`, `2h10`, `4:12` under five minutes. */
+function shortDuration(ms: number): string {
+  const s = Math.floor(Math.max(0, ms) / 1000);
+  if (s < 300) return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  if (s < 3600) return `${Math.floor(s / 60)}m`;
+  return `${Math.floor(s / 3600)}h${String(Math.floor((s % 3600) / 60)).padStart(2, '0')}`;
+}
+
+/** Below this many body columns the model and `ret` columns make way for the waste. */
+const NARROW = 58;
+
+function agentCells(a: unknown, inner: number): Cell[] {
+  const state = stringAt(a, 'state') ?? '';
+  const [glyph, color] = STATE_GLYPH[state] ?? ['·', undefined];
+  const elapsed = measured(a, 'elapsed');
+  const cost = measured(a, 'cost');
+  const unpriced = stringAt(a, 'cost', 'source') === 'unpriced';
+  const ret = measured(a, 'returned_tokens');
+  const wide = inner >= NARROW;
+  const cells: Cell[] = [{ text: `${glyph} ${stringAt(a, 'type') ?? DASH}`, width: W.glyph, color, key: 'agent_state' }];
+  if (wide) cells.push({ text: family(stringAt(a, 'model')), width: W.model, dim: true });
+  cells.push(
+    { text: elapsed === null ? DASH : formatDuration(elapsed.value), width: W.elapsed, right: true },
+    { text: tokensOf(measured(a, 'tokens')), width: W.tokens, right: true, key: 'agent_tokens' },
+    { text: cost === null || unpriced ? DASH : cents(cost.value), width: W.cost, right: true, key: 'agent_cost' },
+  );
+  if (wide) cells.push({ text: ret === null ? (state === 'running' ? '...' : DASH) : tokensOf(ret).replace(/^≈/, ''), width: W.ret, right: true, key: 'agent_returned' });
+  cells.push({ text: wasteText(a), key: 'agent_waste', color: at(a, 'waste') ? 'yellow' : undefined });
+  return cells;
+}
+
+function mcpCells(m: unknown): Cell[] {
+  const rss = measured(m, 'rss');
+  const calls = measured(m, 'calls');
+  const restarts = at(m, 'restarts');
+  return [
+    { text: 'mcp', width: W.prefix, dim: true },
+    { text: stringAt(m, 'name') ?? DASH },
+    { text: rss === null ? DASH : formatBytes(rss.value), width: W.rss, right: true, key: 'mcp_rss' },
+    { text: calls === null ? DASH : `${calls.value} calls`, width: W.calls, right: true, key: 'mcp_calls' },
+    { text: typeof restarts === 'number' && restarts > 0 ? `↻${restarts}` : '', width: W.restarts, color: 'yellow' },
+  ];
+}
+
+function taskCells(t: unknown, now: number): Cell[] {
+  const started = at(t, 'started_at_ms');
+  return [
+    { text: 'bg', width: W.prefix, dim: true },
+    { text: stringAt(t, 'kind') ?? DASH, width: W.kind },
+    { text: stringAt(t, 'description') ?? '', dim: true },
+    { text: typeof started === 'number' ? formatDuration(now - started) : DASH, width: W.elapsed, right: true },
+    { text: [stringAt(t, 'id')?.slice(0, 8), stringAt(t, 'status')].filter((x) => x !== undefined && x !== null).join(' '), width: W.status, dim: true },
+  ];
+}
+
+/** A teammate's row: the subagent columns plus context and turns; a member with no transcript has only its word. */
+function teammateCells(t: unknown, inner: number): Cell[] {
+  const state = stringAt(t, 'state') ?? '';
+  const [glyph, color] = TEAM_GLYPH[state] ?? ['·', undefined];
+  const wide = inner >= NARROW;
+  const cells: Cell[] = [{ text: `${glyph} ${stringAt(t, 'name') ?? DASH}`, width: W.glyph, color, key: 'teammate_state' }];
+  if (wide) cells.push({ text: family(stringAt(t, 'model')), width: W.model, dim: true });
+  if (state === 'missing') {
+    cells.push({ text: stringAt(t, 'status') ?? 'no transcript', color: 'yellow' });
+    return cells;
+  }
+  const elapsed = measured(t, 'elapsed');
+  const cost = measured(t, 'cost');
+  const approx = at(t, 'cost', 'approx') === true;
+  const human = measured(t, 'turns', 'human');
+  const machine = measured(t, 'turns', 'machine');
+  cells.push({ text: elapsed === null ? DASH : formatDuration(elapsed.value), width: W.elapsed, right: true });
+  if (wide) cells.push({ text: tokensOf(measured(t, 'context')), width: W.ctx, right: true, key: 'teammate_context' });
+  cells.push(
+    { text: tokensOf(measured(t, 'tokens')), width: W.tokens, right: true, key: 'teammate_tokens' },
+    { text: cost === null ? DASH : `${approx ? '≈' : ''}${cents(cost.value)}`, width: W.teamCost, right: true, key: 'teammate_cost' },
+    { text: human === null || machine === null ? DASH : `${human.value}/${machine.value}`, width: W.turns, right: true, key: 'teammate_turns' },
+    { text: stringAt(t, 'status') ?? '', key: 'teammate_waste', color: at(t, 'waste') ? 'yellow' : undefined },
+  );
+  return cells;
+}
+
+/** `team 3 · 1 active · ≈$0.48 · 2 of 3 read`, as the TUI's team group row. */
+function teamGroupText(team: unknown): string {
+  const parts = [`team ${at(team, 'members') ?? DASH} · ${at(team, 'active') ?? 0} active`];
+  const cost = measured(team, 'cost');
+  parts.push(cost === null ? DASH : `${cost.approx ? '≈' : ''}${formatUsd(cost.value)}`);
+  const waste = measured(team, 'waste');
+  if (waste !== null && waste.value > 0) parts.push(`wasted ≈${formatUsd(waste.value)}`);
+  const read = at(team, 'read');
+  const members = at(team, 'members');
+  if (typeof read === 'number' && typeof members === 'number' && read < members) parts.push(`${read} of ${members} read`);
+  return parts.join(' · ');
+}
+
+function listAt(obj: unknown, key: string): unknown[] {
+  const v = at(obj, key);
+  return Array.isArray(v) ? v : [];
+}
+
+/** `0/1 agents` as the TUI's panel summary: running over listed; a team alone as `1/3 team`. */
+function agentsSummary(data: unknown): string | undefined {
+  const agents = listAt(data, 'agents');
+  const parts: string[] = [];
+  if (agents.length > 0) {
+    const running = agents.filter((a) => stringAt(a, 'state') === 'running').length;
+    parts.push(`${running}/${agents.length} agents`);
+  }
+  const team = at(data, 'team');
+  if (team !== null && team !== undefined) parts.push(`${at(team, 'active') ?? 0}/${at(team, 'members') ?? 0} team`);
+  return parts.length === 0 ? undefined : parts.join(' · ');
+}
+
+/** Body columns from which a run's detail is the wide layout (the query's `detail`), as the TUI's DETAIL_WIDE. */
+export const DETAIL_WIDE = 116;
+
+/** The elements the agents view presses with, and what a press does; built in pane.tsx over `$`. */
+export type AgentsElements = Pick<ElementTable<'terminal'>, 'Box' | 'Text' | 'Button'>;
+export type AgentsActions = { el: AgentsElements; open(run: string | null): void };
+
+/** The run's row as the TUI's group line: dim, its `✗N` red when agents failed. */
+function runLine(w: unknown): Line {
+  const text = stringAt(w, 'row') ?? '';
+  const failed = at(w, 'failed');
+  const mark = ` ✗${typeof failed === 'number' ? failed : 0}`;
+  const i = typeof failed === 'number' && failed > 0 ? text.indexOf(mark) : -1;
+  if (i < 0) return [seg(text, { dim: true })];
+  const end = i + mark.length;
+  return [seg(text.slice(0, i + 1), { dim: true }), seg(text.slice(i + 1, end), { color: THEME.red }), seg(text.slice(end), { dim: true })];
+}
+
+/** A run's detail rows, styled as the TUI's: the fixes after ` ───` warn, their pointer lines and the column heads (row `heads`) dim. */
+function detailRows(rows: string[], heads: number): FrameRow[] {
+  let fixes = false;
+  return rows.map((text, i) => {
+    if (text === ' ───') fixes = true;
+    const style =
+      fixes && text !== ' ───' && (text.startsWith('   →') || text.startsWith('     '))
+        ? { dim: true }
+        : fixes
+          ? { color: THEME.yellow }
+          : i === heads
+            ? { dim: true }
+            : {};
+    return { line: [seg(text, style)], key: i === 0 ? 'workflow_failed' : undefined };
+  });
+}
+
+export function renderAgents(model: Model, el: ViewElements, columns: number, now: number, actions?: AgentsActions): RenderElement {
+  const data = model.query.agents;
+  const p = { hotkey: '6', title: 'Agents & MCP', summary: model.binary === 'missing' ? undefined : agentsSummary(data) };
+  if (model.binary === 'missing') return panel(p, [line(NEEDS_BINARY, { key: 'agent_state' })], columns, el);
+  const inner = bodyWidth(columns);
+  const fel = actions?.el ?? el;
+  // The runs the query drew a row for; an older binary's entry without one
+  // leaves its agents listed one by one and draws no run row (ruling R17).
+  const workflows = listAt(data, 'workflows').filter((w) => (stringAt(w, 'row') ?? '') !== '');
+  const runs = new Set(workflows.map((w) => stringAt(w, 'run') ?? ''));
+  const agents = listAt(data, 'agents');
+  const open = model.openRun === null ? undefined : workflows.find((w) => stringAt(w, 'run') === model.openRun);
+  if (open !== undefined) {
+    const rows: FrameRow[] = [];
+    if (actions !== undefined) rows.push({ line: [seg('back')], press: { key: 'agents-back', onPress: () => actions.open(null) } });
+    const wide = inner >= DETAIL_WIDE;
+    const detail = at(open, wide ? 'detail' : 'detail_narrow');
+    // The narrow header is two rows (the run, then its money), so its column heads are row 2.
+    rows.push(...detailRows(Array.isArray(detail) ? detail.filter((t): t is string => typeof t === 'string') : [], wide ? 1 : 2));
+    // The run's agents under its phase table, one row each, as the TUI's detail (spec §4.4).
+    for (const a of agents) if (at(a, 'workflow') === model.openRun) rows.push(row(agentCells(a, inner), inner, 'agent_state'));
+    return panel(p, rows, columns, fel);
+  }
+  const rows: FrameRow[] = [];
+  // A run's agents are its row, not a row each (the TUI's list).
+  for (const a of agents) {
+    const run = at(a, 'workflow');
+    if (typeof run !== 'string' || !runs.has(run)) rows.push(row(agentCells(a, inner), inner, 'agent_state'));
+  }
+  for (const w of workflows) {
+    const run = stringAt(w, 'run') ?? '';
+    const r: FrameRow = { line: runLine(w), key: 'workflow_failed' };
+    if (actions !== undefined) r.press = { key: run, onPress: () => actions.open(run) };
+    rows.push(r);
+  }
+  // The team under the subagents: the group row, then a row per member
+  // (the query's `teammates[]` are the rows only when `team` is present).
+  const team = at(data, 'team');
+  if (team !== null && team !== undefined) {
+    const missing = listAt(team, 'missing').length > 0;
+    rows.push(line(teamGroupText(team), { key: 'team_cost', ...(missing ? { color: 'yellow' as Color } : {}) }));
+    for (const t of listAt(data, 'teammates')) rows.push(row(teammateCells(t, inner), inner, 'teammate_state'));
+  }
+  if (isMissing(data, 'mcp')) rows.push(line(`mcp: ${stringAt(data, 'mcp', 'hint') ?? DASH}`, { key: 'mcp_rss' }));
+  for (const m of listAt(data, 'mcp')) rows.push(row(mcpCells(m), inner, 'mcp_rss'));
+  for (const t of listAt(data, 'tasks')) rows.push(row(taskCells(t, now), inner));
+  if (rows.length === 0) rows.push(line('no subagents, MCP servers or background tasks'));
+  return panel(p, rows, columns, fel);
+}

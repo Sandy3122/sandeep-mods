@@ -1,0 +1,96 @@
+{
+  "name": "cost-guard",
+  "displayName": "Cost Guard",
+  "version": "0.1.0",
+  "description": "Shows what each chat, reply and day costs, nudges you to a fresh session when a chat gets long or heavy, and turns PDFs, Word, PowerPoint and Excel files into markdown before Claude reads them.",
+  "author": {
+    "name": "Sandeep"
+  },
+  "homepage": "https://github.com/YOUR-GITHUB-USERNAME/claude-mods/tree/main/mods/cost-guard#readme",
+  "repository": "https://github.com/YOUR-GITHUB-USERNAME/claude-mods",
+  "license": "MIT",
+  "keywords": [
+    "cost",
+    "tokens",
+    "usage",
+    "spend",
+    "budget",
+    "markdown",
+    "pdf",
+    "docx",
+    "mod"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "warnAtTokens": {
+      "type": "number",
+      "title": "Long chat: warn at (tokens)",
+      "description": "Context size at which the meter turns yellow and suggests a fresh session. Every message re-sends the whole context.",
+      "default": 80000
+    },
+    "urgeAtTokens": {
+      "type": "number",
+      "title": "Long chat: urge a new session at (tokens)",
+      "description": "Context size at which the meter turns red and strongly recommends starting a fresh session.",
+      "default": 150000
+    },
+    "warnAtUsd": {
+      "type": "number",
+      "title": "Chat cost warning (USD)",
+      "description": "Cost of one chat, in US dollars at API list prices, at which the meter warns.",
+      "default": 5
+    },
+    "replyToastUsd": {
+      "type": "number",
+      "title": "Expensive reply alert (USD)",
+      "description": "A single reply costing at least this much shows a toast.",
+      "default": 1
+    },
+    "largeFileKb": {
+      "type": "number",
+      "title": "Large file (KB)",
+      "description": "An @-mentioned file at least this big gets a warning.",
+      "default": 150
+    },
+    "largePasteTokens": {
+      "type": "number",
+      "title": "Large paste (tokens)",
+      "description": "A message whose typed or pasted text is at least this many tokens gets a warning.",
+      "default": 15000
+    },
+    "inlineMarkdownTokens": {
+      "type": "number",
+      "title": "Converted file: read whole up to (tokens)",
+      "description": "A converted document larger than this is attached as a preview of its first lines, with the path to read more only when needed.",
+      "default": 20000
+    },
+    "longChatAction": {
+      "type": "string",
+      "title": "When a chat passes the urge level",
+      "description": "warn: show the red meter only. hold-once: also hold the next message once, explain the cost, and put the text back so Enter sends it anyway.",
+      "options": [
+        "warn",
+        "hold-once"
+      ],
+      "default": "warn"
+    },
+    "convertDocs": {
+      "type": "boolean",
+      "title": "Convert documents to markdown",
+      "description": "Turn PDF, Word, PowerPoint, Excel, OpenDocument, RTF and EPUB files into a .md copy beside the original before Claude reads them.",
+      "default": true
+    },
+    "localCurrencySymbol": {
+      "type": "string",
+      "title": "Local currency symbol",
+      "description": "Shown beside dollar figures, for example ₹. Leave empty to show dollars only.",
+      "default": ""
+    },
+    "usdToLocalRate": {
+      "type": "number",
+      "title": "Local currency per US dollar",
+      "description": "Exchange rate used for the local figure, for example 84 for rupees. 0 turns the local figure off.",
+      "default": 0
+    }
+  }
+}

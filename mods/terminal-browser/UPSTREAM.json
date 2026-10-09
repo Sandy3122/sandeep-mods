@@ -1,0 +1,12 @@
+{
+  "name": "terminal-browser",
+  "repo": "zenbu-labs/terminal-browser",
+  "path": "claude-code-plugin",
+  "url": "https://github.com/zenbu-labs/terminal-browser/tree/2165ae76c9639e3996829ab0e6d54ddbd4f06ad8/claude-code-plugin",
+  "commit": "2165ae76c9639e3996829ab0e6d54ddbd4f06ad8",
+  "author": "zenbu-labs",
+  "license": "MIT",
+  "category": "Viewing output",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

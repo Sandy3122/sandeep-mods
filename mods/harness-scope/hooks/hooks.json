@@ -1,0 +1,1 @@
+{ "description": "harness-scope hooks module", "modules": ["./register.ts"] }

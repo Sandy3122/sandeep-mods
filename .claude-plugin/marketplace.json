@@ -1,0 +1,114 @@
+{
+  "name": "sandeep-mods",
+  "description": "Claude Code mods collected, standardized and maintained by Sandeep",
+  "owner": {
+    "name": "Sandeep"
+  },
+  "plugins": [
+    {
+      "name": "agent-compact-advisor",
+      "source": "./mods/agent-compact-advisor",
+      "description": "Status line score 0-100 for how good a moment it is to /compact now, with reasons; offers a ready /compact that keeps goal, decisions, leftovers and paths, and…"
+    },
+    {
+      "name": "aside",
+      "source": "./mods/aside",
+      "description": "Read-only side chat: /aside opens a pane beside the transcript where you ask about the session so far; answers come from a tool-less fork of the session's own…"
+    },
+    {
+      "name": "blast-radius",
+      "source": "./mods/blast-radius",
+      "description": "Holds risky Bash commands and shows what they would change before they run."
+    },
+    {
+      "name": "cctop",
+      "source": "./mods/cctop",
+      "description": "btop-style live dashboard for Claude Code internals: /cctop opens it in a side pane, cctop-insights lets the session answer questions from its numbers"
+    },
+    {
+      "name": "context-view",
+      "source": "./mods/context-view",
+      "description": "The context window as one row above the prompt, drawn the way Claude Code draws its own meters: the context's cells, the percentage used, the tokens over the w…"
+    },
+    {
+      "name": "cost-guard",
+      "source": "./mods/cost-guard",
+      "description": "Shows what each chat, reply and day costs, nudges you to a fresh session when a chat gets long or heavy, and turns PDFs, Word, PowerPoint and Excel files into…"
+    },
+    {
+      "name": "deploy-verify",
+      "source": "./mods/deploy-verify",
+      "description": "After a deploy command succeeds, curls the live URL with cache-busting and puts the verdict in the model's context, so a deploy cannot be claimed without evide…"
+    },
+    {
+      "name": "flightdeck",
+      "source": "./mods/flightdeck",
+      "description": "Flightdeck: a live agent dashboard for Claude Code. Main model vitals, an on-call architect, every permission check, subagent cards and swimlanes, a turn recei…"
+    },
+    {
+      "name": "github-issues",
+      "source": "./mods/github-issues",
+      "description": "A side pane listing the repository's GitHub issues, with one click to have Claude work on one"
+    },
+    {
+      "name": "harness-scope",
+      "source": "./mods/harness-scope",
+      "description": "Turn global skills, rules, agents and tools on or off per repo with named profiles"
+    },
+    {
+      "name": "launch-codes",
+      "source": "./mods/launch-codes",
+      "description": "Dangerous Bash commands need launch codes: red alert pane, siren, a code to arm and a LAUNCH to fire"
+    },
+    {
+      "name": "md-preview",
+      "source": "./mods/md-preview",
+      "description": "Shows the Markdown files Claude edits, rendered like GitHub, in a pane next to the chat. Before and after side by side. /md opens it."
+    },
+    {
+      "name": "micro-compaction",
+      "source": "./mods/micro-compaction",
+      "description": "Adds `/compact micro`: elides Read results and strips thinking, keeping the conversation structure"
+    },
+    {
+      "name": "pr-pulse",
+      "source": "./mods/pr-pulse",
+      "description": "PR Pulse: live status, merge readiness, checks, comments, review queue and change alerts for your GitHub PRs, with a collapsible band"
+    },
+    {
+      "name": "prismantis",
+      "source": "./mods/prismantis",
+      "description": "Colorful, themeable rendering for Claude Code replies: tables, headings, code, numbers, paths and links."
+    },
+    {
+      "name": "rabe",
+      "source": "./mods/rabe",
+      "description": "Watch Claude Code's background work: subagents, Codex jobs, shells, monitors, cron jobs and workflows."
+    },
+    {
+      "name": "receipt",
+      "source": "./mods/receipt",
+      "description": "What each turn did, in a band above the prompt once it ends (files changed with lines, commands and failures, reads, subagents), and a toast when the model goe…"
+    },
+    {
+      "name": "secret-redactor",
+      "source": "./mods/secret-redactor",
+      "description": "Keeps secrets, email addresses and IP addresses out of the session transcript: swaps each one for a stable placeholder on the way in, and puts the real value b…"
+    },
+    {
+      "name": "terminal-browser",
+      "source": "./mods/terminal-browser",
+      "description": "A browser running directly inside claude code. Preview websites, view HTML documents, and let your agent control the built in browser."
+    },
+    {
+      "name": "todo-bar",
+      "source": "./mods/todo-bar",
+      "description": "The task list's progress in a band above the prompt, read from the todo and task tools' own calls: no tool, no prompt, no tokens"
+    },
+    {
+      "name": "weektoken",
+      "source": "./mods/weektoken",
+      "description": "Rate-limit pace for Claude Code's 5-hour and weekly windows: usage against elapsed time, plain-language forecast, per-model quotas and burn-up history. A band…"
+    }
+  ]
+}

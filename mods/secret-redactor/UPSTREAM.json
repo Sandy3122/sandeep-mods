@@ -1,0 +1,12 @@
+{
+  "name": "secret-redactor",
+  "repo": "ray-amjad/awesome-claude-code-function-hooks",
+  "path": "plugins/secret-redactor",
+  "url": "https://github.com/ray-amjad/awesome-claude-code-function-hooks/tree/12b5fea27a4bd1b88cd9c9b6abc1efc0756c6625/plugins/secret-redactor",
+  "commit": "12b5fea27a4bd1b88cd9c9b6abc1efc0756c6625",
+  "author": "ray-amjad",
+  "license": "MIT",
+  "category": "Safety",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

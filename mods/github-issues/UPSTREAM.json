@@ -1,0 +1,12 @@
+{
+  "name": "github-issues",
+  "repo": "MarcoCarnevali/claude-code-mods",
+  "path": "github-issues",
+  "url": "https://github.com/MarcoCarnevali/claude-code-mods/tree/a3e528dd00ced34a46973ab89398cc52168191b9/github-issues",
+  "commit": "a3e528dd00ced34a46973ab89398cc52168191b9",
+  "author": "MarcoCarnevali",
+  "license": "MIT",
+  "category": "Git and deploys",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

@@ -1,0 +1,12 @@
+{
+  "name": "launch-codes",
+  "repo": "OneWave-AI/claude-code-mods",
+  "path": "launch-codes",
+  "url": "https://github.com/OneWave-AI/claude-code-mods/tree/e6da26ca36a88eec3be25605d30fa20f2c1c0cec/launch-codes",
+  "commit": "e6da26ca36a88eec3be25605d30fa20f2c1c0cec",
+  "author": "OneWave-AI",
+  "license": "MIT",
+  "category": "Safety",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

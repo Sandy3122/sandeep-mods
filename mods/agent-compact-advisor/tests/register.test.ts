@@ -1,0 +1,249 @@
+import { expect, mock, test } from "claude-code/testing";
+
+import { TEMPLATE } from "../hooks/model/template.ts";
+import { advance } from "./fixtures/advance.ts";
+import { DONE, measure, MESSAGES, START, turn } from "./fixtures/session.ts";
+import { world } from "./fixtures/world.ts";
+
+const RUN = {
+  command: "compact-advisor",
+  args: "",
+  origin: { kind: "composer" },
+  presentation: { isFullscreen: true, columns: 160 },
+} as const;
+test("a big, finished session scores high, suggests /compact once-toasted", async ($, on) => {
+  const clock = mock.clock(on, { now: 1_000_000 });
+  const seen = world(on);
+  seen.calls = [{ status: "done" }];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toBe(
+    "хороший момент для /compact: оценка 90 из 100 · контекст 400k (40%) · хвостов нет · цель достигнута с вероятностью 90% · кэш тёплый",
+  );
+  expect(seen.suggested.at(-1)).toMatch(/^\/compact Keep the goal/u);
+  expect(seen.toasts).toHaveLength(1);
+  expect(JSON.parse(seen.posts[0] ?? "{}")).toMatchObject({
+    model: "kev-latest",
+    state: DONE,
+  });
+  await measure($, 410_000);
+  expect(seen.toasts).toHaveLength(1);
+});
+
+test("running agents gate the score to 0 and nothing is suggested", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.agents = [
+    { id: "a1", description: "review", type: "Explore", status: "running" },
+  ];
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toBe(
+    "рано: работает 1 агент · контекст 400k (40%)",
+  );
+  expect(seen.suggested).toEqual([]);
+});
+
+test("without agent-shell-watch and with Kev down the score stays capped", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.kev = undefined;
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toBe(
+    "можно подождать: оценка 60 из 100 · контекст 400k (40%) · хвостов нет · кэш тёплый · фоновые задачи неизвестны",
+  );
+  expect(seen.suggested).toEqual([]);
+});
+
+test("the agent's own listed leftovers are a gate and Kev is not asked", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, "Хвосты для агента: слить PR\nХвосты для владельца: нет");
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toBe(
+    "рано: хвосты — слить PR · контекст 400k (40%)",
+  );
+  expect(seen.posts).toEqual([]);
+});
+
+test("a question to the owner is no gate: the compaction carries it", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, "Хвосты для агента: нет\nХвосты для владельца: push");
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toContain("вопрос владельцу: push");
+  expect(seen.statuses.at(-1)).not.toContain("рано");
+  await $.session.compact({
+    trigger: "manual",
+    messages: MESSAGES,
+  });
+  expect(seen.compactions.at(-1)).toContain(
+    "Open questions to the owner, verbatim from the last answer: push",
+  );
+});
+
+test("the cache going cold redraws without its part", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  await advance(clock, 301_000);
+  expect(seen.statuses.at(-1)).toBe(
+    "хороший момент для /compact: оценка 88 из 100 · контекст 400k (40%) · хвостов нет · цель достигнута с вероятностью 90% · кэш остыл",
+  );
+});
+
+test("every main compaction gets the template; others pass untouched", async ($, on) => {
+  mock.clock(on);
+  const seen = world(on);
+  await $.session.start(START);
+  await $.session.compact({ messages: MESSAGES, trigger: "manual" });
+  await $.session.compact({
+    messages: MESSAGES,
+    trigger: "manual",
+    instructions: "keep API notes",
+  });
+  await $.session.compact({ messages: MESSAGES, trigger: "auto" });
+  await $.session.compact({ messages: MESSAGES, trigger: "precompute" });
+  expect(seen.compactions).toEqual([
+    TEMPLATE,
+    `keep API notes\n\n${TEMPLATE}`,
+    TEMPLATE,
+    undefined,
+  ]);
+});
+
+test("a compaction resets the size so a stale score does not stay", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  await $.session.compact({ messages: MESSAGES, trigger: "manual" });
+  const answer = await $.command.run(RUN);
+  expect(answer.text).toContain("можно подождать: оценка 0 из 100");
+  expect(seen.compactions).toHaveLength(1);
+});
+
+test("tiny turns skip the paid check", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 20_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.asked).toHaveLength(0);
+});
+
+test("/compact-advisor explains the score", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  const answer = await $.command.run(RUN);
+  expect(answer.text).toContain(
+    "- потолок 90: цель достигнута с вероятностью 90%",
+  );
+  expect(answer.text).toContain("шаблон сохранения");
+});
+
+test(
+  "a guard switched off leaves compactions as typed",
+  { options: { guardCompactions: false } },
+  async ($, on) => {
+    mock.clock(on);
+    const seen = world(on);
+    await $.session.start(START);
+    await $.session.compact({ messages: MESSAGES, trigger: "manual" });
+    expect(seen.compactions).toEqual([undefined]);
+  },
+);
+
+test("a Kev that never answers times out to P1 n/a", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.kev = "hang";
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.statuses.at(-1)).toContain("проверяю, достигнута ли цель");
+  await advance(clock, 20_000);
+  expect(seen.statuses.at(-1)).toBe(
+    "хороший момент для /compact: оценка 100 из 100 · контекст 400k (40%) · хвостов нет · кэш тёплый",
+  );
+});
+
+test("a reload keeps a P1 left pending: the verdict is still unknown", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.kev = "hang";
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  await $.session.start(START);
+  // The hung Kev never settles: the next turn re-asks, until then it holds.
+  expect(seen.statuses.at(-1)).toContain("рано: проверяю, достигнута ли цель");
+  expect(seen.suggested).toHaveLength(0);
+});
+
+test("an agent finishing between turns is seen within 30 s and offers once", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  seen.agents = [
+    { id: "a1", description: "review", type: "Explore", status: "running" },
+  ];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  expect(seen.suggested).toEqual([]);
+  seen.agents = [];
+  await advance(clock, 30_000);
+  expect(seen.statuses.at(-1)).toMatch(
+    /^хороший момент для \/compact: оценка 90 /u,
+  );
+  expect(seen.suggested).toHaveLength(1);
+  await advance(clock, 30_000);
+  expect(seen.suggested).toHaveLength(1);
+});
+
+test("after a reload the cache still goes cold on time", async ($, on) => {
+  const clock = mock.clock(on);
+  const seen = world(on);
+  seen.calls = [];
+  await $.session.start(START);
+  await measure($, 400_000);
+  await turn($, DONE);
+  await advance(clock, 0);
+  await $.session.start(START);
+  await advance(clock, 330_000);
+  expect(seen.statuses.at(-1)).toContain("кэш остыл");
+});

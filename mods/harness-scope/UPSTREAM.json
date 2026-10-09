@@ -1,0 +1,12 @@
+{
+  "name": "harness-scope",
+  "repo": "shimo4228/harness-scope",
+  "path": "plugin",
+  "url": "https://github.com/shimo4228/harness-scope/tree/02225a09febf2fb0914857b6c532965e807e8e5c/plugin",
+  "commit": "02225a09febf2fb0914857b6c532965e807e8e5c",
+  "author": "shimo4228",
+  "license": "MIT",
+  "category": "Context",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

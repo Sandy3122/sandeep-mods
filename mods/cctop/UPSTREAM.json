@@ -1,0 +1,12 @@
+{
+  "name": "cctop",
+  "repo": "tomstagl/cctop",
+  "path": "plugin",
+  "url": "https://github.com/tomstagl/cctop/tree/6ceafc34a972f4e58d5e53b1c69f80e2a9759d41/plugin",
+  "commit": "6ceafc34a972f4e58d5e53b1c69f80e2a9759d41",
+  "author": "tomstagl",
+  "license": "MIT",
+  "category": "Cost and usage",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

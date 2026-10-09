@@ -1,0 +1,12 @@
+{
+  "name": "blast-radius",
+  "repo": "hamzafer/claude-code-mods",
+  "path": "mods/blast-radius",
+  "url": "https://github.com/hamzafer/claude-code-mods/tree/e687416b0f2df0f3ad7f4dfc2065eefe6bc17ea9/mods/blast-radius",
+  "commit": "e687416b0f2df0f3ad7f4dfc2065eefe6bc17ea9",
+  "author": "hamzafer",
+  "license": "MIT",
+  "category": "Safety",
+  "fetched": "2026-10-09",
+  "note": "Written by fetch_mods.py. Records where this mod came from; keep it."
+}

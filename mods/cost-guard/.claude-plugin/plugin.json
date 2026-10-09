@@ -18,8 +18,7 @@
     "budget",
     "markdown",
     "pdf",
-    "docx",
-    "mod"
+    "docx"
   ],
   "types": "./types/index.d.ts",
   "userConfig": {

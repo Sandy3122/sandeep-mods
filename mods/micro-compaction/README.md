@@ -1,81 +1,70 @@
-# micro-compaction
+# Micro Compaction
 
-A Claude Mod that adds **micro-compaction** as `/compact micro`. Instead of asking a model to summarize your whole conversation, it trims the two bulkiest and cheapest-to-recover parts of the transcript and leaves everything else exactly as it was.
+Micro Compaction adds `/compact micro`, which shrinks your conversation by replacing file reads with short placeholders and dropping thinking, with no model call.
+
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 
 ## What it does
 
-When you run `/compact micro`, the plugin rewrites the conversation transcript locally:
+- Replaces each successful `Read` result with a one-line placeholder, such as `[file contents elided by compaction: <path>, N lines. Read it again if needed.]`.
+- Does the same for images and PDFs, which are usually the largest results in a conversation.
+- Removes thinking-only messages from the transcript.
+- Keeps everything else as it was: your prompts, Claude's replies, tool calls and the output of other tools.
+- Runs on your machine and calls no model, so it costs no tokens.
 
-- **File reads are elided.** Each successful `Read` tool result is replaced with a short placeholder such as `[file contents elided by compaction: <path>, N lines. Read it again if needed.]` (or `lines A-B` for partial reads). Images and PDFs get one too (`[image elided by compaction: <path>, WxH. …]`, `[PDF elided …]`, `[PDF pages elided …, pages N]`), since their image and document blocks are usually the largest results in a conversation. Claude can read the file again on its own whenever it needs the contents.
-- **Thinking is dropped.** Thinking-only messages are removed from the transcript.
-- **Everything else is kept.** Your prompts, Claude's replies, tool calls, and non-Read tool output stay unchanged, so the structure and wording of the conversation survive.
-
-Some results are deliberately left alone: errored reads, text results already shorter than their placeholder ("unchanged since last read" stubs, tiny files), and earlier placeholders. Running `/compact micro` repeatedly is safe, because elision is idempotent.
-
-## When it runs
-
-- Only for a manual `/compact micro`.
-- Any other `/compact`, with or without instructions (`/compact keep the plan`), is passed through unchanged to Claude Code's normal model-written summary.
-- Automatic compaction (when the context window fills up) and other compaction triggers also use the normal summary, since that may be needed to fit the window.
-
-
-## Installation
-
-Requires Claude Code v2.1.287 or later.
-
-Install it from the official Anthropic plugin directory. In case you haven't added this marketplace yet, add it first, and refresh it to get the latest listing:
+## Install
 
 ```
-claude plugin marketplace add anthropic-plugin-directory
-claude plugin marketplace update anthropic-plugin-directory
-claude plugin install micro-compaction@anthropic-plugin-directory
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install micro-compaction@sandeep-mods
 ```
 
-If you prefer using the TUI, inside a session, use `/plugin marketplace add`, `/plugin marketplace update` and `/plugin install` with the same arguments.
+## Use
 
-To update to a newer release later:
+Type `/compact micro` in a session. Claude can read an elided file again on its own when it needs the contents.
 
-```
-claude plugin marketplace update anthropic-plugin-directory
-claude plugin update micro-compaction@anthropic-plugin-directory
-```
+- The mod acts only on a manual `/compact` whose instructions are exactly `micro` (any case, spaces around it ignored).
+- Plain `/compact`, and `/compact` with other instructions, work as usual and write a normal summary.
+- Automatic compaction also writes a normal summary.
+- Running `/compact micro` twice is safe. Existing placeholders are left alone.
 
-To try a local checkout while developing, load it directly instead:
+Some results are not elided: reads that failed, text shorter than its placeholder (tiny files and "unchanged since last read" notes), and earlier placeholders. Bash output is not touched, even when you used `cat`.
 
-```
-claude --plugin-dir /path/to/micro-compaction
-```
+Tips:
+- Run it after a reading phase, once the findings are already in the conversation.
+- Micro compaction rewrites earlier messages, so the prompt cache is lost. It pays off most when the cache has gone cold or the elided content is large.
+- Claude re-reads a file it still needs, which adds the tokens back.
+- It cannot remove unrelated discussion. For that, use plain `/compact` or `/clear`.
+- A lower `bashOutputMaxChars` in your Claude Code config sends more long Bash output to files, which Claude then reads with `Read`, so more of it can be elided.
 
-Then run `/compact micro`. Plain `/compact` keeps working as usual.
+## Settings
 
-## Best practice
+None.
 
-- **Lower `bashOutputMaxChars` in your Claude Code config.** Micro-compaction leaves Bash output alone, but long output is spilled to a file that Claude then reads with `Read`, and that read can be elided. The default threshold is 30000 characters; a lower one (for example 10000) spills more output to files, so more of it can be stripped.
-- **Watch prompt cache warmness.** Micro-compaction rewrites earlier messages, which invalidates the prompt cache. Running it often while the cache is still warm is not cost-efficient, so it pays off most when the cache has gone cold anyway or the elided content is large.
-- **Use full compaction when the context is mostly unrelated information.** If a large part of the conversation no longer matters and you don't need to preserve its structure, plain `/compact` (the default) is a better fit, as is `/clear`. Micro-compaction keeps everything except file reads and thinking, so it can't discard irrelevant discussion.
-- **Compact at natural breakpoints.** The best moment is after an exploration or reading phase, when many files have been read but the findings are already in the conversation, and before the next phase begins.
-- **Prefer the `Read` tool for file contents.** Only `Read` results are elided. Output from `cat` in Bash, or from other tools such as MCP tools, web fetches and searches, is kept as is.
-- **Expect re-reads if you keep working on the same files.** Claude re-reads an elided file when it needs it again, which adds back the tokens you saved. Micro-compaction helps most when the files you read are no longer needed.
-- **It shines in image and PDF heavy sessions.** Image and PDF results are usually the largest blocks in a transcript, and they are always elided.
-- **Fall back to full compaction if micro isn't enough.** Prompts, replies, tool calls and non-Read output are kept, so a long conversation can still fill the window. Run `/compact` for a summary, or rely on automatic compaction, which always uses the normal summary.
+## Requirements
 
-## What the hook does
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- `/compact` must be available, so it does not work in `claude -p`.
 
-The plugin registers exactly one hook, on the `session.compact` event, with the filter `trigger: 'manual'`. `session.compact` is also the name of the call that Claude Code makes to compact a conversation, so this hook sees the conversation's message list for every manual `/compact`. It changes the call only when the instructions are exactly `micro` (ignoring surrounding whitespace and case): then it returns a rewritten list (file reads elided, thinking dropped) in place of core's model-written summary. For any other `/compact`, with or without instructions, it calls `next` with the call unchanged, so Claude Code compacts as usual. Other triggers (automatic, plugin, precompute) never reach the hook because of its `trigger: 'manual'` filter. The plugin never makes the `session.compact` call itself, and it hooks no other event.
+## What it can access
 
-## What it runs, sends, and fetches
+- **Hooks:** the `session.compact` event, for manual compactions only. Other triggers never reach it.
+- **Gating:** for `/compact micro` it replaces the compaction and returns the rewritten message list. For any other `/compact` it passes the call on unchanged.
+- **Reads:** the conversation messages Claude Code hands to the hook, held in memory.
+- **Writes:** one log line through `$.ui.log` with the number of elided reads and characters. No files.
+- **Programs, network and models:** none. It runs no commands, makes no network requests and calls no model.
 
-- It runs a single `session.compact` hook, written in TypeScript (`hooks/register.ts` and `hooks/elide.ts`), inside Claude Code.
-- It makes **no model calls**, **no network requests**, and **no shell commands**.
-- It does not read or write any files itself, and it uses no credentials, environment variables, or MCP servers.
-- It does not collect, store, or transmit any data. It only edits the in-memory message list that Claude Code hands to the hook, and it writes one debug-level log line with the count of elided reads and dropped thinking blocks.
-- It has no package dependencies and no install step.
+## Troubleshooting
 
-## Development
+- **Plain `/compact` still writes a summary.** That is intended. Only `/compact micro` uses this mod.
+- **Nothing seems smaller.** Only successful `Read` results are elided. If the context is mostly Bash output, MCP tool output, web results or discussion, there is little to remove.
+- **Claude reads the same file again.** It saw the placeholder and needed the contents. This is expected.
+- **`/compact micro` does nothing in `claude -p`.** `/compact` is not available there. Use an interactive session.
 
-The core logic is the pure function `microCompact(messages)` in `hooks/elide.ts`, covered by unit tests in `tests/elide.test.ts`.
+## License
 
-```
-claude plugin validate .
-claude plugin test
-```
+Unlicense (public domain); see LICENSE.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [ruihe774](https://github.com/ruihe774) in [ruihe774/cc-micro-compaction](https://github.com/ruihe774/cc-micro-compaction/tree/7409c6265aa977c01cfd6b070af3c734f56fb467), Unlicense.

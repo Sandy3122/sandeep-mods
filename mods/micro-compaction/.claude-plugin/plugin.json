@@ -1,23 +1,21 @@
 {
+  "name": "micro-compaction",
+  "displayName": "Micro Compaction",
+  "version": "0.1.3",
+  "description": "Adds /compact micro, which replaces Read results with short placeholders and drops thinking without calling a model.",
   "author": {
-    "email": "ruihe774@outlook.com",
-    "name": "Rui He"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
-  "description": "Adds `/compact micro`: elides Read results and strips thinking, keeping the conversation structure",
-  "displayName": "micro-compaction",
-  "homepage": "https://github.com/ruihe774/cc-micro-compaction",
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/micro-compaction#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
+  "license": "Unlicense",
   "keywords": [
     "compact",
     "compaction",
-    "micro-compaction",
     "context",
     "context-window",
     "tokens",
-    "mod",
-    "hooks"
-  ],
-  "license": "Unlicense",
-  "name": "micro-compaction",
-  "repository": "https://github.com/ruihe774/cc-micro-compaction",
-  "version": "0.1.2"
+    "read"
+  ]
 }

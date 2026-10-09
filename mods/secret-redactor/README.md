@@ -78,7 +78,7 @@ Change them in `/plugin` → **Installed** → **secret-redactor** → **Configu
 - **A real secret was missed.** Lower `minEntropy` or `minLength`, or put a name like `API_KEY=` in front of it. Short or hex-only values are only hidden when a key name sits beside them.
 - **Something harmless is hidden.** Add it to `allow`, or its email to `allowEmails`, or its id prefix to `allowPrefixes`.
 - **A placeholder shows up in a file or command.** Placeholders are swapped back only inside tool inputs, and only when `restoreInToolInputs` is on. A placeholder from an earlier session means nothing in a new one.
-- **Running the tests.** There is a plain Node script, not covered by `claude plugin test`: run `node --experimental-strip-types test/detect.test.mts` from the mod folder.
+- **Running the tests.** Run `claude plugin test` on the mod folder. It runs `tests/detect.test.ts`, which checks the must-hide list, the must-keep list and the round trip.
 
 ## License
 

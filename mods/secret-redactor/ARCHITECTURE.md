@@ -18,8 +18,8 @@ vault (module-level maps, memory only, dropped at session end)
 | --- | --- |
 | `hooks/hooks.json` | Points at `./redact.ts` |
 | `hooks/redact.ts` | The vault, the secret and PII detectors, the object walker, config parsing and the three hooks |
-| `test/detect.test.mts` | Node script with a must-hide list, a must-keep list and a round-trip check |
-| `test/fixtures/sample.env` | Fake credentials for an end-to-end run |
+| `tests/detect.test.ts` | Tests for `claude plugin test`: a must-hide list, a must-keep list and a round-trip check |
+| `tests/fixtures/sample.env` | Fake credentials for an end-to-end run |
 
 ## Events hooked
 
@@ -55,7 +55,7 @@ Secret tests run in order: vendor patterns, private key blocks, passwords in URL
 
 ## Testing
 
-`test/detect.test.mts` is a standalone Node script, so `claude plugin test` does not find it. Run it from the mod folder with `node --experimental-strip-types test/detect.test.mts`. It checks 13 values that must be hidden, 23 that must be kept, that a value always gets the same placeholder, and that restoring a placeholder returns the original. The original repository also ran `claude plugin validate` and a manual `claude --plugin-dir` run against `test/fixtures/sample.env`. The `tsconfig.json` only covers `hooks`; the test folder is checked by running it.
+`tests/detect.test.ts` runs under `claude plugin test` with the Claude Code test kit. It checks 13 values that must be hidden, 23 that must be kept, that a value always gets the same placeholder, and that restoring a placeholder returns the original. The original repository also ran `claude plugin validate` and a manual `claude --plugin-dir` run against `tests/fixtures/sample.env`. The `tsconfig.json` only covers `hooks`; the tests folder is checked by running it.
 
 ## Known limits
 

@@ -1,8 +1,6 @@
-// Runs with no dependencies:
-//   node --experimental-strip-types plugins/secret-redactor/test/detect.test.mts
-//
 // The two lists below are the whole contract. A change to a threshold or a
 // pattern is only finished when both still pass.
+import { expect, test } from 'claude-code/testing'
 import { makeConfig, scrubSecrets, scrubPii, restore } from '../hooks/redact.ts'
 
 const cfg = makeConfig({})
@@ -52,32 +50,21 @@ const KEEP: readonly string[] = [
   'placeholder="you@example.com" and name@company.com',
 ]
 
-let bad = 0
-for (const text of HIDE) {
-  if (scrub(text) === text) {
-    bad++
-    console.log(`MISS  ${text.split('\n')[0].slice(0, 100)}`)
-  }
-}
-for (const text of KEEP) {
-  const out = scrub(text)
-  if (out !== text) {
-    bad++
-    console.log(`FALSE POSITIVE  ${out.slice(0, 120)}`)
-  }
-}
+
+test('hides every value that looks like a secret or personal data', () => {
+  const missed = HIDE.filter((text) => scrub(text) === text)
+  expect(missed).toEqual([])
+})
+
+test('keeps every public id, hash, path and name', () => {
+  const changed = KEEP.filter((text) => scrub(text) !== text).map((text) => scrub(text))
+  expect(changed).toEqual([])
+})
 
 // A value always mints the same placeholder, and the placeholder always
 // buys the value back.
-const line = 'KEY=sk-ant-api03-Zx8Q2mLpR7vT4nK9wYbF1cJhE6sAdG0uH3iO5rP'
-if (scrub(line) !== scrub(line)) {
-  bad++
-  console.log('DRIFT  the same value minted two placeholders')
-}
-if (restore(scrub(line)) !== line) {
-  bad++
-  console.log('LOSS  a placeholder did not buy its value back')
-}
-
-console.log(bad === 0 ? `ok  ${HIDE.length} hidden, ${KEEP.length} kept, round trip clean` : `${bad} failure(s)`)
-if (bad > 0) process.exitCode = 1
+test('round trip: same value, same placeholder, and it restores', () => {
+  const line = 'KEY=sk-ant-api03-Zx8Q2mLpR7vT4nK9wYbF1cJhE6sAdG0uH3iO5rP'
+  expect(scrub(line)).toBe(scrub(line))
+  expect(restore(scrub(line))).toBe(line)
+})

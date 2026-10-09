@@ -386,7 +386,7 @@ This repository is a Claude Code plugin marketplace: one mod per folder under `m
 """
 
 GITIGNORE = """# Written by Claude Code whenever it loads a mod for development
-.claude-plugin/types/
+**/.claude-plugin/types/
 node_modules/
 .DS_Store
 Thumbs.db

@@ -2,6 +2,10 @@
 
 All notable changes to cost-guard are listed here. Versions follow [semantic versioning](https://semver.org).
 
+## 0.1.1 (2026-10-09)
+
+- Standardized: README, ARCHITECTURE, manifest metadata. No behaviour change.
+
 ## 0.1.0 (2026-10-09)
 
 First public release.

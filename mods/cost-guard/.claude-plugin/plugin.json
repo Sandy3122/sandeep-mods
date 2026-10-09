@@ -1,10 +1,11 @@
 {
   "name": "cost-guard",
   "displayName": "Cost Guard",
-  "version": "0.1.0",
-  "description": "Shows what each chat, reply and day costs, nudges you to a fresh session when a chat gets long or heavy, and turns PDFs, Word, PowerPoint and Excel files into markdown before Claude reads them.",
+  "version": "0.1.1",
+  "description": "Shows what each chat, reply and day costs, warns you when a chat gets long, and converts documents to markdown before Claude reads them.",
   "author": {
-    "name": "Sandeep"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
   "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/cost-guard#readme",
   "repository": "https://github.com/Sandy3122/claude-mods",

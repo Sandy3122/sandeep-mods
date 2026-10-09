@@ -1,10 +1,12 @@
 {
   "name": "github-issues",
-  "version": "0.1.0",
-  "description": "A side pane listing the repository's GitHub issues, with one click to have Claude work on one",
-  "author": { "name": "Marco Carnevali", "url": "https://github.com/MarcoCarnevali" },
-  "repository": "https://github.com/MarcoCarnevali/claude-code-mods",
+  "displayName": "GitHub Issues",
+  "version": "0.1.1",
+  "description": "Lists a repository's GitHub issues in a side pane, with one click to have Claude work on one.",
+  "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/github-issues#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
-  "keywords": ["mod", "github", "issues", "pane"],
+  "keywords": ["github", "issues", "pane", "gh", "repository"],
   "types": "./types/index.d.ts"
 }

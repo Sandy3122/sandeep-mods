@@ -1,47 +1,75 @@
-# github-issues
+# GitHub Issues
 
-A side pane in Claude Code that lists a repository's GitHub issues as cards.
+GitHub Issues lists a repository's issues as cards in a side pane, with a button that has Claude work on one.
+
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and deploys
 
 <p>
   <img src="docs/issues.png" alt="The Issues pane: tabs, search, a label picker, and issue cards with labels, linked pull requests and actions" width="380">
   <img src="docs/picker.png" alt="The repository picker: a filter box and repositories grouped by owner, with open issue counts" width="380">
 </p>
 
-<sub>Screenshots show made-up repositories, people and issues.</sub>
+*Screenshots show made-up repositories, people and issues.*
 
-**[Watch the demo on X](https://x.com/marcocarne_/status/2107456270873796697)**
+## What it does
 
-- **Tabs:** Open, Assigned (with your count), Created, Closed
-- **Search and labels:** a search box (Enter runs a GitHub search) and a label picker. **Clear** resets both.
-- **Cards:** title, `#number` (opens the issue on GitHub), assignees, last update, comment count, linked pull request (open, draft, merged or closed), and labels as small pills in GitHub's colors
-- **Details:** shows the issue's description inside its card
-- **Work on it:** sends Claude a prompt to read the issue and its comments, plan, and implement it. Its card gets an accent border.
-- **Assignment alerts:** a toast when an issue is newly assigned to you, and your count on the Assigned tab
-
-The pane shows the 40 most recently updated issues that match. A spinner shows while it loads. The list refreshes when you open the pane, after each of Claude's turns, every two minutes, and when you press **Refresh**. If a repository's issues are too large to fit in the pane at once, the pane shows as many as fit and says how many more there are. Use search or a label to narrow the list. If you leave the pane open, it opens again in your next session.
-
-## Usage
-
-| Command | |
-| --- | --- |
-| `/issues` | Started in a folder whose repository is on GitHub: that repository's issues. Anywhere else: pick a repository, the 30 you pushed to most recently (yours, collaborations and your organizations'), each with its open issue count. **Switch repo** opens the picker from the issues |
-| `/issues owner/name` | Show that repository's issues |
-| `/issues .` | Show the session's repository (from the `origin` remote) |
-
-In the picker, repositories are grouped by owner. Type in the filter box to narrow the list. Enter opens the first match, or any `owner/name` you type. **Switch repo** in the pane goes back to the picker. If the session isn't in a GitHub repository, the pane opens on the picker.
-
-## Assignment alerts
-
-While the pane is open, the mod checks every two minutes which open issues are assigned to you in the repository it's watching: the one you picked, or the session's own. With the pane closed it makes no requests. The first check of a repository is silent and only records the current issues. After that, each newly assigned issue raises a toast. The issue numbers already seen are kept in Claude Code's plugin store, so alerts carry over between sessions.
-
-## Requirements
-
-The [GitHub CLI](https://cli.github.com) (`gh`), signed in with `gh auth login`. The mod runs `gh api graphql` (issues, labels, assigned issues and repositories) and `gh issue view` on your machine. Nothing leaves your machine except those GitHub requests.
+- Shows issues on four tabs: Open, Assigned (with your count), Created and Closed.
+- Searches issues (Enter runs a GitHub search) and filters them by label. **Clear** resets both.
+- Draws each issue as a card: title, `#number` (opens the issue on GitHub), assignees, last update, comment count, linked pull request (open, draft, merged or closed), and labels as pills in GitHub's colors.
+- Shows an issue's description inside its card, and has a **Work on it** button that sends Claude a prompt to read the issue and its comments, plan, and implement it.
+- Raises a toast when an issue is newly assigned to you.
+- Lets you pick any repository you can reach, with its open issue count.
 
 ## Install
 
 ```
-/plugin marketplace add MarcoCarnevali/claude-code-mods
-/plugin install github-issues@marco-mods
-/reload-plugins
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install github-issues@sandeep-mods
 ```
+
+## Use
+
+| Command | What it does |
+| --- | --- |
+| `/issues` | In a folder whose repository is on GitHub, shows that repository's issues. Anywhere else, opens the repository picker. |
+| `/issues owner/name` | Shows that repository's issues. |
+| `/issues .` | Shows the session's repository (from the `origin` remote). |
+
+- **The pane.** It shows the 40 most recently updated issues that match. A spinner shows while it loads. The list refreshes when you open the pane, after each of Claude's turns, every two minutes, and when you press **Refresh**. If too many cards fit the pane at once, it shows as many as fit and says how many more there are. Use search or a label to narrow the list.
+- **The picker.** It lists the 30 repositories you pushed to most recently (yours, ones you collaborate on, and your organizations'), grouped by owner. Type in the filter box to narrow the list. Enter opens the first match, or any `owner/name` you type. **Switch repo** in the pane goes back to the picker.
+- **Work on it.** The button sends Claude a message asking it to read the issue with `gh issue view`, outline a plan, implement it, and mention the issue number in the commit and pull request. The issue's card gets an accent border while Claude works on it.
+- **Assignment alerts.** While the pane is open, the mod checks every two minutes which open issues are assigned to you in the repository it is watching. The first check of a repository is silent. After that, each newly assigned issue raises a toast. The issue numbers already seen are kept between sessions.
+- **Reopening.** If you leave the pane open, it opens again in your next session.
+
+## Settings
+
+None.
+
+## Requirements
+
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- The [GitHub CLI](https://cli.github.com) (`gh`), signed in with `gh auth login`. The mod looks for `gh` on your path, then in `/opt/homebrew/bin` and `/usr/local/bin`.
+
+## What it can access
+
+- **Hooks:** session start, the `/issues` command, the end of each of Claude's turns, closing the pane, and drawing the pane.
+- **Runs programs:** only `gh`, on your machine: `gh --version` to find it, `gh api graphql` (issues, labels, assigned issues, repositories) and `gh issue view` (an issue's description and comments). It also asks Claude Code for the session's repository.
+- **Network:** requests to GitHub, made by `gh` with your `gh` sign-in. Nothing else leaves your machine. With the pane closed, it makes no requests.
+- **Model calls:** it calls no model itself. **Work on it** submits one ordinary message to Claude, only when you press it, and that message costs tokens like any other.
+- **Writes files:** none in your project. It keeps in the mod's own store whether the pane was open, and the issue numbers already seen per repository.
+- It never approves or changes tool calls.
+
+## Troubleshooting
+
+- **"The GitHub CLI (gh) was not found."** Install `gh` from cli.github.com, then restart Claude Code.
+- **The pane shows an error from `gh`.** Run `gh auth status` in a terminal. If you are signed out, run `gh auth login`. Private and organization repositories need a sign-in that can reach them.
+- **`/issues` opens the picker instead of issues.** The session's folder has no GitHub `origin` remote. Pick a repository, or run `/issues owner/name`.
+- **No assignment toasts.** The first check of a repository only records the current issues. The pane must be open for checks to run.
+
+## License
+
+MIT; see LICENSE.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [MarcoCarnevali](https://github.com/MarcoCarnevali) in [MarcoCarnevali/claude-code-mods](https://github.com/MarcoCarnevali/claude-code-mods/tree/a3e528dd00ced34a46973ab89398cc52168191b9/github-issues), MIT.

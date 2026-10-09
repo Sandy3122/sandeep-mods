@@ -1,18 +1,23 @@
 {
   "name": "deploy-verify",
-  "version": "0.3.0",
-  "description": "After a deploy command succeeds, curls the live URL with cache-busting and puts the verdict in the model's context, so a deploy cannot be claimed without evidence.",
+  "displayName": "Deploy Verify",
+  "version": "0.3.1",
+  "description": "After a deploy command succeeds, checks the live URL with cache-busting and tells Claude the result, so a deploy is not called done without evidence.",
   "author": {
-    "name": "Yash Gadodia"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/deploy-verify#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
-  "homepage": "https://github.com/yash-gadodia/claude-mods",
-  "repository": "https://github.com/yash-gadodia/claude-mods",
   "keywords": [
-    "claude-code",
-    "claude-code-plugin",
-    "claude-mod",
-    "function-hooks",
-    "deploy-verify"
+    "deploy",
+    "verify",
+    "curl",
+    "cdn",
+    "ci",
+    "github-actions",
+    "git",
+    "push"
   ]
 }

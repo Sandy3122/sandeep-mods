@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2 (2026-10-09)
+- Imported from apolenkov/agent-compact-advisor at 5486abe.
+- Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.
+
 ## [0.5.1](https://github.com/apolenkov/agent-compact-advisor/compare/v0.5.0...v0.5.1) (2026-10-07)
 
 

@@ -1,223 +1,90 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/banner-dark.svg">
-  <img alt="agent-compact-advisor: tells you when your Claude Code session is ready to /compact" src=".github/assets/banner-light.svg" width="100%">
-</picture>
+# Agent Compact Advisor
 
-![Claude Code session: a small turn reads "too early: context is small (35k)"; after a turn that reads four log files the status line alerts "context 63% — time to compact" although the score is only 66 of 100, the ready /compact appears in the prompt box, Tab takes it, and after the compaction the line resets to "context is small"](demo/demo.gif)
+Agent Compact Advisor shows a 0-100 score on the status line for how good a moment it is to `/compact`, and keeps your goal, decisions and file paths in every compaction.
 
-This recording predates the logical gates: a small context now has score 0
-without a size gate, and the size alert never offers `/compact` through a gate.
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 
-[![ci](https://github.com/apolenkov/agent-compact-advisor/actions/workflows/ci.yml/badge.svg)](https://github.com/apolenkov/agent-compact-advisor/actions/workflows/ci.yml)
-[![codeql](https://github.com/apolenkov/agent-compact-advisor/actions/workflows/codeql.yml/badge.svg)](https://github.com/apolenkov/agent-compact-advisor/actions/workflows/codeql.yml)
-[![release](https://img.shields.io/github/v/release/apolenkov/agent-compact-advisor?sort=semver)](https://github.com/apolenkov/agent-compact-advisor/releases)
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Claude Code ≥ 2.1.287](https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.287-8F5400)](https://claude.com/claude-code)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/apolenkov/agent-compact-advisor/badge)](https://scorecard.dev/viewer/?uri=github.com/apolenkov/agent-compact-advisor)
+## What it does
 
-A Claude Code mod that tells you how good a moment it is to `/compact` now,
-and why, and makes compaction safer. It never compacts by itself.
-
-```
-agent-compact-advisor: хороший момент для /compact: оценка 98 из 100 · контекст 400k (40%) · хвостов нет · цель достигнута с вероятностью 90% · кэш тёплый
-agent-compact-advisor: можно подождать: оценка 50 из 100 · контекст 400k (40%) · хвосты неизвестны · кэш остыл
-agent-compact-advisor: рано: идёт фоновая задача · контекст 243k (24%)
-agent-compact-advisor: рано: работает 2 агента · контекст 400k (40%)
-agent-compact-advisor: контекст 61% — пора компактить · рано: хвосты — ждать итоги · контекст 610k (61%)
-```
-
-## Why
-
-- Compact too early and you throw away context you still need; too late and
-  the window fills mid-task.
-- Compacting while agents or background calls still run loses track of
-  them.
-- A compaction summary can drop the goal, decisions and open leftovers
-  unless asked to keep them.
-
-## Features
-
-- 📊 **Status line** after every main turn, and every 30 s: a score 0–100
-  and its signals.
-- 🚨 **Size alert** from `alertPercent` (60) of the window, whatever the score,
-  the gates or the leftovers: the line opens with "контекст 61% — пора
-  компактить", one toast per crossing (it re-arms when the share drops, e.g.
-  after a compaction), the `/compact` suggested at each turn end only when no
-  gate holds.
-- 💡 **Suggestion** past the threshold (70): a ready one-line `/compact …` in
-  the empty prompt box, Tab takes it; one toast when the score first crosses.
-- 🔎 **Judges from the session's history**, not from the size: running
-  agents, background work in classes (a poll for a merge is no obstacle), a
-  runner whose result is unread, changes that no commit or push holds (asked
-  of git) and the agent's own leftovers; "everything recorded" when none.
-- 🛡️ **Guard**: every `/compact` and auto-compaction of the main
-  conversation gets a preservation template added after your own text (goal,
-  decisions, open leftovers verbatim, the owner's open question, what each
-  background wait waits for, absolute file paths, verification results, what
-  not to do). It never cancels a compaction.
-- 🔍 **`/compact-advisor`** explains the current score part by part.
+- Shows a score from 0 to 100 on the status line after each main turn and every 30 seconds, with the reasons in words.
+- Sets the score to 0 while something would be lost: running agents, live background work, uncommitted or unpushed changes in git, or leftovers the last answer listed.
+- Alerts when the context reaches a share of the window (60% by default), with one toast per crossing, whatever the score.
+- Puts a ready `/compact` line in the empty prompt box once the score reaches the threshold. Press Tab to take it.
+- Adds a preservation template to every `/compact` and auto-compaction of the main conversation: goal, decisions, open leftovers, file paths, verification results and what not to do.
+- Never compacts by itself and never cancels a compaction.
 
 ## Install
 
-Claude Code 2.1.287+ (mods are on by default).
-
 ```
-/plugin marketplace add apolenkov/agent-compact-advisor
-/plugin install agent-compact-advisor@agent-compact-advisor
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install agent-compact-advisor@sandeep-mods
 ```
 
-It is also listed, with its sibling mods, in the
-[agent-mods](https://github.com/apolenkov/agent-mods) marketplace:
+## Use
 
-```
-/plugin marketplace add apolenkov/agent-mods
-/plugin install agent-compact-advisor@agent-mods
-```
+Nothing to start. The score appears on the status line once a turn has finished.
 
-Or try a checkout: `claude --plugin-dir /path/to/agent-compact-advisor`.
+- `/compact-advisor` explains the current score part by part.
+- Tab takes the suggested `/compact` line from the empty prompt.
 
-## Usage
+How the score works:
+- A gate sets it to 0 and the line says which one, for example "too early: 2 agents running".
+- Below `minTokens` of context the score is 0, because there is nothing worth compacting yet.
+- Otherwise the score adds three parts: how full the context is (40), whether the last answer's leftover lines all say none (30), and whether the prompt cache is still warm (10).
+- When the rules say the moment is ready, a small model reads the end of the last answer. It can only lower the verdict, and only if the answer promises more work.
+- A probability from Kev (a local System One service) can cap the score. It is off unless that service runs on your machine.
 
-| Command / key      | What it does                                           |
-| ------------------ | ------------------------------------------------------ |
-| `/compact-advisor` | Explains the current score part by part                |
-| Tab                | Takes the suggested `/compact …` from the empty prompt |
+Leftovers are read from lines that start with `Хвосты для агента:` and `Хвосты для владельца:`. For English, set `leftoverPrefixes` to `Leftovers:`. The status line and toasts use Russian by default; set `language` to `en` to change that.
 
-### The score
+## Settings
 
-A score, not a probability: nothing is calibrated.
+| Option | Default | What it does |
+| --- | --- | --- |
+| `threshold` | `70` | Score from which the ready `/compact` is suggested |
+| `minTokens` | `100000` | Context below this scores 0 |
+| `fullTokens` | `300000` | Context at which the fill part of the score is complete |
+| `cacheTtlMin` | `5` | Minutes after a turn the prompt cache counts as warm (60 with the 1-hour cache) |
+| `systemOneUrl` | `http://127.0.0.1:8010` | Kev's System One address; loopback only, empty turns it off |
+| `kevModel` | `kev-latest` | System One model asked for the probability |
+| `leftoverPrefixes` | `Хвосты для агента:\|Хвосты для владельца:` | `\|`-separated line prefixes that report leftovers |
+| `noneWords` | `нет\|none` | `\|`-separated values meaning no leftovers |
+| `guardCompactions` | `true` | Add the preservation template to every compaction |
+| `ignoreLeftovers` | `false` | Leftovers neither gate nor cap the score; for a coordinator session that always waits on others |
+| `modelCheck` | `true` | A small model reads the last answer when the rules say ready |
+| `language` | `ru` | Words of the status line, toasts and explanation: `ru` or `en` |
+| `alertPercent` | `60` | Context share (%) that alerts whatever the score; `0` turns it off |
+| `statusLine` | `true` | Show the score on the status line |
 
-Gates set it to 0, and the line says which in words: no context reading yet,
-running agents, live background work,
-background work that hung ("stop it"), a runner that ended with its verdict
-unread, changes in the repositories the session touched that no commit or push
-holds (read from git), or leftovers the agent itself listed in the last answer
-(unless `ignoreLeftovers`), a pending priority verdict, a pending model check
-or work the model found still owed. An owed result persists across turns until
-another model check replaces it. A question to the owner (the second leftover line)
-is no gate: the compaction template carries it.
-Otherwise the score measures how worthwhile compaction is, using a weighted sum.
-A known context under `minTokens` (100k) has score 0 without a size gate:
+Change them in `/plugin` → **Installed** → **agent-compact-advisor** → **Configure options**, or run `claude plugin configure agent-compact-advisor@sandeep-mods`.
 
-| Part      | Weight | Value                                                                            |
-| --------- | ------ | -------------------------------------------------------------------------------- |
-| fill      | 40     | from `minTokens` to `min(fullTokens, 90% of the window)`                         |
-| leftovers | 30     | 1 when the last answer's leftover lines all say none                             |
-| cache     | 10     | 1 within `cacheTtlMin` of the last turn (the compaction reads the cached prefix) |
+## Requirements
 
-Kev's probability is a ceiling, not a weighted part: 0.55 caps the score at 55.
-A pending verdict gates, including after a reload; an unavailable verdict
-adds no ceiling. Unknown background work (agent-shell-watch not loaded) or
-missing leftover lines cap the score at the lower of 60 and `threshold - 1`.
-The size alert remains a separate trigger when no gate holds.
-With `ignoreLeftovers` the leftovers part leaves the sum (the rest is
-rescaled) and never gates or caps: for a coordinator session, whose leftovers
-always say "wait for the others". Running agents, background work and
-unrecorded changes still gate independently of that setting.
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- `git` on your path to check for unrecorded changes. Without it the line never says everything is recorded.
+- Optional: the agent-shell-watch mod, so the advisor can see background calls. Without it background work counts as unknown and caps the score.
+- Optional: a Kev System One service on loopback for the probability.
 
-**Leftovers** are read from lines starting with `Хвосты для агента:` and
-`Хвосты для владельца:` (the last of each counts; list marks, quotes, bold and
-code are tolerated). Both prefixes and the words meaning none (`нет`, `none`)
-are settings: for an English convention set `leftoverPrefixes` to `Leftovers:`.
+## What it can access
 
-**Words.** The status line, toasts and `/compact-advisor` use plain words, no
-abbreviations, in `language`: `ru` (default, like the Russian leftover
-prefixes) or `en`. A gate reads "рано: …" / "too early: …", a score at or
-above `threshold` "хороший момент для /compact: оценка 82 из 100 · …", below
-it "можно подождать: …".
+- **Hooks:** session start, tool calls, turn start, size readings, finished turns, compactions and the `/compact-advisor` command. It changes a compaction only by adding the template to its instructions.
+- **Calls a model (costs tokens):** after a main turn, when the rules already say ready, it sends the last 6000 characters of the answer to `haiku` through your own Claude Code session, with a 15 second limit and 8 output tokens. Turns under `minTokens` are skipped. Turn it off with `modelCheck`.
+- **Network:** one request, to Kev's System One at `systemOneUrl`. It posts the last 8000 characters of the answer to `/v1/systemone`, with a 20 second timeout. Only `127.0.0.1`, `localhost` and `[::1]` are accepted. Any other address, or an empty one, turns this off and nothing is sent. Whatever listens on that port receives the text.
+- **Runs programs:** `git` in your session folder and in the repository of every file the session wrote to, with a 5 second limit. It runs `rev-parse --show-toplevel`, `config`, `status --porcelain`, `diff --name-only`, `rev-list --count` and similar read-only commands. It does not fetch.
+- **Reads:** the session transcript, to rebuild the list of files written to after a resume; the list of running agents; and the `agent-shell-watch` call list in `$.state`, if that mod is loaded.
+- **Writes files:** none. It keeps its facts in `$.state` for the session. It stores nothing across sessions.
+- **Draws:** the status line, toasts and the prompt suggestion.
 
-**P1** asks Kev (System One, `kev-latest`) one question over the last answer's
-final 8000 characters, on loopback only, with a 20 s timeout.
+## Troubleshooting
 
-**Background calls** come from
-[agent-shell-watch](https://github.com/apolenkov/agent-shell-watch)'s call list
-and are told apart by what a compaction would lose with each:
-
-- a **waiter** polls an external event (a loop that only sleeps and reads:
-  `gh pr view`, `gh run watch`, `curl`, `grep`) and loses nothing: it does not
-  gate, the line says how many run, and the compaction template names what each
-  waits for;
-- **work** (a runner, a build, any command that is not a poll, and every
-  command the advisor cannot read) gates;
-- **work that hung** gates as "stop it", never as "wait";
-- a call that finished never counts, except a runner whose verdict is unread.
-
-**Unrecorded work** is read from git, not guessed from commands: the advisor
-remembers the files the session's tools wrote to, and at each turn start and
-after each tool that can change files asks git, in the session's directory and
-in every repository of those files, for uncommitted changes and for commits not
-on the upstream (or on any remote). Untracked files count only when the session
-wrote them. At a resume the list is rebuilt from the transcript — the main
-loop's rows and the agents' an Agent call names, up to a bounded depth — so a
-file written before the resume still counts. When git says nothing the line
-never claims "everything recorded"; if the session touched files, they
-conservatively count as unrecorded until git supplies a state.
-
-**What it cannot see.** Changes made by another process between turns show at
-the next turn; files outside any repository are listed for the compaction
-template and can count in the conservative gate when git supplies no state;
-a promise deeper than the answer's last 6000
-characters is beyond the model check; a subagent's transcript stores no tool
-records, so what its Bash calls changed is lost to a resume; a squash-merged
-branch counts as recorded only when its upstream is gone and every path it
-changed matches origin's default branch as last fetched (offline, no network);
-if main has changed those paths since, or the branch never had an upstream,
-its commits still count as unpushed.
-
-## Configuration
-
-Set in `/config`.
-
-<details>
-<summary><b>All settings</b></summary>
-
-| Setting            | Default                                     |                                                                                  |
-| ------------------ | ------------------------------------------- | -------------------------------------------------------------------------------- |
-| `threshold`        | 70                                          | score from which the `/compact` is suggested                                     |
-| `minTokens`        | 100000                                      | below it the score is 0                                                          |
-| `fullTokens`       | 300000                                      | context at which the fill part is complete                                       |
-| `cacheTtlMin`      | 5                                           | minutes the prompt cache counts as warm (60 with the 1-hour cache)               |
-| `systemOneUrl`     | `http://127.0.0.1:8010`                     | Kev for P1; loopback only, empty turns it off                                    |
-| `kevModel`         | `kev-latest`                                | System One model                                                                 |
-| `leftoverPrefixes` | `Хвосты для агента:\|Хвосты для владельца:` | `\|`-separated                                                                   |
-| `noneWords`        | `нет\|none`                                 | `\|`-separated                                                                   |
-| `guardCompactions` | true                                        | add the template to every compaction                                             |
-| `statusLine`       | true                                        | show the score                                                                   |
-| `ignoreLeftovers`  | false                                       | leftovers neither gate, cap nor count (coordinator sessions)                     |
-| `modelCheck`       | true                                        | haiku reads the last answer when the rules say ready; it can only lower to early |
-| `language`         | `ru`                                        | words of the status line, toasts and explanation: `ru` or `en`                   |
-| `alertPercent`     | 60                                          | context share (%) that alerts regardless of score; 0 turns it off                |
-
-</details>
-
-## Privacy
-
-The model check sends the last answer's final 6000 characters to haiku through
-your own Claude Code session (its subscription and client; no key, no other
-party), only on a turn whose answer the rules do not already hold back, and a
-failure or an unclear reply leaves the rules' verdict as it is. The model can
-only add the gate "the answer promises more work", never lift one. Besides
-it, one network call, on loopback only: P1 posts the last answer's final 8000
-characters to `systemOneUrl`. No key, no telemetry, nothing stored across
-sessions. See [SECURITY.md](SECURITY.md) for what it reads and sends.
-
-## Development
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) to work on it: `npm ci`, then
-`npm run check`. Questions: [SUPPORT.md](SUPPORT.md).
-
-Live checks run locally: `npm run eval` (headless, on your Claude login; not in CI).
-
-`scripts/corpus.py` rebuilds the calibration corpus from the local
-`~/.claude/projects` journals: for every compaction boundary, the state it
-was taken at (size, leftover lines, git, live background) and what the owner
-said or redid after it. The October corpus (63 boundaries, 53 observable, 4
-loss incidents) found every loss at a state the gates already hold — a listed
-agent leftover, a live background call, an unpushed commit — while context
-size and uncommitted edits predicted nothing. That is why the gates, not the
-weighted sum, carry the verdict.
+- **The line is in Russian.** That is the default. Set `language` to `en`.
+- **The score stays at 0 and says leftovers.** The last answer listed leftovers, or the advisor found no leftover lines. Add the lines to your answers, change `leftoverPrefixes`, or set `ignoreLeftovers`.
+- **It says changes are not recorded.** Git reports uncommitted files or commits not on the upstream. Commit and push, or the gate stays.
+- **No probability on the line.** Kev is off unless something listens at `systemOneUrl`. That is fine; the score works without it.
 
 ## License
 
-[MIT](LICENSE). `engine-types/claude-code.d.ts` is © Anthropic PBC and not
-covered by the MIT license; see [engine-types/NOTICE.md](engine-types/NOTICE.md).
+MIT; see LICENSE. `engine-types/claude-code.d.ts` is copyright Anthropic PBC and not covered by it; see `engine-types/NOTICE.md`.
+
+## Credits
+
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [apolenkov](https://github.com/apolenkov) in [apolenkov/agent-compact-advisor](https://github.com/apolenkov/agent-compact-advisor/tree/5486abec02ae09bda76750993a0f68ca61b76dbf), MIT.

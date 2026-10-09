@@ -11,15 +11,22 @@ test("no options give the defaults, Kev on loopback", () => {
     kevUrl: "http://127.0.0.1:8010",
     kevModel: "kev-latest",
     leftovers: {
-      prefixes: ["Хвосты для агента:", "Хвосты для владельца:"],
-      noneWords: ["нет", "none"],
+      prefixes: ["Leftovers for agent:", "Leftovers for owner:"],
+      noneWords: ["none"],
     },
     guardCompactions: true,
     statusLine: true,
     ignoreLeftovers: false,
     modelCheck: true,
-    language: "ru",
+    language: "en",
     alertPercent: 60,
+  });
+});
+
+test("language ru gives the Russian leftover prefixes and none-words", () => {
+  expect(configOf({ language: "ru" }).leftovers).toEqual({
+    prefixes: ["Хвосты для агента:", "Хвосты для владельца:"],
+    noneWords: ["нет", "none"],
   });
 });
 
@@ -66,7 +73,7 @@ test("P1 is off for an empty or a non-loopback URL", () => {
 
 test("a bad language or alert percent falls back to the defaults", () => {
   const config = configOf({ language: "de", alertPercent: 150 });
-  expect(config.language).toBe("ru");
+  expect(config.language).toBe("en");
   expect(config.alertPercent).toBe(60);
   expect(configOf({ alertPercent: "x" }).alertPercent).toBe(60);
 });

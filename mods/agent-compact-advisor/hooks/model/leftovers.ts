@@ -1,5 +1,5 @@
 /**
- * The leftover lines ("Хвосты для агента: нет") of an answer, read strictly.
+ * The leftover lines ("Leftovers for agent: none") of an answer, read strictly.
  */
 import type { Leftovers } from "../../types";
 

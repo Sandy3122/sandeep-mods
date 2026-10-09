@@ -13,7 +13,7 @@ const waiter = (label: string): WatchedCall => ({
   label,
 });
 
-test("seven waiters do not stand in the way, and the compaction carries their purpose", async ($, on) => {
+test("seven waiters do not stand in the way, and the compaction carries their purpose", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = Array.from({ length: 7 }, (_, n) =>
@@ -29,7 +29,7 @@ test("seven waiters do not stand in the way, and the compaction carries their pu
   expect(seen.compactions.at(-1)).toContain("PR 0 merged; PR 1 merged");
 });
 
-test("real work in the background still gates, a hung one says to stop it", async ($, on) => {
+test("real work in the background still gates, a hung one says to stop it", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [
@@ -49,7 +49,7 @@ test("real work in the background still gates, a hung one says to stop it", asyn
   );
 });
 
-test("a runner that ended with its verdict unread gates", async ($, on) => {
+test("a runner that ended with its verdict unread gates", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [
@@ -76,7 +76,7 @@ const edit = async (
   await $.tool.call({ tool: "Edit", file_path: file } as ToolCallArgs);
 };
 
-test("an edit in a repository gates until git says it is recorded", async ($, on) => {
+test("an edit in a repository gates until git says it is recorded", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -104,7 +104,7 @@ test("an edit in a repository gates until git says it is recorded", async ($, on
   expect(seen.statuses.at(-1)).not.toContain("рано");
 });
 
-test("an untracked file counts only when the session wrote it", async ($, on) => {
+test("an untracked file counts only when the session wrote it", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -123,7 +123,7 @@ test("an untracked file counts only when the session wrote it", async ($, on) =>
   );
 });
 
-test("git saying nothing never claims that all is recorded", async ($, on) => {
+test("git saying nothing never claims that all is recorded", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -155,7 +155,7 @@ const branches: readonly (readonly [
 ];
 
 for (const [name, branch, isRecorded] of branches) {
-  test(`a branch: ${name}`, async ($, on) => {
+  test(`a branch: ${name}`, { options: { language: "ru" } }, async ($, on) => {
     const clock = mock.clock(on);
     const seen = world(on);
     seen.calls = [];

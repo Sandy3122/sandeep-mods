@@ -11,7 +11,7 @@ const RUN = {
   origin: { kind: "composer" },
   presentation: { isFullscreen: true, columns: 160 },
 } as const;
-test("a big, finished session scores high, suggests /compact once-toasted", async ($, on) => {
+test("a big, finished session scores high, suggests /compact once-toasted", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on, { now: 1_000_000 });
   const seen = world(on);
   seen.calls = [{ status: "done" }];
@@ -32,7 +32,7 @@ test("a big, finished session scores high, suggests /compact once-toasted", asyn
   expect(seen.toasts).toHaveLength(1);
 });
 
-test("running agents gate the score to 0 and nothing is suggested", async ($, on) => {
+test("running agents gate the score to 0 and nothing is suggested", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.agents = [
@@ -49,7 +49,7 @@ test("running agents gate the score to 0 and nothing is suggested", async ($, on
   expect(seen.suggested).toEqual([]);
 });
 
-test("without agent-shell-watch and with Kev down the score stays capped", async ($, on) => {
+test("without agent-shell-watch and with Kev down the score stays capped", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.kev = undefined;
@@ -63,7 +63,7 @@ test("without agent-shell-watch and with Kev down the score stays capped", async
   expect(seen.suggested).toEqual([]);
 });
 
-test("the agent's own listed leftovers are a gate and Kev is not asked", async ($, on) => {
+test("the agent's own listed leftovers are a gate and Kev is not asked", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -77,7 +77,7 @@ test("the agent's own listed leftovers are a gate and Kev is not asked", async (
   expect(seen.posts).toEqual([]);
 });
 
-test("a question to the owner is no gate: the compaction carries it", async ($, on) => {
+test("a question to the owner is no gate: the compaction carries it", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -96,7 +96,7 @@ test("a question to the owner is no gate: the compaction carries it", async ($, 
   );
 });
 
-test("the cache going cold redraws without its part", async ($, on) => {
+test("the cache going cold redraws without its part", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -110,7 +110,7 @@ test("the cache going cold redraws without its part", async ($, on) => {
   );
 });
 
-test("every main compaction gets the template; others pass untouched", async ($, on) => {
+test("every main compaction gets the template; others pass untouched", { options: { language: "ru" } }, async ($, on) => {
   mock.clock(on);
   const seen = world(on);
   await $.session.start(START);
@@ -130,7 +130,7 @@ test("every main compaction gets the template; others pass untouched", async ($,
   ]);
 });
 
-test("a compaction resets the size so a stale score does not stay", async ($, on) => {
+test("a compaction resets the size so a stale score does not stay", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -144,7 +144,7 @@ test("a compaction resets the size so a stale score does not stay", async ($, on
   expect(seen.compactions).toHaveLength(1);
 });
 
-test("tiny turns skip the paid check", async ($, on) => {
+test("tiny turns skip the paid check", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -155,7 +155,7 @@ test("tiny turns skip the paid check", async ($, on) => {
   expect(seen.asked).toHaveLength(0);
 });
 
-test("/compact-advisor explains the score", async ($, on) => {
+test("/compact-advisor explains the score", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -172,7 +172,7 @@ test("/compact-advisor explains the score", async ($, on) => {
 
 test(
   "a guard switched off leaves compactions as typed",
-  { options: { guardCompactions: false } },
+  { options: { language: "ru", guardCompactions: false } },
   async ($, on) => {
     mock.clock(on);
     const seen = world(on);
@@ -182,7 +182,7 @@ test(
   },
 );
 
-test("a Kev that never answers times out to P1 n/a", async ($, on) => {
+test("a Kev that never answers times out to P1 n/a", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.kev = "hang";
@@ -198,7 +198,7 @@ test("a Kev that never answers times out to P1 n/a", async ($, on) => {
   );
 });
 
-test("a reload keeps a P1 left pending: the verdict is still unknown", async ($, on) => {
+test("a reload keeps a P1 left pending: the verdict is still unknown", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.kev = "hang";
@@ -213,7 +213,7 @@ test("a reload keeps a P1 left pending: the verdict is still unknown", async ($,
   expect(seen.suggested).toHaveLength(0);
 });
 
-test("an agent finishing between turns is seen within 30 s and offers once", async ($, on) => {
+test("an agent finishing between turns is seen within 30 s and offers once", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -235,7 +235,7 @@ test("an agent finishing between turns is seen within 30 s and offers once", asy
   expect(seen.suggested).toHaveLength(1);
 });
 
-test("after a reload the cache still goes cold on time", async ($, on) => {
+test("after a reload the cache still goes cold on time", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];

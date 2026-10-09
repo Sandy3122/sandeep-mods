@@ -24,7 +24,7 @@ const PARTS: Verdict["parts"] = [
   { name: "leftovers", weight: 30, value: 1 },
   { name: "cache", weight: 10, value: 1 },
 ];
-const RU = configOf({ alertPercent: 0 });
+const RU = configOf({ language: "ru", alertPercent: 0 });
 const EN = configOf({ language: "en", alertPercent: 0 });
 const drawn = (over: Partial<Drawn> = {}): Drawn => ({
   verdict: { score: 82, parts: PARTS, caps: [] },
@@ -89,14 +89,14 @@ test("ignored leftovers say nothing about leftovers", () => {
   const line = statusLineOf(
     drawn({
       facts: { ...FACTS, leftovers: { kind: "listed", text: "wait" } },
-      config: configOf({ ignoreLeftovers: true, alertPercent: 0 }),
+      config: configOf({ language: "ru", ignoreLeftovers: true, alertPercent: 0 }),
     }),
   );
   expect(line).not.toContain("хвост");
 });
 
 test("past the alert percent the line opens with the alert", () => {
-  const alerting = configOf({ alertPercent: 60 });
+  const alerting = configOf({ language: "ru", alertPercent: 60 });
   expect(statusLineOf(drawn({ config: alerting }))).toMatch(
     /^контекст 62% — пора компактить · хороший момент/u,
   );
@@ -144,7 +144,7 @@ test("the explanation lists parts, caps and the guard, in the language", () => {
 
 test("the explanation notes ignored leftovers and the alert", () => {
   const text = explanationOf(
-    drawn({ config: configOf({ ignoreLeftovers: true, alertPercent: 60 }) }),
+    drawn({ config: configOf({ language: "ru", ignoreLeftovers: true, alertPercent: 60 }) }),
     true,
   );
   expect(text).toContain("- хвосты: не учитываются по настройке");

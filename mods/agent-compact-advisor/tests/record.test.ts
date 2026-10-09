@@ -36,7 +36,7 @@ const WROTE = {
 // After a resume the in-memory list of written paths is gone; the transcript
 // is what restores it. Without it an untracked file the session itself wrote
 // would not count, and the gate would stay silent over unrecorded work.
-test("the paths the session wrote before a resume still gate", async ($, on) => {
+test("the paths the session wrote before a resume still gate", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -70,7 +70,7 @@ test("the paths the session wrote before a resume still gate", async ($, on) => 
   expect(seen.suggested).toHaveLength(0);
 });
 
-test("git silent over the session's own writes still holds", async ($, on) => {
+test("git silent over the session's own writes still holds", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -86,7 +86,7 @@ test("git silent over the session's own writes still holds", async ($, on) => {
   expect(seen.suggested).toHaveLength(0);
 });
 
-test("a denied agent transcript and a fresh start restore nothing", async ($, on) => {
+test("a denied agent transcript and a fresh start restore nothing", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -101,7 +101,7 @@ test("a denied agent transcript and a fresh start restore nothing", async ($, on
   expect(seen.statuses.at(-1)).toContain("правки не записаны: файлов 1");
 });
 
-test("an empty transcript and clean git leave a start unheld", async ($, on) => {
+test("an empty transcript and clean git leave a start unheld", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];

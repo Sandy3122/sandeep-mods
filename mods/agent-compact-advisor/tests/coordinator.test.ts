@@ -7,7 +7,7 @@ import { world } from "./fixtures/world.ts";
 const COORDINATOR =
   "Идёт работа.\nХвосты для агента: ждать итоги субагентов\nХвосты для владельца: нет";
 
-test("a listed leftover scores 0 for a plain session, with the size shown", async ($, on) => {
+test("a listed leftover scores 0 for a plain session, with the size shown", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -22,7 +22,7 @@ test("a listed leftover scores 0 for a plain session, with the size shown", asyn
 
 test(
   "ignoreLeftovers keeps a coordinator's score alive",
-  { options: { ignoreLeftovers: true } },
+  { options: { language: "ru", ignoreLeftovers: true } },
   async ($, on) => {
     const clock = mock.clock(on);
     const seen = world(on);
@@ -55,7 +55,7 @@ test(
   },
 );
 
-test("the size alert fires past 60% but offers no /compact through a gate", async ($, on) => {
+test("the size alert fires past 60% but offers no /compact through a gate", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -77,7 +77,7 @@ test("the size alert fires past 60% but offers no /compact through a gate", asyn
 
 test(
   "alertPercent 0 turns the alert off",
-  { options: { alertPercent: 0 } },
+  { options: { language: "ru", alertPercent: 0 } },
   async ($, on) => {
     const clock = mock.clock(on);
     const seen = world(on);
@@ -92,7 +92,7 @@ test(
   },
 );
 
-test("the size alert shows but offers no /compact while background work runs", async ($, on) => {
+test("the size alert shows but offers no /compact while background work runs", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [{ status: "running" }];

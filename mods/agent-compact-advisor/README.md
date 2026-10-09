@@ -34,7 +34,7 @@ How the score works:
 - When the rules say the moment is ready, a small model reads the end of the last answer. It can only lower the verdict, and only if the answer promises more work.
 - A probability from Kev (a local System One service) can cap the score. It is off unless that service runs on your machine.
 
-Leftovers are read from lines that start with `Хвосты для агента:` and `Хвосты для владельца:`. For English, set `leftoverPrefixes` to `Leftovers:`. The status line and toasts use Russian by default; set `language` to `en` to change that.
+Leftovers are read from lines that start with `Leftovers for agent:` and `Leftovers for owner:`, and `none` means nothing is left. The status line, toasts and explanation are in English by default. To use Russian, set `language` to `ru`: the lines are then `Хвосты для агента:` and `Хвосты для владельца:`, and `нет` also means none. Set `leftoverPrefixes` or `noneWords` to use your own wording in either language.
 
 ## Settings
 
@@ -46,12 +46,12 @@ Leftovers are read from lines that start with `Хвосты для агента:
 | `cacheTtlMin` | `5` | Minutes after a turn the prompt cache counts as warm (60 with the 1-hour cache) |
 | `systemOneUrl` | `http://127.0.0.1:8010` | Kev's System One address; loopback only, empty turns it off |
 | `kevModel` | `kev-latest` | System One model asked for the probability |
-| `leftoverPrefixes` | `Хвосты для агента:\|Хвосты для владельца:` | `\|`-separated line prefixes that report leftovers |
-| `noneWords` | `нет\|none` | `\|`-separated values meaning no leftovers |
+| `leftoverPrefixes` | empty (`Leftovers for agent:\|Leftovers for owner:`) | `\|`-separated line prefixes that report leftovers; empty follows `language` (Russian: `Хвосты для агента:\|Хвосты для владельца:`) |
+| `noneWords` | empty (`none`) | `\|`-separated values meaning no leftovers; empty follows `language` (Russian: `нет\|none`) |
 | `guardCompactions` | `true` | Add the preservation template to every compaction |
 | `ignoreLeftovers` | `false` | Leftovers neither gate nor cap the score; for a coordinator session that always waits on others |
 | `modelCheck` | `true` | A small model reads the last answer when the rules say ready |
-| `language` | `ru` | Words of the status line, toasts and explanation: `ru` or `en` |
+| `language` | `en` | Words of the status line, toasts and explanation: `en` or `ru`. Set `ru` for Russian |
 | `alertPercent` | `60` | Context share (%) that alerts whatever the score; `0` turns it off |
 | `statusLine` | `true` | Show the score on the status line |
 
@@ -76,7 +76,7 @@ Change them in `/plugin` → **Installed** → **agent-compact-advisor** → **C
 
 ## Troubleshooting
 
-- **The line is in Russian.** That is the default. Set `language` to `en`.
+- **The line is in English and you want Russian.** Set `language` to `ru`. Your answers then need `Хвосты для агента:` and `Хвосты для владельца:` lines.
 - **The score stays at 0 and says leftovers.** The last answer listed leftovers, or the advisor found no leftover lines. Add the lines to your answers, change `leftoverPrefixes`, or set `ignoreLeftovers`.
 - **It says changes are not recorded.** Git reports uncommitted files or commits not on the upstream. Commit and push, or the gate stays.
 - **No probability on the line.** Kev is off unless something listens at `systemOneUrl`. That is fine; the score works without it.

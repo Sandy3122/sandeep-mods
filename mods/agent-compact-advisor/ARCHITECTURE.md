@@ -24,7 +24,7 @@ session.compact ─▶ template added to instructions
 | `types/index.d.ts` | Types for the mod's `$.state` and the shape it reads from agent-shell-watch |
 | `engine-types/` | Copy of the Claude Code API declarations, used by `tsconfig.json`; copyright Anthropic PBC (see its NOTICE.md) |
 | `tests/` | Behaviour tests, `tests/model/` for the pure logic, `tests/fixtures/` for shared setup |
-| `scripts/`, `evals/`, `openspec/`, `demo/` | Upstream development material; not loaded by the mod |
+| `scripts/`, `evals/` | Development material (corpus builder, type refresh, smoke script, eval suite); not loaded by the mod |
 
 ## Events hooked
 
@@ -67,7 +67,7 @@ The status line (`$.ui.status`), toasts and a prompt suggestion (`$.prompt.sugge
 
 ## Settings flow
 
-`configOf(options)` in `hooks/model/config.ts` reads the 14 `userConfig` values once at registration and applies defaults. `systemOneUrl` must match a loopback pattern, or Kev is switched off. Changes apply after a reload.
+`configOf(options)` in `hooks/model/config.ts` reads the 14 `userConfig` values once at registration and applies defaults. `systemOneUrl` must match a loopback pattern, or Kev is switched off. `language` is `en` unless it is `ru`. It also picks the default leftover prefixes and none-words: an empty `leftoverPrefixes` or `noneWords` falls back to the table for that language in `config.ts` (`Leftovers for agent:|Leftovers for owner:` and `none` in English, `Хвосты для агента:|Хвосты для владельца:` and `нет|none` in Russian). Changes apply after a reload.
 
 ## Testing
 

@@ -7,7 +7,7 @@ import { world } from "./fixtures/world.ts";
 const READY = "хороший момент";
 const OWES = "рано: в ответе обещано дальнейшее";
 
-test("the model's owes lowers a ready verdict to early, clean leaves it", async ($, on) => {
+test("the model's owes lowers a ready verdict to early, clean leaves it", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -28,7 +28,7 @@ test("the model's owes lowers a ready verdict to early, clean leaves it", async 
   expect(seen.asked).toHaveLength(2);
 });
 
-test("an unclear reply, a failed call: the rules' verdict stands", async ($, on) => {
+test("an unclear reply, a failed call: the rules' verdict stands", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -45,7 +45,7 @@ test("an unclear reply, a failed call: the rules' verdict stands", async ($, on)
   expect(seen.asked).toHaveLength(2);
 });
 
-test("while the model reads, the verdict is early and nothing is suggested", async ($, on) => {
+test("while the model reads, the verdict is early and nothing is suggested", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -58,7 +58,7 @@ test("while the model reads, the verdict is early and nothing is suggested", asy
   expect(seen.suggested).toHaveLength(0);
 });
 
-test("a gate that holds until the next turn: the model is not asked, and cannot lift it", async ($, on) => {
+test("a gate that holds until the next turn: the model is not asked, and cannot lift it", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -80,7 +80,7 @@ test("a gate that holds until the next turn: the model is not asked, and cannot 
   expect(seen.asked).toHaveLength(0);
 });
 
-test("a gate that ends between turns: the model has read the answer before", async ($, on) => {
+test("a gate that ends between turns: the model has read the answer before", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [
@@ -98,7 +98,7 @@ test("a gate that ends between turns: the model has read the answer before", asy
   expect(seen.suggested).toHaveLength(0);
 });
 
-test("the answer is data between markers, its tail is what the model reads", async ($, on) => {
+test("the answer is data between markers, its tail is what the model reads", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];
@@ -115,7 +115,7 @@ test("the answer is data between markers, its tail is what the model reads", asy
 
 test(
   "modelCheck off: the model is never asked",
-  { options: { modelCheck: false } },
+  { options: { language: "ru", modelCheck: false } },
   async ($, on) => {
     const clock = mock.clock(on);
     const seen = world(on);
@@ -133,7 +133,7 @@ test(
 // The fixture can't judge text, so the stub answers "owes"; what this pins
 // down is that the prose tail actually reaches the model and its "owes"
 // gates.
-test("a promise in Russian prose reaches the model and holds", async ($, on) => {
+test("a promise in Russian prose reaches the model and holds", { options: { language: "ru" } }, async ($, on) => {
   const clock = mock.clock(on);
   const seen = world(on);
   seen.calls = [];

@@ -7,7 +7,7 @@ export const TEMPLATE = [
   "Preserve for continuing this work after compaction:",
   "- Goal and the backlog task id, as the owner stated them; the owner's constraints.",
   "- Decisions made, each with its reason; what was rejected and why.",
-  '- Open leftovers verbatim, including the last answer\'s "Хвосты для агента/владельца" lines.',
+  '- Open leftovers verbatim, including the last answer\'s leftover lines for the agent and for the owner.',
   "- Absolute file paths touched or relevant, the branch and uncommitted changes.",
   "- Verification commands run and their results (pass/fail, counts).",
   "- What not to do: approaches that failed, actions the owner forbade.",

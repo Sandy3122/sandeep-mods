@@ -1,7 +1,7 @@
 {
   "name": "agent-compact-advisor",
   "displayName": "Agent Compact Advisor",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Shows a 0-100 status line score for how good a moment it is to /compact, and adds a preservation template to every compaction.",
   "author": {
     "name": "Sandeep",
@@ -59,14 +59,14 @@
     "leftoverPrefixes": {
       "type": "string",
       "title": "Leftover line prefixes",
-      "description": "|-separated line prefixes that report leftovers",
-      "default": "Хвосты для агента:|Хвосты для владельца:"
+      "description": "|-separated line prefixes that report leftovers; empty uses the language default (Leftovers for agent:|Leftovers for owner: in en, Хвосты для агента:|Хвосты для владельца: in ru)",
+      "default": ""
     },
     "noneWords": {
       "type": "string",
       "title": "None words",
-      "description": "|-separated values meaning no leftovers",
-      "default": "нет|none"
+      "description": "|-separated values meaning no leftovers; empty uses the language default (none in en, нет|none in ru)",
+      "default": ""
     },
     "guardCompactions": {
       "type": "boolean",
@@ -89,8 +89,8 @@
     "language": {
       "type": "string",
       "title": "Language",
-      "description": "Words of the status line, toasts and explanation: ru or en",
-      "default": "ru"
+      "description": "Words of the status line, toasts and explanation: en or ru",
+      "default": "en"
     },
     "alertPercent": {
       "type": "number",

@@ -17,8 +17,13 @@ const DEFAULTS = {
 const ALERT_PERCENT = 60;
 const SYSTEM_ONE_URL = "http://127.0.0.1:8010";
 const KEV_MODEL = "kev-latest";
-const PREFIXES = "Хвосты для агента:|Хвосты для владельца:";
-const NONE_WORDS = "нет|none";
+// The leftover line prefixes and none-words of each language; the options
+// `leftoverPrefixes` and `noneWords` override them when set.
+const PREFIXES = {
+  en: "Leftovers for agent:|Leftovers for owner:",
+  ru: "Хвосты для агента:|Хвосты для владельца:",
+} as const;
+const NONE_WORDS = { en: "none", ru: "нет|none" } as const;
 // The last answer may only go to this machine (TASK-209: no transcript leaves it).
 const LOOPBACK = /^https?:\/\/(?:127\.0\.0\.1|localhost|\[::1\])(?::\d+)?\/?$/u;
 
@@ -86,6 +91,7 @@ const alertOf = (value: unknown): number =>
 export const configOf = (options: PluginOptions): Config => {
   const minTokens = positive(options, "minTokens");
   const fullTokens = positive(options, "fullTokens");
+  const language: Language = options["language"] === "ru" ? "ru" : "en";
   return {
     threshold: Math.min(positive(options, "threshold"), MAX_SCORE),
     minTokens,
@@ -94,14 +100,16 @@ export const configOf = (options: PluginOptions): Config => {
     ...kevUrlOf(text(options, "systemOneUrl", SYSTEM_ONE_URL)),
     kevModel: text(options, "kevModel", KEV_MODEL) || KEV_MODEL,
     leftovers: {
-      prefixes: listOf(text(options, "leftoverPrefixes", PREFIXES)),
-      noneWords: listOf(text(options, "noneWords", NONE_WORDS).toLowerCase()),
+      prefixes: listOf(text(options, "leftoverPrefixes", "") || PREFIXES[language]),
+      noneWords: listOf(
+        (text(options, "noneWords", "") || NONE_WORDS[language]).toLowerCase(),
+      ),
     },
     guardCompactions: options["guardCompactions"] !== false,
     statusLine: options["statusLine"] !== false,
     ignoreLeftovers: options["ignoreLeftovers"] === true,
     modelCheck: options["modelCheck"] !== false,
-    language: options["language"] === "en" ? "en" : "ru",
+    language,
     alertPercent: alertOf(options["alertPercent"]),
   };
 };

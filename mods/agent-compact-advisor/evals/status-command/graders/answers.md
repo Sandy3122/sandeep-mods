@@ -1,4 +1,4 @@
 ---
 type: regex
-pattern: шаблон сохранения
+pattern: preservation template
 ---

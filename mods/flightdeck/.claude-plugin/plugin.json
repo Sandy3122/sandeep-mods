@@ -1,23 +1,23 @@
 {
   "name": "flightdeck",
-  "version": "0.3.2",
-  "description": "Flightdeck: a live agent dashboard for Claude Code. Main model vitals, an on-call architect, every permission check, subagent cards and swimlanes, a turn receipt and a session log, all from real session events",
+  "displayName": "Flightdeck",
+  "version": "0.3.3",
+  "description": "Shows a live dashboard of context, cost, permission checks and subagents in a Claude Code pane, built from real session events.",
   "author": {
-    "name": "Stephen Casella",
-    "url": "https://github.com/scasella"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/scasella/claude-flightdeck",
-  "repository": "https://github.com/scasella/claude-flightdeck",
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/flightdeck#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
   "keywords": [
-    "claude-code",
-    "claude-code-mod",
-    "claude-code-plugin",
     "dashboard",
     "subagents",
     "agents",
     "observability",
-    "tui"
+    "permissions",
+    "context",
+    "cost"
   ],
   "types": "./types/index.d.ts",
   "userConfig": {

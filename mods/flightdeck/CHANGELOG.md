@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 (2026-10-09)
+
+- Imported from scasella/claude-flightdeck at f31daca.
+- Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.
+
 ## 0.3.2
 
 - A background architect's advice is read from its `SubagentHandback` tool call, where the report actually arrives, with the hand-back text as a fallback. Bold markers no longer leak into the advice line.

@@ -1,7 +1,7 @@
 {
   "name": "micro-compaction",
   "displayName": "Micro Compaction",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Adds /compact micro, which replaces Read results with short placeholders and drops thinking without calling a model.",
   "author": {
     "name": "Sandeep",

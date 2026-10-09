@@ -20,13 +20,14 @@ session.compact (manual) ─▶ instructions == "micro"? ─no─▶ next(e)
 | `hooks/register.ts` | The `session.compact` hook and its gate on `micro` |
 | `hooks/elide.ts` | `microCompact(messages)`, a pure function that elides Read results and drops thinking |
 | `tests/elide.test.ts` | Unit tests for `microCompact` |
-| `docs/` | Reference docs downloaded from the upstream repository (`mods-*.md`) |
 
 ## Events hooked
 
 | Event (matcher) | What the hook does | Gating? |
 | --- | --- | --- |
 | `session.compact` (`trigger: manual`) | If instructions trimmed and lower-cased equal `micro`, returns `{ messages }` from `microCompact`; otherwise calls `next(e)` | Yes (replaces the compaction) |
+
+The published event table lists `session.compact` as returning `{ skip: reason }` only. Returning `{ messages }` is documented in the generated types, not in the prose reference.
 
 ## Calls on $
 
@@ -50,7 +51,7 @@ None. The mod has no `userConfig` options.
 
 ## Testing
 
-`tests/elide.test.ts` covers the elision rules, thinking removal and idempotence. Run `claude plugin test mods/micro-compaction`. Typecheck with `npx -p typescript tsc -p .` (TS5097 on `.ts` imports is expected). An end-to-end check needs an interactive session: read a file, run `/compact micro`, then inspect the session JSONL after the last `compact_boundary`. Unset the `CLAUDE*` and `AI_AGENT` variables first (except `CLAUDE_CODE_PLUGIN_DIRS`) so it is not treated as a child session.
+`tests/elide.test.ts` covers the elision rules, thinking removal and idempotence. Run `claude plugin test mods/micro-compaction`. Tests use the `claude-code/testing` kit (`import { expect, test } from 'claude-code/testing'`); each file needs at least one `test()` and a name ending in `.test.ts`. Most tests in `elide.test.ts` call the pure `microCompact` function directly and need no stubs; the `/compact micro` test goes through the hook and checks the log line. `claude plugin test` exits with status 1 on any failure, so it works in CI. Typecheck with `npx -p typescript tsc -p .` (TS5097 on `.ts` imports is expected). An end-to-end check needs an interactive session: read a file, run `/compact micro`, then inspect the session JSONL after the last `compact_boundary`. Unset the `CLAUDE*` and `AI_AGENT` variables first (except `CLAUDE_CODE_PLUGIN_DIRS`) so it is not treated as a child session.
 
 ## Known limits
 
@@ -61,4 +62,5 @@ None. The mod has no `userConfig` options.
 - A message returned with its `handle` is kept whole. One without is rebuilt from role, text and tool blocks; a rebuilt thinking-only message becomes `(no content)`, so those are dropped, not rebuilt. A rebuilt tool result carries only the placeholder text, with no image or document block.
 - After a hook compaction, core resets its read-state cache, so an identical Read returns full content instead of the "unchanged" stub.
 - `session.compact` is barely documented. If docs and types disagree, trust `SessionCompactInput`, `SessionCompacted` and `SessionMessage` in `.claude-plugin/types/claude-code/index.d.ts`, which is generated per version and not hand-edited.
+- For the rest of the mods API, see https://code.claude.com/docs/en/plugins/mods/overview.
 - Never rename the plugin (`micro-compaction`) or the marketplace (`sandeep-mods`); existing installs use those names.

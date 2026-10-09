@@ -1,17 +1,13 @@
 {
   "name": "terminal-browser",
-  "version": "0.0.2",
-  "description": "A browser running directly inside claude code. Preview websites, view HTML documents, and let your agent control the built in browser.",
-  "author": {
-    "name": "zenbu-labs"
-  },
-  "homepage": "https://github.com/zenbu-labs/terminal-browser/tree/main/claude-code-plugin",
-  "repository": "https://github.com/zenbu-labs/terminal-browser",
+  "displayName": "Terminal Browser",
+  "version": "0.0.3",
+  "description": "Opens a real browser in a pane inside Claude Code, with a /browser command and an optional tool that lets the agent open pages.",
+  "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/terminal-browser#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
-  "keywords": [
-    "browser",
-    "function-hooks"
-  ],
+  "keywords": ["browser", "pane", "preview", "kitty", "terminal"],
   "types": "./hooks/browser.d.ts",
   "userConfig": {
     "agentTool": {

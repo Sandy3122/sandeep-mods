@@ -1,132 +1,78 @@
-# terminal-browser claude code plugin
+# Terminal Browser
 
-> This plugin is experimental and does have some [known limitations](#caveats)
+Terminal Browser opens a real web browser in a pane inside Claude Code, so you can preview pages without leaving the terminal.
 
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing output
 
+## What it does
 
+- Opens a pane to the right of the chat that shows a live browser page as an image.
+- Passes your mouse clicks, scrolling and keystrokes to the page while the pane has focus.
+- Titles the pane with the page title.
+- Can hand text the page sends back (such as a screenshot path) to your prompt box.
+- Adds a `browser` API that other plugins can call to open or close the pane.
+- Can add an open and close tool that Claude calls itself (off by default).
 
-https://github.com/user-attachments/assets/a79e7667-6fcb-49a4-9967-44d0f942102c
+## Install
 
-
-
-## Installation
-
-Install terminal-browser
 ```
-curl -fsSL https://terminal-browser.sh/install | bash # or brew install terminal-browser
-```
-
-Ensure you are on the latest version of claude code
-```
-claude update
-```
-
-Enable claude code UI plugins by adding this to `~/.claude/settings.json`:
-```json
-{
-  "env": { "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1" }
-}
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install terminal-browser@sandeep-mods
 ```
 
+## Use
 
+| Command | What it does |
+| --- | --- |
+| `/browser` | Opens the pane. If it is already open, closes it. |
+| `/browser <url>` | Opens the pane on that page. A bare host such as `example.com` gets `https://`. `localhost` and IP addresses get `http://`. |
+| `/browser close` | Closes the pane. |
 
+- **First page.** With no address, the pane shows the browser's start page, or the page it last showed.
+- **Size.** The picture is capped at 255 by 255 terminal cells.
+- **Scrolling.** The mouse wheel scrolls the page, up to 10 steps at a time.
+- **Other plugins.** A plugin can call `$.browser.open({ url })` and `$.browser.close()`. ARCHITECTURE.md lists the types.
+- **Agent tool.** With the `agentTool` setting on, Claude gets `mcp__terminal-browser__open` and `mcp__terminal-browser__close`. Claude drives the page itself with the `terminal-browser` command line program.
 
-Install the terminal-browser plugin
-```
-# set the marketplace
-claude plugin marketplace add zenbu-labs/terminal-browser
+The command and tools are only registered in the terminal. Other surfaces get an empty pane.
 
-# install the plugin
-claude plugin install terminal-browser@terminal-browser
-```
+## Settings
 
-Now you can run "/browser" inside claude code to open the browser
+| Option | Default | What it does |
+| --- | --- | --- |
+| `agentTool` | Off | Adds the open and close tools so Claude can show a page in the pane. |
 
-### Updating
+## Requirements
 
-Update the claude code plugin
-```
-claude plugin update terminal-browser@terminal-browser
-```
+- Claude Code 2.1.287+ (terminal only).
+- The `terminal-browser` program, installed from [terminal-browser.sh](https://terminal-browser.sh). It must be recent enough to report the `embedding` and `image-frames` capabilities. If not, the mod tells you to run `terminal-browser upgrade`.
+- A terminal that supports the kitty graphics protocol with unicode placeholders, such as Ghostty or kitty. Other terminals can show garbled output.
+- Terminal multiplexers such as tmux often break the pictures.
+- Function hooks must be enabled: set `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS` to `1` in the `env` block of `~/.claude/settings.json`.
 
-Update terminal-browser
-```
-terminal-browser upgrade
-```
+## What it can access
 
-### Configuration
+- **Hooks:** session start, the `/browser` command, the open and close tools (when enabled), drawing the pane, messages and scrolling from the pane, and closing the pane. It also adds the `browser` API to the engine.
+- **Runs programs:** the `terminal-browser` program on your machine, with `capabilities` (a 10 second check) and `claude-bridge launch` (20 seconds), which starts a background browser. If a `cli/dist/main.js` sits next to the mod folder, it runs that with `node` instead. It checks for that file with a file-exists test.
+- **Network:** requests only to `http://127.0.0.1` on the port the launched program reports, with a bearer token it reports. They send your mouse and key events, the pane size, the URL to open, and requests for page state and for text waiting for you. Nothing is sent to other hosts by the mod. The browser itself loads whatever page you open, so that page's site sees a normal visit. Your OS may ask whether your terminal may reach the local network.
+- **Controls a browser:** the `/browser` command lets you open any URL. With `agentTool` on, Claude can open any URL in a real browser and, through the `terminal-browser` program, can control the page. That includes clicking, typing and signing in to sites if the browser has a session. Turn the setting on only if you want that.
+- **Fills your prompt:** text the browser queues (lines of text and screenshot paths) is put in your prompt box with a new line. It does not submit it.
+- **Model calls:** none by the mod. Anything Claude does with the tools costs tokens as usual.
+- **Writes files:** none in your project, and it keeps nothing between sessions. The browser program shares page images through shared memory.
+- It never approves tool calls. When the tools are on, it answers calls to its own open and close tools, and can refuse the open call if the browser fails to start.
 
-You can configure the terminal-browser plugin to include a tool that claude can use to open the browser. This is by default off, since claude can already use the `terminal-browser` CLI to open the browser inside the terminal through a split pane. You can enable the tool by adding the following to your ` ~/.claude/settings.json`:
+## Troubleshooting
 
-```json
-{
-  "pluginConfigs": {
-    "terminal-browser@terminal-browser": {
-      "options": {
-        "agentTool": true
-      }
-    }
-  }
-}
-```
+- **"Please install terminal-browser first".** The `terminal-browser` program was not found. Install it from terminal-browser.sh.
+- **"Newer terminal-browser version required".** Run `terminal-browser upgrade`.
+- **The pane is blank or the screen is garbled.** Your terminal may not support kitty unicode placeholders, or a multiplexer is in the way. Use Ghostty or kitty without tmux.
+- **Nothing happens with `/browser`.** The command is only registered in a terminal session, and function hooks must be enabled.
+- **Clicks land slightly off.** Claude Code does not report pixel mouse positions, so this is expected.
 
+## License
 
-## terminal-browser plugin API
+MIT; see LICENSE.
 
-The terminal-browser plugin comes with an API you can use within another claude code plugin to programatically open the browser and load a URL. Some examples of useful plugins you can build with this are:
-- `/tldraw` slash command that opens tldraw in the claude code split pane
-- `/open-pr` slash command that opens the PR associated with the branch you are working on
+## Credits
 
-```typescript
-export type BrowserOpenInput = { url?: string }
-
-export type BrowserOpenResult =
-  | { ok: true; url: string }
-  | { ok: false; error: string }
-
-export type Browser = {
-  open: (input: BrowserOpenInput) => Promise<BrowserOpenResult>
-  close: (input?: Record<string, never>) => Promise<boolean>
-}
-
-// usage: in your plugin's hooks module
-on('command.run', { command: 'tldraw' }, async ($) => {
-  const result = await $.browser.open({ url: 'https://www.tldraw.com/' })
-  return { text: result.ok ? 'Opened tldraw' : result.error }
-})
-```
-
-## How does it work?
-
-terminal-browser uses the [kitty graphics protocol] to display pixels generated by a real browser inside the terminal. To display the browser inside claude code, we use claude codes new [function hooks API](https://github.com/anthropics/claude-code/issues/91870).
-
-terminal-browser's internals have been extracted to a javascript library - https://github.com/zenbu-labs/terminal-browser/tree/main/pixel - if you would like to build your own graphical application inside claude code/the terminal
-
-
-## Supported terminals
-
-The terminal-browser claude code plugin will only work in terminals that support the [kitty graphics protocol], and implement [kitty unicode placeholders](https://sw.kovidgoyal.net/kitty/graphics-protocol/#unicode-placeholders). The most popular terminals that support this feature are:
-- [ghostty](https://ghostty.org)
-- [kitty](https://sw.kovidgoyal.net/kitty/)
-
-If your terminal does not support the required features, trying to open the browser inside claude code may garble the TUI
-
-In addition any terminals that are built on libghostty will support this feature, some examples are:
-- [cmux](https://cmux.com/)
-- [supacode](https://supacode.sh/)
-
-You can find more libghostty based terminals here: [awesome-libghostty](https://github.com/Uzaaft/awesome-libghostty)
-
-Even if your terminal supports the required graphics feature, if you are running a multiplexer, the plugin may not work. This is because multiplexers rewrite the output of terminal programs and breaks terminal graphics commands. tmux support will be arriving soon (terminal-browser currently works in tmux, just not through the claude code plugin yet), and within herdr performance is very bad when running through the claude code plugin, but will likely improve soon. Other multiplexers I have not tested, so if it does not work please file an issue and I will see if we can support this.
-
-
-
-
-## Caveats:
-- depends on your terminal supporting the [kitty graphics protocol]
-- the mouse position will sometimes be slightly off, since claude code does not enable pixel coordinate mouse reporting
-- the plugin needs to make fetch requests to a local http server to communicate with the terminal-browser CLI, which may cause a prompt to show in your OS that your terminal wants to access the local network
-- claude code sets a very high min width for the chat area, so its sometimes not possible to resize the browser to the size you want
-- the plugin depends on the experimental function hooks claude code API, which is unstable, so the plugin may break between releases
-
-[kitty graphics protocol]: https://sw.kovidgoyal.net/kitty/graphics-protocol/
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [zenbu-labs](https://github.com/zenbu-labs) in [zenbu-labs/terminal-browser](https://github.com/zenbu-labs/terminal-browser/tree/2165ae76c9639e3996829ab0e6d54ddbd4f06ad8/claude-code-plugin), MIT.

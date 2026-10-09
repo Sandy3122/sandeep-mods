@@ -1,7 +1,7 @@
 {
   "name": "launch-codes",
   "displayName": "Launch Codes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Asks for a one-time code and a second confirmation before Claude runs a dangerous Bash command such as rm -rf, git push --force or vercel --prod.",
   "author": {
     "name": "Sandeep",
@@ -21,8 +21,8 @@
   ],
   "types": "./types/index.d.ts",
   "icon": "./.claude-plugin/icon.png",
-  "documentationUrl": "https://github.com/OneWave-AI/claude-code-mods/blob/main/launch-codes/README.md",
-  "supportUrl": "https://www.onewave-ai.com/contact",
+  "documentationUrl": "https://github.com/Sandy3122/claude-mods/tree/main/mods/launch-codes#readme",
+  "supportUrl": "https://github.com/Sandy3122/claude-mods/issues",
   "privacyPolicyUrl": "https://www.onewave-ai.com/privacy",
   "termsOfServiceUrl": "https://www.onewave-ai.com/terms"
 }

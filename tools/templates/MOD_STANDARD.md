@@ -1,6 +1,6 @@
 # Mod standard
 
-Every mod in this collection looks the same from the outside: the same files, the same manifest fields, the same README and ARCHITECTURE sections. A user who has read one mod's folder knows where to find everything in the next.
+Every mod in {{TITLE}} looks the same from the outside: the same files, the same manifest fields, the same README and ARCHITECTURE sections. A user who has read one mod's folder knows where to find everything in the next.
 
 Standardizing changes **how a mod is presented, never what it does.** Behaviour changes are separate work, in their own commits, with a version bump and a CHANGELOG entry.
 
@@ -21,24 +21,26 @@ mods/<name>/
 ├── ARCHITECTURE.md          for maintainers (section 4)
 ├── CHANGELOG.md             section 5
 ├── LICENSE                  the original license, kept (section 6)
-└── UPSTREAM.json            where the mod came from; written by fetch_mods.py, never edited
+└── UPSTREAM.json            adapted mods only; written by fetch_mods.py (section 8)
 ```
 
 Keep anything else the mod needs at run time or for its tests (vendored libraries, skills/, commands/, agents/, data files). Move tests into `tests/` only if they still pass there.
 
-**Remove** what belonged to the upstream repository rather than to the mod: CI configs, release tooling (release-please, commitlint, lefthook, knip), linters and formatters (eslint, prettier, biome) and lockfiles, unless the mod's tests need them. Fold anything useful from an upstream `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md` or `SECURITY.md` into ARCHITECTURE.md, then delete them. Keep translated READMEs as `README.<lang>.md`.
+**tsconfig.** The `extends` form is the default. Keep a mod's own tsconfig when its `include` covers folders the shared one doesn't, and check that `tsc -p .` and the tests give the same result before replacing one.
+
+**Remove** what belonged to the upstream repository rather than to the mod: CI configs, release tooling (release-please, commitlint, lefthook, knip), linters and formatters (eslint, prettier, biome), lockfiles, and a root `CLAUDE.md` (Claude Code warns that a plugin root `CLAUDE.md` is not loaded), unless the mod's tests need them. Fold anything useful from an upstream `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md` or `SECURITY.md` into ARCHITECTURE.md, then delete them. Keep translations as `README.<lang>.md`; `README.md` is always English.
 
 ## 2. plugin.json
 
-Fields in this order. Keep every other field the mod already has (`userConfig`, `types`, `dependencies`, `defaultEnabled`) exactly as it is.
+Fields in this order. Keep every other field the mod already has (`userConfig`, `types`, `dependencies`, `defaultEnabled`, `icon` and the like) exactly as it is.
 
 ```json
 {
   "name": "<unchanged>",
   "displayName": "<Title Case Name>",
-  "version": "<upstream version, bumped on any change you make>",
+  "version": "<previous version, bumped on any change you make>",
   "description": "<one plain sentence: what the user gets>",
-  "author": { "name": "{{OWNER}}" },
+  "author": { "name": "{{OWNER}}", "url": "https://github.com/{{GITHUB}}" },
   "homepage": "https://github.com/{{GITHUB}}/{{REPO}}/tree/main/mods/<name>#readme",
   "repository": "https://github.com/{{GITHUB}}/{{REPO}}",
   "license": "<same as the original: MIT, Unlicense, ...>",
@@ -47,17 +49,21 @@ Fields in this order. Keep every other field the mod already has (`userConfig`, 
 ```
 
 - **`name` stays as it is.** It is the install id (`<name>@{{MARKETPLACE}}`), and many mods use it as a literal in `$.state` references (`{ plugin: '<name>', key: ... }`) and in `types/index.d.ts` (`interface PluginState { '<name>': ... }`). If a rename is ever required, change all of those together, then validate and test.
-- **`version`**: when you first standardize a mod, bump the patch number (0.2.0 → 0.2.1) so users who installed the upstream copy can tell them apart. Bump again on every release; users don't receive changes without a version change.
+- **`displayName`**: Title Case of the name, with no brand prefix (`Blast Radius`).
+- **`version`**: when you first standardize a mod, bump the patch number (0.2.0 → 0.2.1) so users who installed the original copy can tell them apart. Bump again on every release; users don't receive changes without a version change.
 - **`description`**: one sentence, no marketing words, under 160 characters.
+- **`author`** names the maintainer of this copy. The original author is credited in the README, CREDITS.md and LICENSE.
 
 ## 3. README.md
 
-Written for someone deciding whether to install the mod. Sections in this order; leave a section out only when it has nothing to say.
+Written for someone deciding whether to install the mod. Sections in this order; leave a section out only when it has nothing to say. Lines 1 to 3 are always the same three.
 
-```markdown
+````markdown
 # <Display Name>
 
 <One sentence: what it does for you.>
+
+Part of [{{TITLE}}](https://github.com/{{GITHUB}}/{{REPO}}) · <Category>
 
 ![<what the picture shows>](assets/<file>)        <- optional screenshot or GIF
 
@@ -65,8 +71,10 @@ Written for someone deciding whether to install the mod. Sections in this order;
 - <3 to 6 bullets, concrete>
 
 ## Install
+```
 /plugin marketplace add {{GITHUB}}/{{REPO}}
 /plugin install <name>@{{MARKETPLACE}}
+```
 
 ## Use
 <commands it adds, keys, buttons, where it draws (band, pane, status line)>
@@ -85,15 +93,19 @@ Say clearly if it runs programs, writes files, calls a model (costs tokens) or u
 ## Troubleshooting
 - <the 2 to 4 problems people will actually hit>
 
-## Credits
-Originally created by [<author>](https://github.com/<author>) in [<repo>](<url>) (<license>).
-Maintained in this collection by {{OWNER}}; changes are listed in CHANGELOG.md.
-
 ## License
 <license name>; see LICENSE.
-```
 
-Write it in the maintainer's own voice, from reading the code, not by copying the upstream README. Never claim the mod was written from scratch here.
+## Credits
+<Adapted mods:>
+Adapted and maintained by {{OWNER}} as part of {{TITLE}}. Originally created by [<author>](https://github.com/<author>) in [<owner/repo>](<source url>), <license>.
+<{{OWNER}}'s own mods:>
+Created and maintained by {{OWNER}} as part of {{TITLE}}.
+````
+
+- **Credits is the last section** of every README.
+- The category is one of: Cost and usage · Context · Safety · Workflow · Git and deploys · Viewing output.
+- Write the README from reading the code, not by copying the original README. Never write or imply that {{OWNER}} created an adapted mod.
 
 ## 4. ARCHITECTURE.md
 
@@ -110,7 +122,7 @@ Written for whoever changes the mod next. Sections in this order:
 
 ## Events hooked
 | Event (matcher) | What the hook does | Gating? |
-<"Gating" = can refuse or rewrite: tool.call, prompt.submit, prompt.mention, command.run ...>
+<"Gating" = can refuse or rewrite: tool.call, prompt.submit, command.run ...>
 
 ## Calls on $
 | Call | Why |
@@ -143,14 +155,14 @@ Written for whoever changes the mod next. Sections in this order:
 - Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.
 ```
 
-Newest version first. One bullet per user-visible change.
+Newest version first. One bullet per user-visible change. A mod that came with its own changelog keeps its older entries below the new one.
 
 ## 6. LICENSE and credit (required)
 
 - Keep the original LICENSE file and its original copyright line exactly. MIT and Apache-2.0 require the notice to stay with the code.
-- Add one line under the original copyright line: `Copyright (c) <year> {{OWNER}} (modifications)`.
+- Add one line under the original copyright line: `Copyright (c) <year> {{OWNER}} (modifications)`, once.
+- The Unlicense and other public-domain dedications ask for nothing and have no copyright line to sit under. Leave the file untouched and credit the author in the README and CHANGELOG.
 - For Apache-2.0 mods, keep any NOTICE file and note your changes in CHANGELOG.md.
-- The Unlicense asks for nothing; credit the author anyway.
 - A mod with no license file must not be published.
 
 ## 7. Checks before every commit
@@ -163,6 +175,33 @@ claude plugin validate --strict .              # the marketplace
 
 Load the mod for a real session before publishing: `claude --plugin-dir mods/<name>`.
 
-## 8. Security review
+## 8. Upstream records
+
+Each adapted mod has a `UPSTREAM.json` that `tools/fetch_mods.py` writes. The script and CREDITS.md read it, so:
+
+- Never edit, move or delete it.
+- Never mention, link or show it in user-facing text: the root README, a mod README, plugin or marketplace descriptions, CHANGELOGs. Maintainer files (`CLAUDE.md`, `docs/`, `tools/`) may refer to it.
+- Write credits from its data (author, repository, source URL, license) without naming the file.
+
+## 9. Brand and voice
+
+The collection is **{{TITLE}}**, maintained by {{OWNER}} (GitHub `{{GITHUB}}`).
+
+| Item | Value |
+| --- | --- |
+| Marketplace | `name` `{{MARKETPLACE}}` (permanent); `owner` `{ "name": "{{OWNER}}", "url": "https://github.com/{{GITHUB}}" }`; `description` begins `{{TITLE}}:` |
+| Install ids | `<plugin-name>@{{MARKETPLACE}}` |
+| Wording | "adapted and maintained by" for adapted mods; "created and maintained by" only for {{OWNER}}'s own mods |
+
+The brand is carried by the marketplace, the author fields, the README brand line and the credits wording. Never rename plugins or commands to carry it.
+
+Voice:
+- Plain English, written to the reader as "you", present tense, short sentences, concrete nouns.
+- Sentence-case headings.
+- No hype words (powerful, seamless, supercharge, blazing), no emojis, no exclamation marks.
+- Name features the way the interface does: band above the prompt, pane, status line, toast, `/command`.
+- Say plainly what a mod can access: network calls, model calls (they cost tokens), programs it runs and files it writes.
+
+## 10. Security review
 
 Mods run with the user's permissions. While standardizing, read what the mod hooks and calls and confirm it matches its README. Flag, don't silently keep: network calls, model calls, processes started, files written outside the project, and any hook that approves tool calls.

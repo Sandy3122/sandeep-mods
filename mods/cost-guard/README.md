@@ -75,7 +75,7 @@ Pick one route. Each installs the plugin `cost-guard` from the marketplace `sand
 Needs Claude Code 2.1.275 or newer. At the Claude Code prompt, type:
 
 ```
-/plugin install cost-guard --marketplace YOUR-GITHUB-USERNAME/claude-mods
+/plugin install cost-guard --marketplace Sandy3122/claude-mods
 ```
 
 1. Confirm adding the marketplace when asked.
@@ -85,11 +85,11 @@ Needs Claude Code 2.1.275 or newer. At the Claude Code prompt, type:
 ### Option 2: from your shell
 
 ```bash
-claude plugin marketplace add YOUR-GITHUB-USERNAME/claude-mods
+claude plugin marketplace add Sandy3122/claude-mods
 claude plugin install cost-guard@sandeep-mods
 ```
 
-Then start a new Claude Code session, or run `/reload-plugins` in one that is open. With Claude Code 2.1.292 or newer you can do both in one command: `claude plugin install cost-guard --marketplace YOUR-GITHUB-USERNAME/claude-mods`.
+Then start a new Claude Code session, or run `/reload-plugins` in one that is open. With Claude Code 2.1.292 or newer you can do both in one command: `claude plugin install cost-guard --marketplace Sandy3122/claude-mods`.
 
 You can set options while installing, for example rupees at 84 per dollar:
 
@@ -102,7 +102,7 @@ claude plugin install cost-guard@sandeep-mods --config localCurrencySymbol=₹ -
 Run these once in the repository, from your shell, and commit the `.claude/settings.json` they write:
 
 ```bash
-claude plugin marketplace add YOUR-GITHUB-USERNAME/claude-mods --scope project
+claude plugin marketplace add Sandy3122/claude-mods --scope project
 claude plugin install cost-guard@sandeep-mods --scope project
 ```
 

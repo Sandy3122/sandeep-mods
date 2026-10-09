@@ -1,8 +1,9 @@
 {
   "name": "sandeep-mods",
-  "description": "Claude Code mods collected, standardized and maintained by Sandeep",
+  "description": "Sandeep Mods: Claude Code mods collected, standardized and maintained by Sandeep",
   "owner": {
-    "name": "Sandeep"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
   "plugins": [
     {

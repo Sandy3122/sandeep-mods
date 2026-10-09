@@ -1,24 +1,24 @@
-# Sandeep's Claude Code mods
+# Sandeep Mods
 
-Claude Code mods I use every day, collected in one place, reviewed, and made consistent: every mod has the same layout, a README, an ARCHITECTURE.md and a CHANGELOG.
+Sandeep Mods is a marketplace of Claude Code mods. Most are open-source mods by other authors, adapted and maintained here by Sandeep. One, `cost-guard`, is original. Every mod has the same layout, a README, an ARCHITECTURE.md and a CHANGELOG, and every original author is credited.
 
 ## Install
 
-Add this marketplace once, inside Claude Code:
+Add the marketplace once, inside Claude Code:
 
 ```
-/plugin marketplace add YOUR-GITHUB-USERNAME/claude-mods
+/plugin marketplace add Sandy3122/claude-mods
 ```
 
 Then install any mod from the list below, for example:
 
 ```
-/plugin install agent-compact-advisor@sandeep-mods
+/plugin install cost-guard@sandeep-mods
 ```
 
-Or from your shell: `claude plugin marketplace add YOUR-GITHUB-USERNAME/claude-mods`, then `claude plugin install <mod>@sandeep-mods`.
+From your shell, run `claude plugin marketplace add Sandy3122/claude-mods`, then `claude plugin install <mod>@sandeep-mods`.
 
-Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Code tab. A mod runs with your permissions, so read its README (the "What it can access" section) before installing.
+Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Code tab.
 
 ## Mods
 
@@ -29,6 +29,7 @@ Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Cod
 | --- | --- | --- |
 | [cctop](mods/cctop) | btop-style live dashboard for Claude Code internals: /cctop opens it in a side pane, cctop-insights lets the session answer questions from its numbers | `/plugin install cctop@sandeep-mods` |
 | [context-view](mods/context-view) | The context window as one row above the prompt, drawn the way Claude Code draws its own meters: the context's cells, the percentage used, the tokens over the window, and the tokens left before auto-c… | `/plugin install context-view@sandeep-mods` |
+| [cost-guard](mods/cost-guard) | Shows what each chat, reply and day costs, nudges you to a fresh session when a chat gets long or heavy, and turns PDFs, Word, PowerPoint and Excel files into markdown before Claude reads them. | `/plugin install cost-guard@sandeep-mods` |
 | [flightdeck](mods/flightdeck) | Flightdeck: a live agent dashboard for Claude Code. Main model vitals, an on-call architect, every permission check, subagent cards and swimlanes, a turn receipt and a session log, all from real sess… | `/plugin install flightdeck@sandeep-mods` |
 | [weektoken](mods/weektoken) | Rate-limit pace for Claude Code's 5-hour and weekly windows: usage against elapsed time, plain-language forecast, per-model quotas and burn-up history. A band above the prompt and a full /weektoken p… | `/plugin install weektoken@sandeep-mods` |
 
@@ -72,22 +73,24 @@ Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Cod
 | [md-preview](mods/md-preview) | Shows the Markdown files Claude edits, rendered like GitHub, in a pane next to the chat. Before and after side by side. /md opens it. | `/plugin install md-preview@sandeep-mods` |
 | [prismantis](mods/prismantis) | Colorful, themeable rendering for Claude Code replies: tables, headings, code, numbers, paths and links. | `/plugin install prismantis@sandeep-mods` |
 | [terminal-browser](mods/terminal-browser) | A browser running directly inside claude code. Preview websites, view HTML documents, and let your agent control the built in browser. | `/plugin install terminal-browser@sandeep-mods` |
-
-### My mods
-
-| Mod | What it does | Install |
-| --- | --- | --- |
-| [cost-guard](mods/cost-guard) | Shows what each chat, reply and day costs, nudges you to a fresh session when a chat gets long or heavy, and turns PDFs, Word, PowerPoint and Excel files into markdown before Claude reads them. | `/plugin install cost-guard@sandeep-mods` |
 <!-- mods:end -->
+
+## How the mods are kept consistent
+
+Every mod follows [docs/MOD_STANDARD.md](docs/MOD_STANDARD.md): the same files, the same manifest fields and the same README sections, written in one voice. Standardizing changes how a mod is presented, never what it does. Each mod passes `claude plugin validate --strict` and, where it has tests, `claude plugin test`.
+
+## Safety
+
+A mod runs with your permissions. Some run programs, write files, make network requests or call a model, which costs tokens. Read the "What it can access" section of a mod's README before you install it.
 
 ## Updating
 
-`claude plugin update <mod>@sandeep-mods`, or turn on auto-update for this marketplace in `/plugin` → Marketplaces.
+Run `claude plugin update <mod>@sandeep-mods`, or turn on auto-update for this marketplace in `/plugin` → Marketplaces.
 
 ## Credits
 
-Many of these mods started as open-source projects by other authors. Each mod folder keeps its original license, and [CREDITS.md](CREDITS.md) lists every original author, source and license.
+Most of these mods started as open-source projects by other authors. [CREDITS.md](CREDITS.md) lists every original author, source and license, and each mod's README ends with a Credits section.
 
 ## License
 
-Each mod is under the license in its own folder. Everything else in this repository: [MIT](LICENSE) © 2026 Sandeep.
+Each mod is under the license in its own folder. Everything else in this repository is [MIT](LICENSE), © 2026 Sandeep.

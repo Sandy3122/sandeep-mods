@@ -26,7 +26,7 @@ mods you wrote yourself.
 Requirements: Python 3.8+, git 2.25+ on PATH. Optional: Claude Code (`claude`).
 
 Examples
-  python fetch_mods.py --out my-claude-mods --owner "Sandeep" --github sandeep --repo my-claude-mods
+  python fetch_mods.py --out my-claude-mods --owner "Sandeep" --github Sandy3122 --repo claude-mods
   python fetch_mods.py --out my-claude-mods --only cctop,rabe
   python fetch_mods.py --out my-claude-mods --check-upstream
   python fetch_mods.py --out my-claude-mods --only rabe --latest --force
@@ -268,8 +268,8 @@ def one_line(text, limit=160):
 def write_marketplace(out, mods, args):
     data = {
         "name": args.marketplace,
-        "description": f"Claude Code mods collected, standardized and maintained by {args.owner}",
-        "owner": {"name": args.owner},
+        "description": f"{args.title}: Claude Code mods collected, standardized and maintained by {args.owner}",
+        "owner": {"name": args.owner, "url": f"https://github.com/{args.github}"},
         "plugins": [
             {
                 "name": mod["manifest"].get("name", mod["folder"].name),
@@ -284,15 +284,16 @@ def write_marketplace(out, mods, args):
     target.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def category_of(mod):
+def category_of(mod, args):
     upstream = mod["upstream"]
-    return (upstream or {}).get("category") or "My mods"
+    name = mod["manifest"].get("name", mod["folder"].name)
+    return (upstream or {}).get("category") or args.categories.get(name) or "My mods"
 
 
 def mod_table(mods, args):
     lines = []
-    for category in CATEGORY_ORDER + sorted({category_of(m) for m in mods} - set(CATEGORY_ORDER)):
-        group = [m for m in mods if category_of(m) == category]
+    for category in CATEGORY_ORDER + sorted({category_of(m, args) for m in mods} - set(CATEGORY_ORDER)):
+        group = [m for m in mods if category_of(m, args) == category]
         if not group:
             continue
         lines += [f"### {category}", "", "| Mod | What it does | Install |", "| --- | --- | --- |"]
@@ -307,7 +308,7 @@ def mod_table(mods, args):
 
 README_TEMPLATE = """# {title}
 
-Claude Code mods I use every day, collected in one place, reviewed, and made consistent: every mod has the same layout, a README, an ARCHITECTURE.md and a CHANGELOG.
+{title} is a marketplace of Claude Code mods, adapted and maintained by {owner}. Every mod has the same layout, a README, an ARCHITECTURE.md and a CHANGELOG, and every original author is credited.
 
 ## Install
 
@@ -401,7 +402,7 @@ def write_if_missing(path, text):
 
 
 def write_collection_files(out, mods, args):
-    title = args.title or f"{args.owner}'s Claude Code mods"
+    title = args.title or f"{args.owner} Mods"
     year = datetime.date.today().year
     example = next((m["manifest"].get("name") for m in mods), "cctop")
     table = mod_table(mods, args)
@@ -426,13 +427,14 @@ def write_collection_files(out, mods, args):
         if template.exists():
             text = template.read_text(encoding="utf-8")
             text = (text.replace("{{OWNER}}", args.owner).replace("{{GITHUB}}", args.github)
-                    .replace("{{REPO}}", args.repo).replace("{{MARKETPLACE}}", args.marketplace))
+                    .replace("{{REPO}}", args.repo).replace("{{MARKETPLACE}}", args.marketplace)
+                    .replace("{{TITLE}}", title))
             write_if_missing(out / "docs" / name, text)
         else:
             say(f"  note: templates/{name} not found next to the script; docs/{name} not written")
 
     rows = ["# Credits", "",
-            "These mods are based on open-source work by the authors below. Each mod folder keeps the original license; "
+            f"{args.title} adapts open-source mods by the authors below, and {args.owner} adapts and maintains them. Each mod folder keeps the original license; "
             "changes made in this collection are listed in each mod's CHANGELOG.md.", "",
             "| Mod | Original author | Source | Commit | License |", "| --- | --- | --- | --- | --- |"]
     originals = []
@@ -445,7 +447,7 @@ def write_collection_files(out, mods, args):
         rows.append(f"| {name} | [{up['author']}](https://github.com/{up['author']}) | [{up['repo']}]({up['url']}) | "
                     f"`{up['commit'][:7]}` | {up['license']} |")
     if originals:
-        rows += ["", f"Original work by {args.owner}: " + ", ".join(originals) + "."]
+        rows += [""] + [f"{name}: Created and maintained by {args.owner} as part of {args.title}." for name in originals]
     (out / "CREDITS.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
 
 
@@ -461,7 +463,7 @@ def install_tools(out, args):
         for template in (HERE / "templates").glob("*.md"):
             shutil.copy2(template, tools / "templates" / template.name)
     settings = {"owner": args.owner, "github": args.github, "repo": args.repo,
-                "marketplace": args.marketplace, "title": args.title}
+                "marketplace": args.marketplace, "title": args.title, "categories": args.categories}
     (tools / "collection.json").write_text(json.dumps(settings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -598,8 +600,9 @@ def main():
     # Settings given once are remembered in <out>/tools/collection.json.
     saved_file = Path(args.out).resolve() / "tools" / "collection.json"
     saved = json.loads(saved_file.read_text(encoding="utf-8")) if saved_file.exists() else {}
-    defaults = {"owner": "YOUR NAME", "github": "YOUR-GITHUB-USERNAME", "repo": "my-claude-mods",
-                "marketplace": "my-claude-mods", "title": None}
+    defaults = {"owner": "Sandeep", "github": "Sandy3122", "repo": "claude-mods",
+                "marketplace": "sandeep-mods", "title": "Sandeep Mods"}
+    args.categories = saved.get("categories", {})
     for key, fallback in defaults.items():
         if getattr(args, key) is None:
             setattr(args, key, saved.get(key, fallback))

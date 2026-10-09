@@ -1,6 +1,6 @@
 # Credits
 
-These mods are based on open-source work by the authors below. Each mod folder keeps the original license; changes made in this collection are listed in each mod's CHANGELOG.md.
+Sandeep Mods adapts open-source mods by the authors below, and Sandeep adapts and maintains them. Each mod folder keeps the original license; changes made in this collection are listed in each mod's CHANGELOG.md.
 
 | Mod | Original author | Source | Commit | License |
 | --- | --- | --- | --- | --- |
@@ -25,4 +25,4 @@ These mods are based on open-source work by the authors below. Each mod folder k
 | todo-bar | [hoobnn](https://github.com/hoobnn) | [hoobnn/hoobnn-agent-mods](https://github.com/hoobnn/hoobnn-agent-mods/tree/b95d1e454a76523e433fb37e5ca171e1f5576676/claude-code/todo-bar) | `b95d1e4` | MIT |
 | weektoken | [3dnow](https://github.com/3dnow) | [3dnow/claude-mods](https://github.com/3dnow/claude-mods/tree/9f0bf8e119a1444fc267b9553da88c6b444f3683/weektoken) | `9f0bf8e` | MIT |
 
-Original work by Sandeep: cost-guard.
+cost-guard: Created and maintained by Sandeep as part of Sandeep Mods.

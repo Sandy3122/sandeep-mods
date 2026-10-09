@@ -1,7 +1,10 @@
 {
   "owner": "Sandeep",
-  "github": "YOUR-GITHUB-USERNAME",
+  "github": "Sandy3122",
   "repo": "claude-mods",
   "marketplace": "sandeep-mods",
-  "title": null
+  "title": "Sandeep Mods",
+  "categories": {
+    "cost-guard": "Cost and usage"
+  }
 }

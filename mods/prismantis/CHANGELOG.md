@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.2 (2026-10-09)
+- Pointed support and documentation links at this repository. No other change.
+
 ## 0.12.1 (2026-10-09)
 - Imported from NahumLitvin/prismantis at 9900aaa.
 - Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.

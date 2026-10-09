@@ -115,7 +115,7 @@ export const helpText = (themes: readonly string[]): string => `
 - Light: ${themes.filter(t => /latte|light|dawn/.test(t)).join(', ')}
 - Plain: mono, no color, only bold and dim
 
-Docs and issues: https://github.com/NahumLitvin/prismantis
+Docs: https://github.com/Sandy3122/claude-mods/tree/main/mods/prismantis#readme · Issues: https://github.com/Sandy3122/claude-mods/issues
 
 > [!TIP]
 > Any color slot beats the theme. Set \`headingColor\` or \`numberColor\` to a hex value in \`/config\`.

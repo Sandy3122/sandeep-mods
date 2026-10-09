@@ -1,22 +1,14 @@
 {
   "name": "weektoken",
   "displayName": "WeekToken",
-  "version": "0.2.20",
-  "description": "Rate-limit pace for Claude Code's 5-hour and weekly windows: usage against elapsed time, plain-language forecast, per-model quotas and burn-up history. A band above the prompt and a full /weektoken pane, in English or Chinese.",
-  "keywords": [
-    "usage",
-    "rate-limit",
-    "pace",
-    "quota"
-  ],
-  "types": "./types/index.d.ts",
-  "author": {
-    "name": "mj0111",
-    "url": "https://x.com/mj0011sec"
-  },
-  "homepage": "https://github.com/3dnow/claude-mods/tree/main/weektoken",
-  "repository": "https://github.com/3dnow/claude-mods",
+  "version": "0.2.21",
+  "description": "Shows your 5-hour, weekly and per-model usage limits against elapsed time, with a forecast and history, in a band above the prompt and a pane.",
+  "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/weektoken#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
   "license": "MIT",
+  "keywords": ["usage", "rate-limit", "pace", "quota"],
+  "types": "./types/index.d.ts",
   "icon": "./.claude-plugin/icon.png",
   "documentationUrl": "https://github.com/3dnow/claude-mods/tree/main/weektoken",
   "supportUrl": "https://github.com/3dnow/claude-mods/issues",

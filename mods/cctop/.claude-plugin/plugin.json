@@ -1,9 +1,15 @@
 {
   "name": "cctop",
-  "version": "0.10.0",
-  "description": "btop-style live dashboard for Claude Code internals: /cctop opens it in a side pane, cctop-insights lets the session answer questions from its numbers",
-  "author": { "name": "Thomas Stagl" },
-  "homepage": "https://github.com/tomstagl/cctop",
-  "skills": "./skills/",
-  "keywords": ["claude-code", "dashboard", "tui", "cost", "tokens", "context"]
+  "displayName": "Cctop",
+  "version": "0.10.1",
+  "description": "Shows a live dashboard of your session's cost, tokens, context and tools in a pane, and lets Claude answer questions from the same numbers.",
+  "author": {
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
+  },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/cctop#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
+  "license": "MIT",
+  "keywords": ["dashboard", "cost", "tokens", "context", "monitor", "tui"],
+  "skills": "./skills/"
 }

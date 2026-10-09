@@ -4,7 +4,7 @@ Rabe shows the subagents, Codex jobs, shells, monitors, cron jobs and workflows 
 
 Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
 
-![Rabe in a session: the band above the prompt lists agents, shells, a monitor and a cron job, and /rabe opens a pane with the list, the selected agent's detail, and the Cost and Timeline tabs](docs/assets/demo.gif)
+![Rabe in a session: the band above the prompt lists agents, shells, a monitor and a cron job, and /rabe opens a pane with the list, the selected agent's detail, and the Cost and Timeline tabs](assets/demo.gif)
 
 ## What it does
 
@@ -56,7 +56,7 @@ Commands:
 - `/rabe:report-bug`: draft a bug report for the original project's GitHub repository.
 - `/rabe:feedback`: draft an idea or comment for the same repository.
 
-The two report commands show you a draft first and create a public GitHub issue only after you say yes. Without the `gh` CLI, they give you a link to open instead. The issues go to the original author's repository, `lorenzh/rabe`, not to Sandeep Mods.
+The two report commands show you a draft first and create a public GitHub issue only after you say yes. Without the `gh` CLI, they give you a link to open instead. The issues go to the Sandeep Mods repository, `Sandy3122/claude-mods`, and their titles start with `[rabe]`.
 
 ## Settings
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Rabe turns hook events and undocumented files into a list of items, keeps the list in `$.state`, and draws it in a band above the prompt and a pane. It has four parts: sources, the registry, the band and pane, and `register.tsx`, which only connects them. A longer description is in `docs/architecture.md`.
+Rabe turns hook events and undocumented files into a list of items, keeps the list in `$.state`, and draws it in a band above the prompt and a pane. It has four parts: sources, the registry, the band and pane, and `register.tsx`, which only connects them.
 
 ```
 hooks (tool.call, agent.spawn, turn.step, task notifications) ─┐
@@ -11,6 +11,27 @@ cron tools (CronList), timers                              ────┘
 $.state ▶ AbovePrompt band, /rabe pane (Items, Cost, Effects, Timeline)
 session.end ▶ $.store previous:<cwd> summary
 ```
+
+### Data sources
+
+Rabe uses three kinds of source, in this order: the mod API (hooks and calls on `$`, documented), files that Claude Code and Codex write while they work (undocumented, can change in any release), and the Claude Code or Codex source code when the first two do not say enough. Read files defensively: a missing file or field shows as `n/a`, never as an error.
+
+- The API has no call that lists running background tasks. Rabe keeps its own list: an item is added when a hook reports a start and closed by a task notification or result, and `classic.Stop` (`background_tasks`, `session_crons`) corrects it. Work that started before Rabe loaded shows only what `$.agent.list()`, `CronList` and the files on disk tell.
+- Subagents: `$.agent.list()`, `agent.spawn`, `turn.step` (tokens, tool calls) and `turn.complete`; worktree, branch and phase from `subagents/agent-<id>.meta.json`, which is written about 1.5 s after the start and rewritten later. Workflow agents are not in the agent list and cannot be stopped one by one; a retried workflow agent raises no new `agent.spawn`.
+- Workflows: the Workflow tool result and the script's `meta.phases`; the run ends with a task notification.
+- Shells and monitors: the Bash or Monitor tool result gives the task id and output file (`/tmp/claude-<uid>/<project>/<session>/tasks/<taskId>.output`, which ends with `[exited with code N]` or `[killed]`). A Monitor task runs as a shell task in `background_tasks`.
+- Cron jobs: `CronCreate` input and result, `CronList` for older jobs, `ScheduleWakeup` for loop wakeups. Next runs are computed in `hooks/schedule.ts`; Claude Code adds jitter, so they are estimates.
+- Codex jobs: the Codex plugin's `state.json` and `jobs/<id>.json` under its data folder, and Codex's own session file for model, effort and tokens. Cancel runs `codex-companion.mjs cancel` with `CLAUDE_PLUGIN_DATA` set, or the script finds no job. Codex deletes old session files, so older jobs show `n/a`.
+- Cost: `$.session.usage().cost.usd` is the session total. No source gives dollars per agent.
+- Task notifications arrive as `prompt.submit` with origin kind `task-notification`; their text format is not documented.
+
+### The engine's rule for `$`
+
+`claude plugin validate` and `claude plugin test` follow `$` only into functions declared in the same file. A module that passes `$` to an imported function, to an object's method or to a function held in a list is refused, and a state reference must be written in the file that uses it. So shared code is pure (`model.ts`, `registry.ts`), each file that writes items has its own small write loop, `sources(on)` calls each source by name, and a source gets `on` only.
+
+An event may have only one hook without a matcher in the whole module. Sources give each hook a matcher, also when it has to match every event (`{ cwd: /^/ }` on `session.start`, `{ agentId: /^/ }` on `turn.step`, `{ stop_hook_active: [true, false] }` on `classic.Stop`).
+
+The write loop reads `rabe.items` with its version, applies the change, and sets it again when another hook wrote first; it writes only when the list changed. A `$.state.set` made in a `$.clock.every` or `$.clock.after` callback does not pass the plugin's own `state.set` hooks, so Rabe never reacts to its own writes in a hook.
 
 ## Files
 
@@ -30,7 +51,7 @@ session.end ▶ $.store previous:<cwd> summary
 | `types/index.d.ts` | The `$.state` keys and item types |
 | `types/claude-code.d.ts` | API types written by Claude Code; replace, don't edit |
 | `commands/report-bug.md`, `commands/feedback.md` | `/rabe:report-bug` and `/rabe:feedback` |
-| `docs/architecture.md`, `docs/feasibility.md` | The original design notes and the list of data sources and their limits. `docs/assets/` holds the README demo and banners. |
+| `assets/` | The README demo GIF and banners |
 | `tsconfig.json` | Own compiler options (JSX with `h`/`Fragment`); includes `types` and `hooks` |
 
 ## Events hooked
@@ -76,7 +97,12 @@ Each hook in a source needs a matcher: an event may have only one hook without a
 
 ## Drawing
 
-The `AbovePrompt` band and a `Pane` opened by `/rabe`. The terminal draws a raster with colors; the desktop app gets text and buttons. Only `band.tsx`, `pane.tsx` and `builtin.tsx` touch `$`; views are pure functions.
+The `AbovePrompt` band and a `Pane` opened by `/rabe`. The terminal draws a raster with colors; the desktop app gets text and buttons (choose by `e.surface === 'terminal'`, not by checking for `Raster`). Only `band.tsx`, `pane.tsx` and `builtin.tsx` touch `$`; views are pure functions.
+
+- A raster is a fixed grid (1 to 512 columns, 1 to 256 rows) of width-1 BMP characters; the engine refuses the tree otherwise. Size every grid from `bodyColumns` and `scroll.bodyRows` on each draw: a grid wider than the body is cut on the right. `$.ui.blit` is refused after a size change, so blit only between resizes.
+- Nothing holds focus when the pane opens. Give a Button `autoFocus`, or call `$.ui.focus` right after the open. `$.ui.open({ focus: true })` inside `command.run` does not focus the pane; `pane.tsx` opens it again from `$.clock.after(1500)`, only while `$.ui.panes()` still lists it. `closeOnEscape` makes Esc close the pane.
+- Hotkeys are one digit or lowercase letter; Shift is ignored. Space, `/` and the arrow keys cannot be bindings. A letter no Button binds sends the focus to the prompt, and no hook can keep the keys, so the hint under each tab names the bound keys.
+- A tree draws at most 100,000 characters: draw the visible part and use `$.ui.scroll`.
 
 ## Settings flow
 
@@ -88,6 +114,8 @@ Tests sit next to the code and cover the registry, each source, the parsers, eve
 
 ## Known limits
 
+- The agent list under the prompt cannot be hidden by a mod. `disableAgentView` hides it but also turns off agent view, `claude agents`, `--bg` and the daemon, so Rabe does not use it.
+- Hiding the built-in count removes only the task part of the `PromptHint` and cannot drop the "still running" part of the `TurnDuration` line without drawing the whole line, so Rabe draws its own.
 - Rabe reads undocumented Claude Code and Codex files; a changed layout shows `n/a`.
 - No dollars per agent: no source gives them.
 - Shell ports are guessed from output.
@@ -98,5 +126,5 @@ Tests sit next to the code and cover the registry, each source, the parsers, eve
   - `$.fs` rejects reads over 4 MiB; use `tail` through `$.process.run`.
   - Module variables reset on reload: keep session values in `$.state`, cross-session values in `$.store`. Poll with `$.clock.every` and write state only on change.
   - Keys are focusable Buttons and lowercase letter hotkeys; raster cells take width-1 BMP characters only (`safe()` replaces the rest).
-  - A new data source goes into `docs/feasibility.md`.
+  - Document a new data source in the Data sources list above.
 - Never rename the plugin (`rabe`) or the marketplace (`sandeep-mods`); existing installs and the `$.state` keys use those names.

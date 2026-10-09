@@ -1,12 +1,25 @@
 {
-  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "secret-redactor",
-  "version": "1.0.0",
-  "description": "Keeps secrets, email addresses and IP addresses out of the session transcript: swaps each one for a stable placeholder on the way in, and puts the real value back on the way into a tool call",
+  "displayName": "Secret Redactor",
+  "version": "1.0.1",
+  "description": "Replaces secrets, email addresses and public IP addresses in the chat with stable placeholders, and restores the real values when a tool runs.",
   "author": {
-    "name": "Ray Amjad",
-    "url": "https://github.com/ray-amjad"
+    "name": "Sandeep",
+    "url": "https://github.com/Sandy3122"
   },
+  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/secret-redactor#readme",
+  "repository": "https://github.com/Sandy3122/claude-mods",
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "secrets",
+    "redaction",
+    "pii",
+    "email",
+    "ip-address",
+    "hooks"
+  ],
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "userConfig": {
     "secrets": {
       "type": "boolean",
@@ -80,14 +93,5 @@
       "description": "Prefixes to put back under the entropy test even though they look like a public id, separated by commas",
       "default": ""
     }
-  },
-  "homepage": "https://github.com/ray-amjad/awesome-claude-code-function-hooks",
-  "license": "MIT",
-  "keywords": [
-    "security",
-    "secrets",
-    "redaction",
-    "pii",
-    "hooks"
-  ]
+  }
 }

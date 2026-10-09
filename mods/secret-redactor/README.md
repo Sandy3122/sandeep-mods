@@ -1,19 +1,8 @@
-# secret-redactor
+# Secret Redactor
 
-Keeps three classes of value out of the session transcript: secrets, email
-addresses and IP addresses.
+Secret Redactor keeps secrets, email addresses and public IP addresses out of your chat by swapping each one for a placeholder, then puts the real value back when a tool runs.
 
-> **Turn function hooks on first.** This is a Claude Code **function hook**,
-> the early-access feature proposed in
-> [anthropics/claude-code#91870](https://github.com/anthropics/claude-code/issues/91870).
-> It is off by default, and this plugin does nothing until you turn it on. Add
-> `"env": { "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1" }` to
-> `~/.claude/settings.json`, or start one session with
-> `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude`.
-
-The value is not destroyed. It goes into a vault that lives in the hooks
-module, in memory, for the session, and the transcript gets a placeholder in
-its place:
+Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Safety
 
 ```
 ANTHROPIC_API_KEY=[REDACTED-SECRET-164d0c98]
@@ -21,115 +10,80 @@ SUPPORT_EMAIL=[REDACTED-EMAIL-6f096ff7]
 EDGE_ORIGIN=[REDACTED-IP-6fc52d2b]
 ```
 
-The same value always mints the same placeholder, so the model can still tell
-one customer from another. The placeholder is swapped back for the real value
-on the way into a tool call, so a `Bash` command or a `Write` still carries the
-real key. Nothing is written to disk. The vault dies with the session.
+*What Claude sees after reading a `.env` file (example values).*
 
-## The three hooks
+## What it does
 
-| Event | What it does |
-| --- | --- |
-| `prompt.submit` | A key you paste never reaches the model as itself |
-| `tool.call` | Puts real values back into the tool's input, then hides them again in the tool's result. This is where a secret usually arrives: a `cat .env`, a `Read` of a config, an API answer |
-| `prompt.context` | Hides secrets in the blocks attached to the first message. Emails are left alone there: the engine puts your own address in that block so the model knows who it is talking to |
+- Hides keys and tokens: vendor-shaped keys (`sk-ant-`, `ghp_`, `AKIA`, `sk_live_`, JWTs, Slack and Discord webhooks, private key blocks), passwords inside connection strings, and long random-looking tokens.
+- Hides email addresses and public IPv4 and IPv6 addresses.
+- Replaces each value with a placeholder such as `[REDACTED-SECRET-1a2b3c4d]`. The same value always gets the same placeholder, so Claude can still tell two values apart.
+- Scans what you type, what tools return (`cat .env`, a `Read` of a config, an API answer) and the CLAUDE.md-style blocks attached to your first message.
+- Swaps placeholders back to the real values before a tool runs, so a `Bash` command or a `Write` still uses the real key.
+- Leaves public ids alone: Stripe object ids such as `price_` and `prod_`, git SHAs, names written in code, documentation emails like `you@example.com`, and private IP ranges such as `127.0.0.1` and `192.168.x.x`.
 
-## What counts as a secret
+## Install
 
-Three tests, in order.
+```
+/plugin marketplace add Sandy3122/claude-mods
+/plugin install secret-redactor@sandeep-mods
+```
 
-1. **A vendor shape.** `sk-ant-`, `ghp_`, `AKIA`, `sk_live_`, `whsec_`, `AIza`,
-   `xoxb-`, a JWT, a Slack or Discord webhook, a `PRIVATE KEY` block, the
-   password inside a `postgres://user:pass@host` string. Hidden on sight.
-2. **Entropy plus mixed case.** A token of 24 characters or more that carries
-   lower case, upper case and digits, above 3.6 bits per character.
-3. **Entropy plus a name.** A shorter token, above 3.0 bits per character, that
-   sits after `API_KEY=`, `"token":`, `Bearer`, `password:` and the like.
+## Use
 
-Four rules stop the noise. Together they take a large Next.js monorepo down to
-two hits across its whole tracked source tree, and both are real secrets.
+There is nothing to run. Turn function hooks on first (see Requirements), then work as usual.
 
-- **A public id is not a secret.** `price_`, `prod_`, `cus_`, `promo_`,
-  `pk_live_` and the rest of Stripe's object ids, and a YouTube channel id, are
-  printed in dashboards and in source. Hiding them protects nothing.
-- **A name is not a key.** `archived-modules-marker`,
-  `lesson_article_outline_open_v1`, `playerEventBatchV1Schema`,
-  `randomTimestampWithinLast14Days` and
-  `META_Conv_Lookalike-Customers_FreeTrial_2024Q1` all read as high entropy.
-  They are word lists. A key is not built out of words.
-- **An alphabet is not a key.** A token of 20 characters or more that uses
-  every character once is a charset constant. A real key of that length
-  repeats a character with near certainty.
-- **Bare hex needs a name beside it.** A 40-character hex run is a git SHA or a
-  checksum far more often than it is a key, so hex only counts as a secret when
-  `API_KEY=` or `"token":` sits in front of it.
+- **When you paste a key,** Claude gets the placeholder, and a toast says how many values were hidden.
+- **When a tool returns a secret,** the tool row shows a count of hidden values, and Claude sees placeholders.
+- **When Claude uses a placeholder in a tool call,** the real value goes into the call. Claude never sees it.
+- **Email addresses in the first-message blocks** are left as they are. Claude Code puts your own address there so Claude knows who you are.
 
-## What counts as PII
+A secret that Claude writes itself is not scanned, and the placeholders are forgotten when the session ends.
 
-- **Email addresses.** Skipped: `noreply@`, `@users.noreply.github.com`,
-  documentation domains (`@example.com`, `@company.com`, `@test`),
-  placeholder local parts (`you@`, `name@`, `admin@`), and anything in
-  `allowEmails`. Put your own published addresses in that option, as
-  `@yourdomain.com`, so your own contact address stays readable.
-- **IP addresses**, v4 and v6. Private and reserved ranges stay visible by
-  default, because `127.0.0.1:3000` is everywhere in dev: loopback, `10.x`,
-  `192.168.x`, `172.16-31.x`, link-local, carrier-grade NAT, multicast, the
-  benchmarking range, and the RFC 5737 documentation ranges. Set
-  `redactPrivateIps` to hide those too.
-
-## Options
-
-Set them per plugin under `pluginConfigs` in your **user** settings.
+## Settings
 
 | Option | Default | What it does |
 | --- | --- | --- |
-| `secrets` | `true` | Hide secrets |
-| `pii` | `true` | Hide emails and IP addresses |
+| `secrets` | `true` | Hide vendor-shaped keys and high-entropy tokens |
+| `pii` | `true` | Hide email addresses and public IP addresses |
 | `restoreInToolInputs` | `true` | Put the real value back before a tool runs |
-| `notify` | `true` | Count on the tool row, toast on a prompt |
-| `minEntropy` | `3.6` | Bits per character for the mixed-case test |
-| `minLength` | `24` | Shortest token the mixed-case test looks at |
-| `contextMinEntropy` | `3.0` | Bits per character when a key name sits in front |
-| `redactPrivateIps` | `false` | Hide reserved ranges too |
-| `allow` | `""` | Exact strings to leave alone, separated by commas |
-| `allowEmails` | `""` | Addresses, or `@domain.com`, separated by commas |
-| `allowPrefixes` | `""` | Extra id prefixes to treat as public |
-| `denyPrefixes` | `""` | Prefixes to put back under the entropy test |
+| `notify` | `true` | Show a count on the tool row and a toast on a prompt |
+| `minEntropy` | `3.6` | Bits per character a mixed-case token must pass; raise it to hide less |
+| `minLength` | `24` | Shortest token the entropy test looks at (never below 8) |
+| `contextMinEntropy` | `3.0` | Bits per character when a key name such as `API_KEY=` sits in front |
+| `redactPrivateIps` | `false` | Also hide `127.x`, `10.x`, `192.168.x` and other reserved ranges |
+| `allow` | empty | Exact strings to leave alone, separated by commas |
+| `allowEmails` | empty | Addresses, or a domain written as `@example.com`, separated by commas |
+| `allowPrefixes` | empty | Extra id prefixes to treat as public, separated by commas |
+| `denyPrefixes` | empty | Prefixes to test for secrets even though they look like a public id |
 
-## Two things it does not do
+Change them in `/plugin` → **Installed** → **secret-redactor** → **Configure options**, or run `claude plugin configure secret-redactor@sandeep-mods`.
 
-- **It does not hide a secret the model itself writes.** Only what the model
-  reads is scanned. A key the model types into a command is a key it already
-  had.
-- **It does not survive a restart.** The vault is memory only. Placeholders
-  from an earlier session are meaningless in a new one.
+## Requirements
 
-## Testing
+- Claude Code 2.1.287+ (terminal or desktop app Code tab).
+- Function hooks turned on. This is an early-access feature that is off by default, and the mod does nothing without it. Add `"env": { "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1" }` to `~/.claude/settings.json`, or start one session with `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude`.
 
-Run every command from the root of this repo.
+## What it can access
 
-Step 1. Make the type declarations. They are not in git, because a new Claude
-Code release rewrites them. This command writes `types/claude-code.d.ts`, which
-`tsconfig.json` points at:
+- **Hooks:** the prompt you submit, every tool call and its result, and the blocks attached to your first message.
+- **Reads:** all of that text, to look for secrets and personal data. It decodes nothing and sends nothing anywhere.
+- **Network and models:** none. It makes no network requests and calls no model, so it costs no tokens.
+- **Runs programs:** none.
+- **Writes files:** none. The mapping from placeholder to real value stays in memory and is dropped when the session ends.
+- **Changes what a tool sees:** with `restoreInToolInputs` on, it rewrites a placeholder in a tool's input back to the real value. It never approves or denies a tool call. It shows a toast and a notice on the tool row when something is hidden.
 
-```
-/plugin-types
-```
+## Troubleshooting
 
-Step 2. Run the detector test and the plugin validator:
+- **Nothing is hidden.** Check that function hooks are on (see Requirements), then run `/plugin` and look for `secret-redactor` under **Errors**. Your organization may allow only managed mods, or `disableAllHooks` may be set.
+- **A real secret was missed.** Lower `minEntropy` or `minLength`, or put a name like `API_KEY=` in front of it. Short or hex-only values are only hidden when a key name sits beside them.
+- **Something harmless is hidden.** Add it to `allow`, or its email to `allowEmails`, or its id prefix to `allowPrefixes`.
+- **A placeholder shows up in a file or command.** Placeholders are swapped back only inside tool inputs, and only when `restoreInToolInputs` is on. A placeholder from an earlier session means nothing in a new one.
+- **Running the tests.** There is a plain Node script, not covered by `claude plugin test`: run `node --experimental-strip-types test/detect.test.mts` from the mod folder.
 
-```bash
-node --experimental-strip-types plugins/secret-redactor/test/detect.test.mts
-claude plugin validate plugins/secret-redactor
-```
+## License
 
-`test/detect.test.mts` holds two lists: values that must be hidden and values
-that must be kept. A change to a threshold or a pattern is only finished when
-both still pass.
+MIT; see LICENSE.
 
-Step 3. Try it end to end:
+## Credits
 
-```bash
-claude --plugin-dir plugins/secret-redactor \
-  -p "cat plugins/secret-redactor/test/fixtures/sample.env, then repeat the values back"
-```
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [ray-amjad](https://github.com/ray-amjad) in [ray-amjad/awesome-claude-code-function-hooks](https://github.com/ray-amjad/awesome-claude-code-function-hooks/tree/12b5fea27a4bd1b88cd9c9b6abc1efc0756c6625/plugins/secret-redactor), MIT.

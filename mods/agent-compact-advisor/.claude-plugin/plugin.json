@@ -1,14 +1,14 @@
 {
   "name": "agent-compact-advisor",
   "displayName": "Agent Compact Advisor",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Shows a 0-100 status line score for how good a moment it is to /compact, and adds a preservation template to every compaction.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/agent-compact-advisor#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/agent-compact-advisor#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "compact",

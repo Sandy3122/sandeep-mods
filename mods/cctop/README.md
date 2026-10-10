@@ -2,7 +2,7 @@
 
 Cctop shows a live dashboard of your Claude Code session in a pane, with cost, tokens, context, tools and a coach that suggests what to do next.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Cost and usage
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usa
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install cctop@sandeep-mods
 ```
 

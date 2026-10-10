@@ -1,14 +1,14 @@
 {
   "name": "cctop",
   "displayName": "Cctop",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Shows a live dashboard of your session's cost, tokens, context and tools in a pane, and lets Claude answer questions from the same numbers.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/cctop#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/cctop#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": ["dashboard", "cost", "tokens", "context", "monitor", "tui"],
   "skills": "./skills/"

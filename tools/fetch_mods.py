@@ -26,7 +26,7 @@ mods you wrote yourself.
 Requirements: Python 3.8+, git 2.25+ on PATH. Optional: Claude Code (`claude`).
 
 Examples
-  python fetch_mods.py --out my-claude-mods --owner "Sandeep" --github Sandy3122 --repo claude-mods
+  python fetch_mods.py --out my-claude-mods --owner "Sandeep" --github Sandy3122 --repo sandeep-mods
   python fetch_mods.py --out my-claude-mods --only cctop,rabe
   python fetch_mods.py --out my-claude-mods --check-upstream
   python fetch_mods.py --out my-claude-mods --only rabe --latest --force
@@ -600,7 +600,7 @@ def main():
     # Settings given once are remembered in <out>/tools/collection.json.
     saved_file = Path(args.out).resolve() / "tools" / "collection.json"
     saved = json.loads(saved_file.read_text(encoding="utf-8")) if saved_file.exists() else {}
-    defaults = {"owner": "Sandeep", "github": "Sandy3122", "repo": "claude-mods",
+    defaults = {"owner": "Sandeep", "github": "Sandy3122", "repo": "sandeep-mods",
                 "marketplace": "sandeep-mods", "title": "Sandeep Mods"}
     args.categories = saved.get("categories", {})
     for key, fallback in defaults.items():

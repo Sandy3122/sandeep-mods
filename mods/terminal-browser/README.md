@@ -2,7 +2,7 @@
 
 Terminal Browser opens a real web browser in a pane inside Claude Code, so you can preview pages without leaving the terminal.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing output
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Viewing output
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing outp
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install terminal-browser@sandeep-mods
 ```
 

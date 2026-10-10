@@ -2,7 +2,7 @@
 
 Agent Compact Advisor shows a 0-100 score on the status line for how good a moment it is to `/compact`, and keeps your goal, decisions and file paths in every compaction.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Context
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install agent-compact-advisor@sandeep-mods
 ```
 

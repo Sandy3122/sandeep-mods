@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 1.0.2 (2026-10-09)
 - Moved the tests to tests/ and ported them to the Claude Code test kit so claude plugin test runs them. No behaviour change.
 

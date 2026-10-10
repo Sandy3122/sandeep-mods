@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.5 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.1.4 (2026-10-09)
 - Folded the reference notes into ARCHITECTURE.md and removed the docs folder. No behaviour change.
 

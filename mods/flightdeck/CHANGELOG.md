@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.5 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.3.4 (2026-10-09)
 
 - Removed unused images and moved the demo GIF to assets/. No behaviour change.

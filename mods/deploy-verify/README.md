@@ -2,7 +2,7 @@
 
 Deploy Verify checks that a deploy is really live after a deploy command succeeds, and gives Claude the result so it cannot call the deploy done without evidence.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and deploys
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Git and deploys
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and depl
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install deploy-verify@sandeep-mods
 ```
 

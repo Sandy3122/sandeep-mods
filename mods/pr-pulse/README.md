@@ -2,7 +2,7 @@
 
 PR Pulse shows live status for your GitHub pull requests in Claude Code: checks, merge readiness, review comments, your review queue and change alerts.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and deploys
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Git and deploys
 
 ![PR Pulse pane watching a pull request: merge-readiness verdict, check progress, recent activity and workflows](assets/pr-pulse.png)
 
@@ -19,7 +19,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and depl
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install pr-pulse@sandeep-mods
 ```
 

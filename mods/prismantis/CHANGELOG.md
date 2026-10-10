@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.12.2 (2026-10-09)
 - Pointed support and documentation links at this repository. No other change.
 

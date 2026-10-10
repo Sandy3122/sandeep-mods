@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+- Pointed the privacy and terms links at the What it can access section of the README.
+
 ## 0.1.2 (2026-10-09)
 - Pointed the support and documentation links in the manifest at this repository. No other change.
 

@@ -7,7 +7,7 @@ Sandeep Mods is a marketplace of Claude Code mods. Most are open-source mods by 
 Add the marketplace once, inside Claude Code:
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 ```
 
 Then install any mod from the list below, for example:
@@ -16,7 +16,7 @@ Then install any mod from the list below, for example:
 /plugin install cost-guard@sandeep-mods
 ```
 
-From your shell, run `claude plugin marketplace add Sandy3122/claude-mods`, then `claude plugin install <mod>@sandeep-mods`.
+From your shell, run `claude plugin marketplace add Sandy3122/sandeep-mods`, then `claude plugin install <mod>@sandeep-mods`.
 
 Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Code tab.
 

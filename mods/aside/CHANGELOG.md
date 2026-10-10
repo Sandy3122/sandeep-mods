@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+- Removed the unused tests/harness.ts and listed the checks the test kit cannot express in ARCHITECTURE.md.
+
 ## 0.1.2 (2026-10-09)
 - Rewrote the test with the Claude Code test kit so claude plugin test runs it. No behaviour change.
 - Restored the evals folder.

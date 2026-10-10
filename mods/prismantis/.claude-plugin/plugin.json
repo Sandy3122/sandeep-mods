@@ -1,14 +1,14 @@
 {
   "name": "prismantis",
   "displayName": "Prismantis",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "Redraws Claude Code replies with themeable colors: tables, headings, code, diagrams, tool rows and copy buttons.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/prismantis#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/prismantis#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "theme",

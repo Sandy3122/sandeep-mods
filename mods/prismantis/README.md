@@ -2,7 +2,7 @@
 
 Prismantis redraws Claude Code replies in a color theme you pick: tables, headings, code, diagrams, tool rows and your own prompts.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing output
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Viewing output
 
 ![A Claude Code session drawn by Prismantis: tool rows on the right, your prompt in a bubble, then headings, a table, a chart and a flowchart](docs/demo.gif)
 
@@ -18,7 +18,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing outp
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install prismantis@sandeep-mods
 ```
 

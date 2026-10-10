@@ -2,7 +2,7 @@
 
 Aside opens a read-only side chat beside the transcript, so you can ask questions about the session so far without touching the main thread.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Context
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install aside@sandeep-mods
 ```
 

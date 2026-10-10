@@ -19,7 +19,6 @@ ui.input / ui.press ─▶ ask, Clear, Close
 | `hooks/hooks.json` | Points at `./register.ts` |
 | `hooks/register.ts` | Every hook, the pane, prompt building and the live fallback |
 | `tests/register.test.ts` | Behaviour tests run by `claude plugin test`, using the Claude Code test kit |
-| `tests/harness.ts` | The older fake engine, written for Node's own runner. The current test does not use it |
 | `evals/` | Evaluation cases for `claude plugin eval` (need credentials to run) |
 | `docs/investigation/` | Upstream measurements the design rests on: `FINDINGS.md`, `DESIGN.md`, probe plugins and evidence logs. Not used at run time |
 | `tsconfig.json` | Own tsconfig; includes `.claude/types` and `hooks` |
@@ -63,7 +62,15 @@ One `Pane` with id `aside`: a header, the recent exchanges, an input and Clear a
 
 ## Testing
 
-`tests/register.test.ts` runs the real hooks over a mocked engine with the Claude Code test kit (`claude-code/testing`). Run `claude plugin test mods/aside`. It covers registration, the fork path, the live fallback, queuing, history in the prompt, the pane and its buttons, and that only the allowed `$` verbs are used: a verb the test does not answer fails the call. Three things from the older Node-runner test are not reproduced exactly. The elapsed time in the pane is only checked as a number slot, because the kit does not give the hook a clock you can set. The list of registered events is not asserted, and a press on another plugin's button cannot be sent through the kit, so that pass-through is not tested. A failed fork is tested for its error row, but not for the exact message.
+`tests/register.test.ts` runs the real hooks over a mocked engine with the Claude Code test kit (`claude-code/testing`). Run `claude plugin test mods/aside`. It covers registration, the fork path, the live fallback, queuing, history in the prompt, the pane and its buttons, and that only the allowed `$` verbs are used: a verb the test does not answer fails the call.
+
+Four checks from the older Node-runner test are not reproduced, because the kit cannot express them:
+
+- The exact elapsed time in the pane. The kit does not give the hook a clock you can set, so the test only checks that a number is shown.
+- The list of registered events. The kit gives no way to read it back.
+- A press on another plugin's button. The kit cannot send one, so the pass-through is not tested.
+- The exact message after a failed fork. The test checks that an error row appears, not its text.
+
 
 ## Known limits
 

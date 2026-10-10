@@ -2,7 +2,7 @@
 
 Micro Compaction adds `/compact micro`, which shrinks your conversation by replacing file reads with short placeholders and dropping thinking, with no model call.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Context
 
 ## What it does
 
@@ -15,7 +15,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install micro-compaction@sandeep-mods
 ```
 

@@ -1,14 +1,14 @@
 {
   "name": "pr-pulse",
   "displayName": "PR Pulse",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Watch your GitHub pull requests from Claude Code: checks, merge readiness, comments, review queue and change alerts.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/pr-pulse#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/pr-pulse#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "github",

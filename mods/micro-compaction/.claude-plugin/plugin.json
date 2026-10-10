@@ -1,14 +1,14 @@
 {
   "name": "micro-compaction",
   "displayName": "Micro Compaction",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Adds /compact micro, which replaces Read results with short placeholders and drops thinking without calling a model.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/micro-compaction#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/micro-compaction#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "Unlicense",
   "keywords": [
     "compact",

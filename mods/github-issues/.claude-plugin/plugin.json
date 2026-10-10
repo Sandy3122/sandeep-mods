@@ -1,11 +1,11 @@
 {
   "name": "github-issues",
   "displayName": "GitHub Issues",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lists a repository's GitHub issues in a side pane, with one click to have Claude work on one.",
   "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/github-issues#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/github-issues#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": ["github", "issues", "pane", "gh", "repository"],
   "types": "./types/index.d.ts"

@@ -1,14 +1,14 @@
 {
   "name": "secret-redactor",
   "displayName": "Secret Redactor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Replaces secrets, email addresses and public IP addresses in the chat with stable placeholders, and restores the real values when a tool runs.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/secret-redactor#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/secret-redactor#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "security",

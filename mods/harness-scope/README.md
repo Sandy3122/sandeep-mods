@@ -2,7 +2,7 @@
 
 Harness Scope hides the global skills, agents, instruction files and tools you choose in a repo, using a named profile that the repo selects.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Context
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Context
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install harness-scope@sandeep-mods
 ```
 

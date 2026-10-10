@@ -1,18 +1,18 @@
 {
   "name": "context-view",
   "displayName": "Context View",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Shows how full the context window is as a meter row above the prompt, with the percentage used and the tokens left before auto-compact.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/context-view#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/context-view#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": ["context-window", "auto-compact", "meter", "tokens", "mod"],
-  "documentationUrl": "https://github.com/Sandy3122/claude-mods/tree/main/mods/context-view#readme",
-  "supportUrl": "https://github.com/Sandy3122/claude-mods/issues",
+  "documentationUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/context-view#readme",
+  "supportUrl": "https://github.com/Sandy3122/sandeep-mods/issues",
   "icon": "./.claude-plugin/icon.png",
   "types": "./types/index.d.ts"
 }

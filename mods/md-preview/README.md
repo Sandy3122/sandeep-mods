@@ -2,7 +2,7 @@
 
 MD Preview shows the Markdown files Claude edits, rendered like GitHub, in a pane next to the chat.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing output
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Viewing output
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Viewing outp
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install md-preview@sandeep-mods
 ```
 

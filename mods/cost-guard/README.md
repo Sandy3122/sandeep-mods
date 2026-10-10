@@ -2,7 +2,7 @@
 
 Cost Guard shows what each chat, reply and day costs, warns you when a chat gets long, and turns documents into markdown before Claude reads them.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Cost and usage
 
 ```
 Spend · this chat ≈$1.84 · last reply $0.21 · today $6.40 · context 92k of 200k (46%)
@@ -25,7 +25,7 @@ When you switch topics, start a fresh session (/clear).
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install cost-guard@sandeep-mods
 ```
 

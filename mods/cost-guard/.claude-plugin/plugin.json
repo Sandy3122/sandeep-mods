@@ -1,14 +1,14 @@
 {
   "name": "cost-guard",
   "displayName": "Cost Guard",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Shows what each chat, reply and day costs, warns you when a chat gets long, and converts documents to markdown before Claude reads them.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/cost-guard#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/cost-guard#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "cost",

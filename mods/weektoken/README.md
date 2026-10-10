@@ -2,7 +2,7 @@
 
 WeekToken shows how much of your Claude Code usage limits you have used next to how much of each window has passed, so you can see if you will run out before the reset.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Cost and usage
 
 ![The band above the prompt, showing a 7-day quota with used and elapsed percentages](screenshots/band-dark.png)
 
@@ -23,7 +23,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usa
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install weektoken@sandeep-mods
 ```
 

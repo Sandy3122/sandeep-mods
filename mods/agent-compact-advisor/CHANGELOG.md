@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.4 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.5.3 (2026-10-09)
 - Changed the default language from Russian to English; Russian stays available with language set to ru.
 - Removed unused demo and openspec folders.

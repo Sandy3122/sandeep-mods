@@ -1,14 +1,14 @@
 {
   "name": "launch-codes",
   "displayName": "Launch Codes",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Asks for a one-time code and a second confirmation before Claude runs a dangerous Bash command such as rm -rf, git push --force or vercel --prod.",
   "author": {
     "name": "Sandeep",
     "url": "https://github.com/Sandy3122"
   },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/launch-codes#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/launch-codes#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": [
     "safety",
@@ -21,8 +21,8 @@
   ],
   "types": "./types/index.d.ts",
   "icon": "./.claude-plugin/icon.png",
-  "documentationUrl": "https://github.com/Sandy3122/claude-mods/tree/main/mods/launch-codes#readme",
-  "supportUrl": "https://github.com/Sandy3122/claude-mods/issues",
-  "privacyPolicyUrl": "https://www.onewave-ai.com/privacy",
-  "termsOfServiceUrl": "https://www.onewave-ai.com/terms"
+  "documentationUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/launch-codes#readme",
+  "supportUrl": "https://github.com/Sandy3122/sandeep-mods/issues",
+  "privacyPolicyUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/launch-codes#what-it-can-access",
+  "termsOfServiceUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/launch-codes#what-it-can-access"
 }

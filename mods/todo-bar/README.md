@@ -2,7 +2,7 @@
 
 Todo Bar shows how far Claude is through its task list, in a band above the prompt.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Workflow
 
 ![The band: the running task, its time, a progress bar and the next tasks](assets/preview.png)
 
@@ -20,7 +20,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install todo-bar@sandeep-mods
 ```
 

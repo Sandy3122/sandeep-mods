@@ -1,17 +1,17 @@
 {
   "name": "weektoken",
   "displayName": "WeekToken",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "description": "Shows your 5-hour, weekly and per-model usage limits against elapsed time, with a forecast and history, in a band above the prompt and a pane.",
   "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/weektoken#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/weektoken#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "MIT",
   "keywords": ["usage", "rate-limit", "pace", "quota"],
   "types": "./types/index.d.ts",
   "icon": "./.claude-plugin/icon.png",
-  "documentationUrl": "https://github.com/Sandy3122/claude-mods/tree/main/mods/weektoken#readme",
-  "supportUrl": "https://github.com/Sandy3122/claude-mods/issues",
-  "privacyPolicyUrl": "https://github.com/3dnow/claude-mods/tree/main/weektoken#privacy-and-permissions",
-  "termsOfServiceUrl": "https://github.com/3dnow/claude-mods/blob/main/LICENSE"
+  "documentationUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/weektoken#readme",
+  "supportUrl": "https://github.com/Sandy3122/sandeep-mods/issues",
+  "privacyPolicyUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/weektoken#what-it-can-access",
+  "termsOfServiceUrl": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/weektoken#what-it-can-access"
 }

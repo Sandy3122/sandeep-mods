@@ -2,7 +2,7 @@
 
 Flightdeck shows a live dashboard in a Claude Code pane: context and cost, an architect timeline, every permission check, and your subagents.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Cost and usage
 
 ![Flightdeck during a session: five subagents appear as cards, switch to swimlanes and finish while the permission gate fills with checks](assets/demo.gif)
 
@@ -18,7 +18,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usa
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install flightdeck@sandeep-mods
 ```
 

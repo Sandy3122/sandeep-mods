@@ -2,7 +2,7 @@
 
 Secret Redactor keeps secrets, email addresses and public IP addresses out of your chat by swapping each one for a placeholder, then puts the real value back when a tool runs.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Safety
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Safety
 
 ```
 ANTHROPIC_API_KEY=[REDACTED-SECRET-164d0c98]
@@ -24,7 +24,7 @@ EDGE_ORIGIN=[REDACTED-IP-6fc52d2b]
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install secret-redactor@sandeep-mods
 ```
 

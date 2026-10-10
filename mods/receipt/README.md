@@ -2,7 +2,7 @@
 
 Receipt leaves a one-line summary above the prompt when a turn ends, showing the files Claude changed, the commands it ran and how many failed.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Workflow
 
 ![The receipt band showing what the last turn changed, ran and read](assets/preview.png)
 
@@ -18,7 +18,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Workflow
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install receipt@sandeep-mods
 ```
 

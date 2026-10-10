@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.1.2 (2026-10-09)
 - Moved the tests into tests/. No behaviour change.
 

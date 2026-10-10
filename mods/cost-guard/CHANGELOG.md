@@ -2,6 +2,9 @@
 
 All notable changes to cost-guard are listed here. Versions follow [semantic versioning](https://semver.org).
 
+## 0.1.3 (2026-10-10)
+- Moved the repository links to Sandy3122/sandeep-mods.
+
 ## 0.1.2 (2026-10-09)
 
 - Removed the mod's own .gitignore; the repository's covers it. No behaviour change.

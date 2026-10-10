@@ -2,7 +2,7 @@
 
 Context View shows how full the context window is as one meter row above the prompt, with the percentage used and the tokens left before auto-compact.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usage
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Cost and usage
 
 ```
 ▰▰▰▰▰▰▰▰▱▱▱▱▱▱▱▱▱▰▰▰  42% · 84.1k/200k tokens · 82.9k until auto-compact
@@ -22,7 +22,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Cost and usa
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install context-view@sandeep-mods
 ```
 

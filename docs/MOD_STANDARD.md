@@ -41,8 +41,8 @@ Fields in this order. Keep every other field the mod already has (`userConfig`, 
   "version": "<previous version, bumped on any change you make>",
   "description": "<one plain sentence: what the user gets>",
   "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
-  "homepage": "https://github.com/Sandy3122/claude-mods/tree/main/mods/<name>#readme",
-  "repository": "https://github.com/Sandy3122/claude-mods",
+  "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/<name>#readme",
+  "repository": "https://github.com/Sandy3122/sandeep-mods",
   "license": "<same as the original: MIT, Unlicense, ...>",
   "keywords": ["<3 to 8 lowercase words>"]
 }
@@ -63,7 +63,7 @@ Written for someone deciding whether to install the mod. Sections in this order;
 
 <One sentence: what it does for you.>
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · <Category>
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · <Category>
 
 ![<what the picture shows>](assets/<file>)        <- optional screenshot or GIF
 
@@ -72,7 +72,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · <Category>
 
 ## Install
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install <name>@sandeep-mods
 ```
 

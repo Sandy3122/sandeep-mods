@@ -2,7 +2,7 @@
 
 GitHub Issues lists a repository's issues as cards in a side pane, with a button that has Claude work on one.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and deploys
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Git and deploys
 
 <p>
   <img src="docs/issues.png" alt="The Issues pane: tabs, search, a label picker, and issue cards with labels, linked pull requests and actions" width="380">
@@ -23,7 +23,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Git and depl
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install github-issues@sandeep-mods
 ```
 

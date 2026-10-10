@@ -2,7 +2,7 @@
 
 Launch Codes stops dangerous Bash commands until you type a one-time code and confirm a second time.
 
-Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Safety
+Part of [Sandeep Mods](https://github.com/Sandy3122/sandeep-mods) · Safety
 
 ## What it does
 
@@ -16,7 +16,7 @@ Part of [Sandeep Mods](https://github.com/Sandy3122/claude-mods) · Safety
 ## Install
 
 ```
-/plugin marketplace add Sandy3122/claude-mods
+/plugin marketplace add Sandy3122/sandeep-mods
 /plugin install launch-codes@sandeep-mods
 ```
 

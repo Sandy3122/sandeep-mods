@@ -1,6 +1,6 @@
 # Standardize a mod with Claude Code
 
-Open Claude Code in the repository root (`cd claude-mods`, then `claude`) and paste one of these prompts. Do one mod per prompt and commit after each, so every change is easy to review and undo. `docs/MOD_STANDARD.md` is the authority; these prompts only say how to apply it.
+Open Claude Code in the repository root (`cd sandeep-mods`, then `claude`) and paste one of these prompts. Do one mod per prompt and commit after each, so every change is easy to review and undo. `docs/MOD_STANDARD.md` is the authority; these prompts only say how to apply it.
 
 ## One mod
 

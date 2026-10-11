@@ -1,7 +1,7 @@
 {
   "name": "deploy-verify",
   "displayName": "Deploy Verify",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "After a deploy command succeeds, checks the live URL with cache-busting and tells Claude the result, so a deploy is not called done without evidence.",
   "author": {
     "name": "Sandeep",

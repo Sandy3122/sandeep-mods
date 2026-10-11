@@ -26,10 +26,10 @@ mods you wrote yourself.
 Requirements: Python 3.8+, git 2.25+ on PATH. Optional: Claude Code (`claude`).
 
 Examples
-  python fetch_mods.py --out my-claude-mods --owner "Sandeep" --github Sandy3122 --repo sandeep-mods
-  python fetch_mods.py --out my-claude-mods --only cctop,rabe
-  python fetch_mods.py --out my-claude-mods --check-upstream
-  python fetch_mods.py --out my-claude-mods --only rabe --latest --force
+  python fetch_mods.py --out my-sandeep-mods --owner "Sandeep" --github Sandy3122 --repo sandeep-mods
+  python fetch_mods.py --out my-sandeep-mods --only cctop,rabe
+  python fetch_mods.py --out my-sandeep-mods --check-upstream
+  python fetch_mods.py --out my-sandeep-mods --only rabe --latest --force
 """
 
 import argparse
@@ -584,7 +584,7 @@ def fetch(args):
 
 def main():
     parser = argparse.ArgumentParser(description="Build a Claude Code mod collection under your own name.")
-    parser.add_argument("--out", default="my-claude-mods", help="collection folder (your GitHub repo's folder)")
+    parser.add_argument("--out", default="my-sandeep-mods", help="collection folder (your GitHub repo's folder)")
     parser.add_argument("--owner", help="your name, as maintainer")
     parser.add_argument("--github", help="your GitHub username")
     parser.add_argument("--repo", help="the GitHub repository name")

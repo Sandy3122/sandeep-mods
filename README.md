@@ -77,7 +77,7 @@ Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Cod
 
 ## How the mods are kept consistent
 
-Every mod follows [docs/MOD_STANDARD.md](docs/MOD_STANDARD.md): the same files, the same manifest fields and the same README sections, written in one voice. Standardizing changes how a mod is presented, never what it does. Each mod passes `claude plugin validate --strict` and, where it has tests, `claude plugin test`.
+Every mod follows one standard: the same files, the same manifest fields and the same README sections, written in one voice. Standardizing changes how a mod is presented, never what it does. Each mod passes `claude plugin validate --strict` and, where it has tests, `claude plugin test`.
 
 ## Safety
 

@@ -2,7 +2,7 @@
 
 This repository is a Claude Code plugin marketplace: one mod per folder under `mods/`. The brand is **Sandeep Mods**, maintained by Sandeep (GitHub `Sandy3122`).
 
-- Every mod follows `docs/MOD_STANDARD.md`. Read it before changing a mod.
+- Every mod follows `docs/MOD_STANDARD.md`. Read it before changing a mod. The docs folder is kept locally and is not in the repository.
 - To standardize a mod, follow `docs/STANDARDIZE_PROMPT.md`.
 - Maintenance commands (check upstream, regenerate, validate) are in `docs/MAINTAINING.md`.
 - Voice: plain English, "you", present tense, short sentences, sentence-case headings, no hype words, no emojis, no exclamation marks.

@@ -4,6 +4,7 @@ This repository is a Claude Code plugin marketplace: one mod per folder under `m
 
 - Every mod follows `docs/MOD_STANDARD.md`. Read it before changing a mod.
 - To standardize a mod, follow `docs/STANDARDIZE_PROMPT.md`.
+- Maintenance commands (check upstream, regenerate, validate) are in `docs/MAINTAINING.md`.
 - Voice: plain English, "you", present tense, short sentences, sentence-case headings, no hype words, no emojis, no exclamation marks.
 - Credit stays truthful: adapted mods are "adapted and maintained by" Sandeep; only `cost-guard` is "created and maintained by".
 - Never edit or delete a mod's `LICENSE` text or `UPSTREAM.json`; only add the maintainer's copyright line as the standard says. Never mention `UPSTREAM.json` in user-facing text (READMEs, descriptions, CHANGELOGs).

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.4 (2026-10-11)
+- Removed links to the original author's repository from the README credits and this changelog.
+
 ## 0.3.3 (2026-10-11)
 - Reworded the import note in this changelog. No other change.
 
@@ -8,5 +11,5 @@
 
 ## 0.3.1 (2026-10-09)
 
-- Imported from the original author's repository at f4c1c75.
+- Imported from the original mod.
 - Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.

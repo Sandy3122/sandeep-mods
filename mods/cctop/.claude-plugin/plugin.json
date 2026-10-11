@@ -1,7 +1,7 @@
 {
   "name": "cctop",
   "displayName": "Cctop",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Shows a live dashboard of your session's cost, tokens, context and tools in a pane, and lets Claude answer questions from the same numbers.",
   "author": {
     "name": "Sandeep",

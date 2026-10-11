@@ -67,4 +67,4 @@ Unlicense (public domain); see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [ruihe774](https://github.com/ruihe774) in [ruihe774/cc-micro-compaction](https://github.com/ruihe774/cc-micro-compaction/tree/7409c6265aa977c01cfd6b070af3c734f56fb467), Unlicense.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by ruihe774, Unlicense.

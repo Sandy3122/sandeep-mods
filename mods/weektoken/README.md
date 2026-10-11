@@ -85,4 +85,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [3dnow](https://github.com/3dnow) in [3dnow/claude-mods](https://github.com/3dnow/claude-mods/tree/9f0bf8e119a1444fc267b9553da88c6b444f3683/weektoken), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by 3dnow, MIT.

@@ -78,4 +78,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [shimo4228](https://github.com/shimo4228) in [shimo4228/harness-scope](https://github.com/shimo4228/harness-scope/tree/02225a09febf2fb0914857b6c532965e807e8e5c/plugin), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by shimo4228, MIT.

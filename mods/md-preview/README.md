@@ -68,4 +68,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [hamzafer](https://github.com/hamzafer) in [hamzafer/claude-code-mods](https://github.com/hamzafer/claude-code-mods/tree/e687416b0f2df0f3ad7f4dfc2065eefe6bc17ea9/mods/md-preview), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by hamzafer, MIT.

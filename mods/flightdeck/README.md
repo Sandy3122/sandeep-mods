@@ -75,4 +75,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [scasella](https://github.com/scasella) in [scasella/claude-flightdeck](https://github.com/scasella/claude-flightdeck/tree/f31daca523d36c501cd0df23a737a44c7dc56ad6), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by scasella, MIT.

@@ -98,7 +98,7 @@ Say clearly if it runs programs, writes files, calls a model (costs tokens) or u
 
 ## Credits
 <Adapted mods:>
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [<author>](https://github.com/<author>) in [<owner/repo>](<source url>), <license>.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by <author>, <license>.
 <Sandeep's own mods:>
 Created and maintained by Sandeep as part of Sandeep Mods.
 ````

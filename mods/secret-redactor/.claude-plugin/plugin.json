@@ -1,7 +1,7 @@
 {
   "name": "secret-redactor",
   "displayName": "Secret Redactor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Replaces secrets, email addresses and public IP addresses in the chat with stable placeholders, and restores the real values when a tool runs.",
   "author": {
     "name": "Sandeep",

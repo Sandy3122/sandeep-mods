@@ -339,7 +339,7 @@ Mods need Claude Code 2.1.287 or newer, in the terminal or the desktop app's Cod
 
 ## Credits
 
-Many of these mods started as open-source projects by other authors. Each mod folder keeps its original license, and [CREDITS.md](CREDITS.md) lists every original author, source and license.
+Many of these mods started as open-source projects by other authors. Each mod folder keeps its original license, and [CREDITS.md](CREDITS.md) lists every original author and license.
 
 ## License
 
@@ -436,7 +436,7 @@ def write_collection_files(out, mods, args):
     rows = ["# Credits", "",
             f"{args.title} adapts open-source mods by the authors below, and {args.owner} adapts and maintains them. Each mod folder keeps the original license; "
             "changes made in this collection are listed in each mod's CHANGELOG.md.", "",
-            "| Mod | Original author | Source | Commit | License |", "| --- | --- | --- | --- | --- |"]
+            "| Mod | Original author | License |", "| --- | --- | --- |"]
     originals = []
     for mod in mods:
         up = mod["upstream"]
@@ -444,8 +444,7 @@ def write_collection_files(out, mods, args):
         if not up:
             originals.append(name)
             continue
-        rows.append(f"| {name} | [{up['author']}](https://github.com/{up['author']}) | [{up['repo']}]({up['url']}) | "
-                    f"`{up['commit'][:7]}` | {up['license']} |")
+        rows.append(f"| {name} | {up['author']} | {up['license']} |")
     if originals:
         rows += [""] + [f"{name}: Created and maintained by {args.owner} as part of {args.title}." for name in originals]
     (out / "CREDITS.md").write_text("\n".join(rows) + "\n", encoding="utf-8")

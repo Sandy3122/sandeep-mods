@@ -1,7 +1,7 @@
 {
   "name": "receipt",
   "displayName": "Receipt",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Shows what each turn did in a band above the prompt: files changed, commands, failures, reads and subagents.",
   "author": {
     "name": "Sandeep",

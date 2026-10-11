@@ -125,4 +125,4 @@ MIT; see LICENSE. The bundled libraries (beautiful-mermaid and Prism) and the co
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [NahumLitvin](https://github.com/NahumLitvin) in [NahumLitvin/prismantis](https://github.com/NahumLitvin/prismantis/tree/9900aaa3aeb31ac728639f692a38354ce89949da), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by NahumLitvin, MIT.

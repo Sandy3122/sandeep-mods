@@ -85,4 +85,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [hoobnn](https://github.com/hoobnn) in [hoobnn/hoobnn-agent-mods](https://github.com/hoobnn/hoobnn-agent-mods/tree/b95d1e454a76523e433fb37e5ca171e1f5576676/claude-code/receipt), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by hoobnn, MIT.

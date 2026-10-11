@@ -1,7 +1,7 @@
 {
   "name": "terminal-browser",
   "displayName": "Terminal Browser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Opens a real browser in a pane inside Claude Code, with a /browser command and an optional tool that lets the agent open pages.",
   "author": { "name": "Sandeep", "url": "https://github.com/Sandy3122" },
   "homepage": "https://github.com/Sandy3122/sandeep-mods/tree/main/mods/terminal-browser#readme",

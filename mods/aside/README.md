@@ -79,4 +79,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [JayDoubleu](https://github.com/JayDoubleu) in [JayDoubleu/aside](https://github.com/JayDoubleu/aside/tree/cf2b7562ae7b376cdcf9e2436a926aba77dc759f), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by JayDoubleu, MIT.

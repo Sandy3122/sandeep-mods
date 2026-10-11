@@ -86,4 +86,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [ray-amjad](https://github.com/ray-amjad) in [ray-amjad/awesome-claude-code-function-hooks](https://github.com/ray-amjad/awesome-claude-code-function-hooks/tree/12b5fea27a4bd1b88cd9c9b6abc1efc0756c6625/plugins/secret-redactor), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by ray-amjad, MIT.

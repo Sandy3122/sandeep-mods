@@ -67,4 +67,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [kongyo2](https://github.com/kongyo2) in [kongyo2/context-view](https://github.com/kongyo2/context-view/tree/137e4e3db754684144ec953c5e66085bc2959766), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by kongyo2, MIT.

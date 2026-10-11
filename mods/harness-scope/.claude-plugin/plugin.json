@@ -1,7 +1,7 @@
 {
   "name": "harness-scope",
   "displayName": "Harness Scope",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Turns global skills, rules, agents and tools on or off per repo using named profiles.",
   "author": {
     "name": "Sandeep",

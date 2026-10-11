@@ -71,4 +71,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [tomstagl](https://github.com/tomstagl) in [tomstagl/cctop](https://github.com/tomstagl/cctop/tree/6ceafc34a972f4e58d5e53b1c69f80e2a9759d41/plugin), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by tomstagl, MIT.

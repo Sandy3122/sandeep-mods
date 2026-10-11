@@ -58,4 +58,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [OneWave-AI](https://github.com/OneWave-AI) in [OneWave-AI/claude-code-mods](https://github.com/OneWave-AI/claude-code-mods/tree/e6da26ca36a88eec3be25605d30fa20f2c1c0cec/launch-codes), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by OneWave-AI, MIT.

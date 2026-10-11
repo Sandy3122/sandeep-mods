@@ -96,4 +96,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [lorenzh](https://github.com/lorenzh) in [lorenzh/rabe](https://github.com/lorenzh/rabe/tree/8edd5cd579f49c2ca95128e815b8d16e002c2a2d), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by lorenzh, MIT.

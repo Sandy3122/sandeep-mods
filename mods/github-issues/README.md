@@ -72,4 +72,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [MarcoCarnevali](https://github.com/MarcoCarnevali) in [MarcoCarnevali/claude-code-mods](https://github.com/MarcoCarnevali/claude-code-mods/tree/a3e528dd00ced34a46973ab89398cc52168191b9/github-issues), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by MarcoCarnevali, MIT.

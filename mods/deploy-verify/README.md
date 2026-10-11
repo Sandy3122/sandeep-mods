@@ -77,4 +77,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [yash-gadodia](https://github.com/yash-gadodia) in [yash-gadodia/claude-mods](https://github.com/yash-gadodia/claude-mods/tree/f4c1c751f67918c73f29977cbd52b8398f8556ac/deploy-verify), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by yash-gadodia, MIT.

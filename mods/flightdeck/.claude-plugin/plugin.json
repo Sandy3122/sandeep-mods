@@ -1,7 +1,7 @@
 {
   "name": "flightdeck",
   "displayName": "Flightdeck",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Shows a live dashboard of context, cost, permission checks and subagents in a Claude Code pane, built from real session events.",
   "author": {
     "name": "Sandeep",

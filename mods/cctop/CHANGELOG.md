@@ -1,8 +1,11 @@
 # Changelog
 
+## 0.10.3 (2026-10-11)
+- Removed links to the original author's repository from the README credits and this changelog.
+
 ## 0.10.2 (2026-10-10)
 - Moved the repository links to Sandy3122/sandeep-mods.
 
 ## 0.10.1 (2026-10-09)
-- Imported from tomstagl/cctop at 6ceafc3.
+- Imported from the original mod.
 - Standardized: README, ARCHITECTURE, manifest metadata, layout. No behaviour change.

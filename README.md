@@ -89,7 +89,7 @@ Run `claude plugin update <mod>@sandeep-mods`, or turn on auto-update for this m
 
 ## Credits
 
-Most of these mods started as open-source projects by other authors. [CREDITS.md](CREDITS.md) lists every original author, source and license, and each mod's README ends with a Credits section.
+Most of these mods started as open-source projects by other authors. [CREDITS.md](CREDITS.md) lists every original author and license, and each mod's README ends with a Credits section.
 
 ## License
 

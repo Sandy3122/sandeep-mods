@@ -1,7 +1,7 @@
 {
   "name": "prismantis",
   "displayName": "Prismantis",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Redraws Claude Code replies with themeable colors: tables, headings, code, diagrams, tool rows and copy buttons.",
   "author": {
     "name": "Sandeep",

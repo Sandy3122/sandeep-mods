@@ -87,4 +87,4 @@ MIT; see LICENSE. `engine-types/claude-code.d.ts` is copyright Anthropic PBC and
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [apolenkov](https://github.com/apolenkov) in [apolenkov/agent-compact-advisor](https://github.com/apolenkov/agent-compact-advisor/tree/5486abec02ae09bda76750993a0f68ca61b76dbf), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by apolenkov, MIT.

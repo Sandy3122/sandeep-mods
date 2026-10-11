@@ -75,4 +75,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [zenbu-labs](https://github.com/zenbu-labs) in [zenbu-labs/terminal-browser](https://github.com/zenbu-labs/terminal-browser/tree/2165ae76c9639e3996829ab0e6d54ddbd4f06ad8/claude-code-plugin), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by zenbu-labs, MIT.

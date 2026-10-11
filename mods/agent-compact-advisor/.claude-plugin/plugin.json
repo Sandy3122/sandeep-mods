@@ -1,7 +1,7 @@
 {
   "name": "agent-compact-advisor",
   "displayName": "Agent Compact Advisor",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Shows a 0-100 status line score for how good a moment it is to /compact, and adds a preservation template to every compaction.",
   "author": {
     "name": "Sandeep",

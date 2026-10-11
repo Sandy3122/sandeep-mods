@@ -1,7 +1,7 @@
 {
   "name": "context-view",
   "displayName": "Context View",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Shows how full the context window is as a meter row above the prompt, with the percentage used and the tokens left before auto-compact.",
   "author": {
     "name": "Sandeep",

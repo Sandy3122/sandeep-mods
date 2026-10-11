@@ -75,4 +75,4 @@ MIT; see LICENSE.
 
 ## Credits
 
-Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by [gerricchaplin](https://github.com/gerricchaplin) in [gerricchaplin/pr-pulse](https://github.com/gerricchaplin/pr-pulse/tree/8bf587aaa9cb3815875dcc3818c8827a37e7cb78), MIT.
+Adapted and maintained by Sandeep as part of Sandeep Mods. Originally created by gerricchaplin, MIT.

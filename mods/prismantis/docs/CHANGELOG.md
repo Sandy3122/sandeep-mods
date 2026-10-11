@@ -6,32 +6,32 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
-- A short table column next to a very wide one no longer breaks inside its words (`10` drawn as `1`/`0`). Columns that fit their share keep their full width, and only the wide ones split the rest ([#41](https://github.com/NahumLitvin/prismantis/pull/41)).
-- Boxed tables keep their borders on every line of a row whose cells wrap. The `│` bars used to stop after the first line, leaving the rest of the row open. Rows with a link keep their link whole and get borders that follow the row's height, in terminals with or without clickable links ([#48](https://github.com/NahumLitvin/prismantis/pull/48), thanks @vrevolverrr and @b33eep).
-- Double underscores inside a word stay as written, as CommonMark has it: `mcp__serena__activate_project` no longer draws as `mcp` **serena** `activate_project`. `__bold__` on its own still draws bold ([#51](https://github.com/NahumLitvin/prismantis/pull/51), thanks @vrevolverrr).
-- A table column keeps at least the width of its longest word when the longest words of all columns fit, so a file path or URL in a narrow table is no longer cut in the middle. The other columns, even ones that would otherwise keep their full width, wrap to make room ([#49](https://github.com/NahumLitvin/prismantis/pull/49), thanks @b33eep).
-- Hebrew and Arabic read right to left in Apple Terminal's fullscreen layout, tables included. Apple Terminal runs its own left-to-right bidi over every fullscreen line, so prismantis now sends each line already reordered for that pass. A number touching Latin text (`250ms`) and ordered-list numbers can still land on the wrong side ([#42](https://github.com/NahumLitvin/prismantis/pull/42)).
+- A short table column next to a very wide one no longer breaks inside its words (`10` drawn as `1`/`0`). Columns that fit their share keep their full width, and only the wide ones split the rest (#41).
+- Boxed tables keep their borders on every line of a row whose cells wrap. The `│` bars used to stop after the first line, leaving the rest of the row open. Rows with a link keep their link whole and get borders that follow the row's height, in terminals with or without clickable links (#48, thanks @vrevolverrr and @b33eep).
+- Double underscores inside a word stay as written, as CommonMark has it: `mcp__serena__activate_project` no longer draws as `mcp` **serena** `activate_project`. `__bold__` on its own still draws bold (#51, thanks @vrevolverrr).
+- A table column keeps at least the width of its longest word when the longest words of all columns fit, so a file path or URL in a narrow table is no longer cut in the middle. The other columns, even ones that would otherwise keep their full width, wrap to make room (#49, thanks @b33eep).
+- Hebrew and Arabic read right to left in Apple Terminal's fullscreen layout, tables included. Apple Terminal runs its own left-to-right bidi over every fullscreen line, so prismantis now sends each line already reordered for that pass. A number touching Latin text (`250ms`) and ordered-list numbers can still land on the wrong side (#42).
 - Tables with many rows draw about twice as fast as in 0.11.0, because plain ASCII text is measured by its length.
 
 ## [0.11.0] - 2026-10-06
 
 ### Added
 
-- Other mods can draw markdown the way prismantis draws replies: `$.prismantis.markdown({ surface, text, columns })` answers the drawn tree, without copy buttons, for their own panes and bands. The types ship as a contract in `types/index.d.ts` ([#38](https://github.com/NahumLitvin/prismantis/pull/38), thanks @Malorn44).
+- Other mods can draw markdown the way prismantis draws replies: `$.prismantis.markdown({ surface, text, columns })` answers the drawn tree, without copy buttons, for their own panes and bands. The types ship as a contract in `types/index.d.ts` (#38, thanks @Malorn44).
 
 ## [0.10.0] - 2026-10-06
 
 ### Added
 
-- Your own prompts draw in the theme: a rounded bubble by default, or an accent bar or a bold chevron with the new `promptStyle` option (`off` keeps Claude Code's look). Task notifications and teammate messages are left alone ([#14](https://github.com/NahumLitvin/prismantis/issues/14)).
+- Your own prompts draw in the theme: a rounded bubble by default, or an accent bar or a bold chevron with the new `promptStyle` option (`off` keeps Claude Code's look). Task notifications and teammate messages are left alone (#14).
 - `toolStyle` keeps tool rows apart from Claude's sentences: `chat` (the default) puts them dimmed on the right, `tree-dim` tucks them under with `⎿`, `tree-bold` adds bold one-line sentences, `classic` keeps the old look.
 
 ## [0.9.0] - 2026-10-06
 
 ### Added
 
-- Links and bare URLs are clickable: they draw as terminal hyperlinks (OSC 8) and as anchors on desktop. Terminals without hyperlinks show the URL after the text, as before ([#9](https://github.com/NahumLitvin/prismantis/issues/9)).
-- `/prismantis copy` copies the last reply and `/prismantis copy code` its last code block, a keyboard path that does not need a click ([#28](https://github.com/NahumLitvin/prismantis/issues/28)).
+- Links and bare URLs are clickable: they draw as terminal hyperlinks (OSC 8) and as anchors on desktop. Terminals without hyperlinks show the URL after the text, as before (#9).
+- `/prismantis copy` copies the last reply and `/prismantis copy code` its last code block, a keyboard path that does not need a click (#28).
 
 ### Fixed
 
@@ -53,13 +53,13 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Fixed
 
-- On Windows the reply marker and the filled arrowheads in sequence and class diagrams drew as color emoji. The marker is now `●`, the same dot Claude Code uses off macOS, and the arrowheads are `►` and `◄`. A test fails if a drawn reply ever adds an emoji-capable character again ([#6](https://github.com/NahumLitvin/prismantis/issues/6)).
+- On Windows the reply marker and the filled arrowheads in sequence and class diagrams drew as color emoji. The marker is now `●`, the same dot Claude Code uses off macOS, and the arrowheads are `►` and `◄`. A test fails if a drawn reply ever adds an emoji-capable character again (#6).
 
 ## [0.7.0] - 2026-10-05
 
 ### Added
 
-- Task lists: `- [ ]` and `- [x]` draw as `[ ]` and `[✓]`, with done items dimmed and struck through. The new `taskStyle` option picks `checks` (the default), `ticks`, `box` or `progress`, which adds a done-count bar above each list. The copy button still copies the markdown as written ([#10](https://github.com/NahumLitvin/prismantis/issues/10)).
+- Task lists: `- [ ]` and `- [x]` draw as `[ ]` and `[✓]`, with done items dimmed and struck through. The new `taskStyle` option picks `checks` (the default), `ticks`, `box` or `progress`, which adds a done-count bar above each list. The copy button still copies the markdown as written (#10).
 
 ## [0.6.1] - 2026-10-05
 
